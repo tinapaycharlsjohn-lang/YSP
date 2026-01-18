@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membership & Chapters - Youth Service Philippines</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER / NAVBAR -->
+<header class="header">
+  <div class="nav-container">
+
+    <!-- Logo -->
+    <img src="YSP LOGO.png" alt="Youth Service Philippines Logo" class="logo">
+
+    <!-- Hamburger Menu -->
+    <button class="hamburger" id="hamburger">&#9776;</button>
+
+    <!-- Navigation -->
+    <nav id="nav-menu">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="programs.html">Programs</a></li>
+        <li><a href="membership.html">Membership & Chapters</a></li>
+        <li><a href="volunteer.html">Volunteer Opportunities</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+  </div>
+</header>
+
+<!-- MEMBERSHIP -->
+<section id="membership" class="section alt">
+  <h2 class="section-title">Membership</h2>
+  <p>Become part of Youth Service Philippines by joining as a member.</p>
+
+  <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdwMKgIjQNrlLH-j-Qdx0MrKxefxaLRC6gMI_oOgMTosDi_sQ/viewform" target="_blank">
+    Join as Member
+  </a>
+
+  <h3>Create a Chapter</h3>
+  <p>Interested in starting a Youth Service Philippines chapter in your area?</p>
+
+  <a class="btn-outline" href="https://forms.gle/cWPsgBJKLaQoLuUr8" target="_blank">
+    Create a Chapter
+  </a>
+
+  <p class="note">You will be contacted once your chapter is approved.</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>&copy; 2026 Youth Service Philippines. All rights reserved.</p>
+</footer>
+
+<!-- HAMBURGER SCRIPT -->
+<script>
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("nav-menu");
+
+  hamburger.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+</script>
+
+</body>
+</html>

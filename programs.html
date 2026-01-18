@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Programs - Youth Service Philippines</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER / NAVBAR -->
+<header class="header">
+  <div class="nav-container">
+
+    <!-- Logo -->
+    <img src="YSP LOGO.png" alt="Youth Service Philippines Logo" class="logo">
+
+    <!-- Hamburger Menu -->
+    <button class="hamburger" id="hamburger">&#9776;</button>
+
+    <!-- Navigation -->
+    <nav id="nav-menu">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="programs.html">Programs</a></li>
+        <li><a href="membership.html">Membership & Chapters</a></li>
+        <li><a href="volunteer.html">Volunteer Opportunities</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+  </div>
+</header>
+
+<!-- PROGRAMS -->
+<section id="programs" class="section">
+  <h2 class="section-title">Our Programs</h2>
+
+  <div class="cards">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d" alt="Program">
+      <div class="card-body">
+        <h3>Community Outreach</h3>
+        <p>Youth-led programs focused on education, health, and empowerment.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d" alt="Program">
+      <div class="card-body">
+        <h3>Environmental Action</h3>
+        <p>Initiatives promoting sustainability and environmental protection.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>&copy; 2026 Youth Service Philippines. All rights reserved.</p>
+</footer>
+
+<!-- HAMBURGER SCRIPT -->
+<script>
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("nav-menu");
+
+  hamburger.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+</script>
+
+</body>
+</html>

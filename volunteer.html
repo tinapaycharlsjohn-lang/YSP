@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volunteer Opportunities - Youth Service Philippines</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER / NAVBAR -->
+<header class="header">
+  <div class="nav-container">
+
+    <!-- Logo -->
+    <img src="YSP LOGO.png" alt="Youth Service Philippines Logo" class="logo">
+
+    <!-- Hamburger Menu -->
+    <button class="hamburger" id="hamburger">&#9776;</button>
+
+    <!-- Navigation -->
+    <nav id="nav-menu">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="programs.html">Programs</a></li>
+        <li><a href="membership.html">Membership & Chapters</a></li>
+        <li><a href="volunteer.html">Volunteer Opportunities</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+  </div>
+</header>
+
+<!-- VOLUNTEER -->
+<section id="volunteer" class="section">
+  <h2 class="section-title">Volunteer Opportunities</h2>
+
+  <div class="volunteer-card">
+    <h3>Tree Planting Activity</h3>
+    <p><strong>Date:</strong> March 20, 2026</p>
+    <p><strong>Chapter:</strong> YSP Manila</p>
+    <p><strong>SDGs Impacted:</strong> SDG 13 – Climate Action</p>
+    <p><strong>Contact:</strong> Juan Dela Cruz – 09123456789</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>&copy; 2026 Youth Service Philippines. All rights reserved.</p>
+</footer>
+
+<!-- HAMBURGER SCRIPT -->
+<script>
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("nav-menu");
+
+  hamburger.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+</script>
+
+</body>
+</html>
