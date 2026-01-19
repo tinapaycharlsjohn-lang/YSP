@@ -5,6 +5,371 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Volunteer Opportunities - Youth Service Philippines</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+
+    /* HEADER / NAVBAR */
+    .header {
+      background: linear-gradient(135deg, #fff 0%, #fff5f0 100%);
+      border-bottom: 3px solid #ff8c42;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      height: 60px;
+      width: auto;
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      object-fit: contain;
+    }
+
+    .logo-text h2 {
+      font-size: 1.50rem;
+      color: #333;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .logo-text p {
+      font-size: 1.1rem;
+      color: #ff8c42;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ff8c42;
+      transition: color 0.3s ease;
+    }
+
+    .hamburger:hover {
+      color: #e67e3c;
+    }
+
+    #nav-menu {
+      display: block;
+    }
+
+    #nav-menu.active {
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #ff8c42;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: #ff8c42;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .sign-in-btn {
+      background: #ff8c42;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sign-in-btn:hover {
+      background: #ff7b2f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+    }
+
+    /* SECTION */
+    .section {
+      padding: 3rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      color: #ff8c42;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: linear-gradient(135deg, #1a2a3a 0%, #0f1a25 100%);
+      color: white;
+      padding: 3rem 2rem 2rem;
+      border-top: 3px solid #ff8c42;
+      text-align: left;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-column h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    .footer-logo-section {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #ff8c42;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .footer-logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .footer-logo-text h4 {
+      font-size: 1.1rem;
+      margin: 0;
+      font-weight: 700;
+      color: white;
+    }
+
+    .footer-logo-text p {
+      font-size: 0.85rem;
+      color: #ff8c42;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .footer-description {
+      font-size: 0.95rem;
+      color: #b0b0b0;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-links a {
+      color: #b0b0b0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .footer-links a:hover {
+      color: #ff8c42;
+    }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .footer-contact-item i {
+      color: #ff8c42;
+      font-size: 1.2rem;
+      width: 20px;
+    }
+
+    .footer-contact-item a {
+      color: #b0b0b0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-contact-item a:hover {
+      color: #ff8c42;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 140, 66, 0.3);
+      padding-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #b0b0b0;
+    }
+
+    .footer-bottom p {
+      margin: 0.5rem 0;
+    }
+
+    .footer-bottom a {
+      color: #ff8c42;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-bottom a:hover {
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .nav-container {
+        padding: 1rem;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      #nav-menu {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+
+      #nav-menu.active {
+        display: flex;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+      }
+
+      .nav-links li {
+        padding: 0.8rem 1.5rem;
+      }
+
+      .nav-links a::after {
+        display: none;
+      }
+
+      .nav-links a:hover {
+        background: #fff5f0;
+        padding-left: 1.5rem;
+      }
+
+      .logo {
+        height: 50px;
+      }
+
+      .sign-in-btn {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-container {
+        padding: 0.8rem;
+      }
+
+      .logo {
+        height: 40px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -13,7 +378,13 @@
   <div class="nav-container">
 
     <!-- Logo -->
-    <img src="YSP LOGO.png" alt="Youth Service Philippines Logo" class="logo">
+    <div class="logo">
+      <img src="YSP LOGO.png" alt="Youth Service Philippines" class="logo-icon">
+      <div class="logo-text">
+        <h2>Youth Service</h2>
+        <p>Philippines</p>
+      </div>
+    </div>
 
     <!-- Hamburger Menu -->
     <button class="hamburger" id="hamburger">&#9776;</button>
@@ -23,11 +394,17 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="programs.html">Programs</a></li>
-        <li><a href="membership.html">Membership & Chapters</a></li>
+        <li><a href="membership.html">Membership & Chapter</a></li>
         <li><a href="volunteer.html">Volunteer Opportunities</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
+
+    <!-- Sign In Button -->
+    <button class="sign-in-btn">
+      <i class="fas fa-arrow-right-to-bracket"></i>
+      Sign In
+    </button>
 
   </div>
 </header>
@@ -47,7 +424,56 @@
 
 <!-- FOOTER -->
 <footer class="footer">
-  <p>&copy; 2026 Youth Service Philippines. All rights reserved.</p>
+  <div class="footer-container">
+    <!-- Footer Column 1: Logo & Description -->
+    <div class="footer-column">
+      <div class="footer-logo-section">
+        <div class="footer-logo-icon">
+          <img src="YSP LOGO.png" alt="Youth Service Philippines">
+        </div>
+        <div class="footer-logo-text">
+          <h4>Youth Service</h4>
+          <p>Philippines</p>
+        </div>
+      </div>
+      <p class="footer-description">Empowering Filipino youth to create positive change through community service, leadership development, and volunteerism.</p>
+    </div>
+
+    <!-- Footer Column 2: Quick Links -->
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="programs.html">Our Programs</a></li>
+        <li><a href="membership.html">Become a Member</a></li>
+        <li><a href="volunteer.html">Volunteer Opportunities</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Footer Column 3: Get in Touch -->
+    <div class="footer-column">
+      <h3>Get in Touch</h3>
+      <div class="footer-contact-item">
+        <i class="fas fa-envelope"></i>
+        <a>phyouthservice@gmail.com</a>
+      </div>
+      <div class="footer-contact-item">
+        <i class="fas fa-phone"></i>
+        <a href="tel:+639177798413">09177798413</a>
+      </div>
+      <div class="footer-contact-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Youth Service Philippines</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Bottom -->
+  <div class="footer-bottom">
+    <p>Made with <span style="color: #ff8c42;">❤</span> by Youth Service Philippines</p>
+    <p>&copy; 2026 Youth Service Philippines. All rights reserved.</p>
+  </div>
 </footer>
 
 <!-- HAMBURGER SCRIPT -->
