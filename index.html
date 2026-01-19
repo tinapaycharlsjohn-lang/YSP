@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Youth Service Philippines</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -39,13 +40,40 @@
     }
 
     .logo {
-      height: 50px;
+      height: 60px;
       width: auto;
       transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
     }
 
     .logo:hover {
       transform: scale(1.1);
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      object-fit: contain;
+    }
+
+    .logo-text h2 {
+      font-size: 1.50rem;
+      color: #333;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .logo-text p {
+      font-size: 1.1rem;
+      color: #ff8c42;
+      margin: 0;
+      font-weight: 600;
     }
 
     .hamburger {
@@ -103,6 +131,27 @@
       width: 100%;
     }
 
+    .sign-in-btn {
+      background: #ff8c42;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sign-in-btn:hover {
+      background: #ff7b2f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+    }
+
     /* HERO SECTION */
     .hero {
       background: linear-gradient(135deg, #ff8c42 0%, #ff7b2f 100%);
@@ -122,6 +171,94 @@
       font-size: 1.2rem;
       margin-bottom: 2rem;
       animation: slideUp 0.6s ease;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .primary-btn {
+      background: white;
+      color: #ff8c42;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .secondary-btn {
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: translateY(-3px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      justify-content: center;
+      align-items: center;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat-item {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.753);
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      min-width: 120px;
+      transition: transform 0.3s ease;
+    }
+
+    .hero-stat-item:hover {
+      transform: scale(1.15);
+    }
+
+    .hero-stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: rgba(255, 138, 42, 0.795);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f1f1f;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-stat-label {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 500;
     }
 
     @keyframes slideDown {
@@ -200,6 +337,13 @@
       left: 50%;
       transform: translateX(-50%);
       border-radius: 2px;
+    }
+
+    .programs-subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 3rem;
     }
 
     .editor-controls {
@@ -290,7 +434,7 @@
 
     .programs-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 2rem;
       margin-top: 3rem;
     }
@@ -329,6 +473,42 @@
     .program-card p {
       padding: 0 1rem 1rem;
       color: #666;
+    }
+
+    .learn-more {
+      display: inline-block;
+      padding: 0 1rem 1rem;
+      color: #ff8c42;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .learn-more:hover {
+      color: #ff7b2f;
+    }
+
+    .view-all-container {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .view-all-btn {
+      padding: 0.8rem 1.5rem;
+      border: 2px solid #ff8c42;
+      background: white;
+      color: #ff8c42;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .view-all-btn:hover {
+      background: #ff8c42;
+      color: white;
+      transform: translateY(-2px);
     }
 
     .delete-btn {
@@ -379,9 +559,16 @@
       border-radius: 2px;
     }
 
+    .chapters-subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 3rem;
+    }
+
     .chapters-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
       max-width: 1200px;
       margin: 0 auto;
@@ -403,15 +590,46 @@
       background: linear-gradient(135deg, #fff 0%, #fff5f0 100%);
     }
 
-    .chapter-card h3 {
+    .chapter-icon {
+      font-size: 1.5rem;
       color: #ff8c42;
       margin-bottom: 0.5rem;
-      font-size: 1.2rem;
+    }
+
+    .chapter-card h3 {
+      color: #333;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
     }
 
     .chapter-card p {
       color: #666;
       font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .start-chapter-container {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .start-chapter-btn {
+      padding: 0.8rem 1.5rem;
+      border: 2px solid #ff8c42;
+      background: white;
+      color: #ff8c42;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .start-chapter-btn:hover {
+      background: #ff8c42;
+      color: white;
+      transform: translateY(-2px);
     }
 
     /* FOOTER */
@@ -467,6 +685,14 @@
         padding-left: 1.5rem;
       }
 
+      .logo {
+        height: 50px;
+      }
+
+      .sign-in-btn {
+        display: none;
+      }
+
       .hero-text h1 {
         font-size: 1.8rem;
       }
@@ -485,12 +711,12 @@
       }
 
       .programs-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
       }
 
       .chapters-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
       }
 
@@ -533,6 +759,10 @@
         font-size: 1rem;
       }
 
+      .chapters-container {
+        grid-template-columns: 1fr;
+      }
+
       .edit-btn {
         padding: 0.6rem 1.2rem;
         font-size: 0.9rem;
@@ -547,7 +777,13 @@
   <div class="nav-container">
 
     <!-- Logo -->
-    <img src="YSP LOGO.png" alt="Youth Service Philippines Logo" class="logo">
+    <div class="logo">
+      <img src="YSP LOGO.png" alt="Youth Service Philippines" class="logo-icon">
+      <div class="logo-text">
+        <h2>Youth Service</h2>
+        <p>Philippines</p>
+      </div>
+    </div>
 
     <!-- Hamburger Menu -->
     <button class="hamburger" id="hamburger">&#9776;</button>
@@ -557,11 +793,17 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="programs.html">Programs</a></li>
-        <li><a href="membership.html">Membership & Chapters</a></li>
+        <li><a href="membership.html">Membership & Chapter</a></li>
         <li><a href="volunteer.html">Volunteer Opportunities</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
+
+    <!-- Sign In Button -->
+    <button class="sign-in-btn">
+      <i class="fas fa-arrow-right-to-bracket"></i>
+      Sign In
+    </button>
 
   </div>
 </header>
@@ -569,109 +811,151 @@
 <!-- HERO -->
 <section id="home" class="hero">
   <div class="hero-text">
-    <h1>Youth Service Philippines</h1>
-    <p>Mobilizing Filipino youth to create meaningful and sustainable community impact.</p>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><h2>25+</h2><p>Projects</p></div>
-    <div class="stat"><h2>12</h2><p>Chapters</p></div>
-    <div class="stat"><h2>1,200+</h2><p>Members</p></div>
+    <h1>Empowering Youth, Building Communities</h1>
+    <p>Join Youth Service Philippines in creating lasting impact through volunteerism, education, and community development across the nation.</p>
+    <div class="hero-buttons">
+      <button class="hero-btn primary-btn" onclick="window.location.href='membership.html'">Become a Member →</button>
+      <button class="hero-btn secondary-btn" onclick="window.location.href='volunteer.html'">View Opportunities</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon"><i class="fas fa-box"></i></div>
+        <div class="hero-stat-number">150</div>
+        <div class="hero-stat-label">Projects Completed</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon"><i class="fas fa-map-pin"></i></div>
+        <div class="hero-stat-number">12</div>
+        <div class="hero-stat-label">Active Chapters</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon"><i class="fas fa-users"></i></div>
+        <div class="hero-stat-number">500</div>
+        <div class="hero-stat-label">Active Members</div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- PROGRAMS SECTION -->
 <section id="programs" class="programs">
   <h2>Our Programs</h2>
-  
-  <!-- Editor Access Button -->
-  <div class="editor-controls">
-    <button id="edit-mode-btn" class="edit-btn">Edit Programs</button>
-    <div id="add-program-form" class="add-program-form" style="display: none;">
-      <h3>Add New Program</h3>
-      <input type="text" id="program-title" placeholder="Program Title" required>
-      <textarea id="program-description" placeholder="Program Description" required></textarea>
-      <input type="text" id="program-image" placeholder="Image URL" required>
-      <button id="add-program-btn">Add Program</button>
-      <button id="cancel-edit-btn">Cancel</button>
-    </div>
-  </div>
+  <p class="programs-subtitle">Making a difference through diverse community initiatives</p>
 
   <!-- Programs Container -->
   <div id="programs-container" class="programs-container">
     <div class="program-card">
-      <img src="program1.jpg" alt="Environmental Conservation" class="program-image">
-      <h3>Environmental Conservation</h3>
-      <p>Youth-led initiatives to protect and restore natural ecosystems in local communities.</p>
-      <button class="delete-btn" onclick="deleteProgram(this)">Delete</button>
+      <img src="program1.jpg" alt="Education for All" class="program-image">
+      <h3>Education for All</h3>
+      <p>Providing quality education and learning opportunities to underserved communities across the Philippines.</p>
+      <a href="#" class="learn-more">Learn More →</a>
     </div>
     <div class="program-card">
-      <img src="program2.jpg" alt="Education Support" class="program-image">
-      <h3>Education Support</h3>
-      <p>Providing mentorship and educational assistance to underprivileged students.</p>
-      <button class="delete-btn" onclick="deleteProgram(this)">Delete</button>
+      <img src="program2.jpg" alt="Environmental Sustainability" class="program-image">
+      <h3>Environmental Sustainability</h3>
+      <p>Leading environmental initiatives including clean-up drives, tree planting, and sustainability awareness campaigns.</p>
+      <a href="#" class="learn-more">Learn More →</a>
     </div>
     <div class="program-card">
-      <img src="program3.jpg" alt="Community Health" class="program-image">
-      <h3>Community Health</h3>
-      <p>Health awareness programs and medical outreach for underserved communities.</p>
-      <button class="delete-btn" onclick="deleteProgram(this)">Delete</button>
+      <img src="program3.jpg" alt="Health & Wellness" class="program-image">
+      <h3>Health & Wellness</h3>
+      <p>Promoting health awareness, organizing medical missions, and supporting community health initiatives.</p>
+      <a href="#" class="learn-more">Learn More →</a>
     </div>
+    <div class="program-card">
+      <img src="program4.jpg" alt="Community Development" class="program-image">
+      <h3>Community Development</h3>
+      <p>Building stronger communities through infrastructure projects, livelihood programs, and social development initiatives.</p>
+      <a href="#" class="learn-more">Learn More →</a>
+    </div>
+    <div class="program-card">
+      <img src="program5.jpg" alt="Youth Leadership" class="program-image">
+      <h3>Youth Leadership</h3>
+      <p>Developing the next generation of leaders through training programs, workshops, and mentorship opportunities.</p>
+      <a href="#" class="learn-more">Learn More →</a>
+    </div>
+    <div class="program-card">
+      <img src="program6.jpg" alt="Disaster Response" class="program-image">
+      <h3>Disaster Response</h3>
+      <p>Providing rapid response and relief operations during natural disasters and emergencies across the Philippines.</p>
+      <a href="#" class="learn-more">Learn More →</a>
+    </div>
+  </div>
+
+  <!-- View All Programs Button -->
+  <div class="view-all-container">
+    <button class="view-all-btn">View All Programs</button>
   </div>
 </section>
 
 <!-- CHAPTERS SECTION -->
 <section id="chapters" class="chapters">
   <h2>Our Chapters</h2>
+  <p class="chapters-subtitle">YSP chapters across the Philippines</p>
   <div class="chapters-container">
     <div class="chapter-card">
-      <h3>Metro Manila Chapter</h3>
-      <p>Members: 150</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Manila</h3>
+      <p>Manila, Metro Manila</p>
     </div>
     <div class="chapter-card">
-      <h3>Cebu Chapter</h3>
-      <p>Members: 120</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Quezon City</h3>
+      <p>Quezon City, Metro Manila</p>
     </div>
     <div class="chapter-card">
-      <h3>Davao Chapter</h3>
-      <p>Members: 100</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Cebu</h3>
+      <p>Cebu City, Cebu</p>
     </div>
     <div class="chapter-card">
-      <h3>Quezon City Chapter</h3>
-      <p>Members: 95</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Davao</h3>
+      <p>Davao City, Davao del Sur</p>
     </div>
     <div class="chapter-card">
-      <h3>Iloilo Chapter</h3>
-      <p>Members: 85</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Baguio</h3>
+      <p>Baguio City, Benguet</p>
     </div>
     <div class="chapter-card">
-      <h3>Cagayan de Oro Chapter</h3>
-      <p>Members: 80</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Iloilo</h3>
+      <p>Iloilo City, Iloilo</p>
     </div>
     <div class="chapter-card">
-      <h3>Bacolod Chapter</h3>
-      <p>Members: 75</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Cagayan de Oro</h3>
+      <p>Cagayan de Oro, Misamis Oriental</p>
     </div>
     <div class="chapter-card">
-      <h3>Tagaytay Chapter</h3>
-      <p>Members: 70</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Bacolod</h3>
+      <p>Bacolod City, Negros Occidental</p>
     </div>
     <div class="chapter-card">
-      <h3>Laguna Chapter</h3>
-      <p>Members: 65</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Zamboanga</h3>
+      <p>Zamboanga City, Zamboanga del Sur</p>
     </div>
     <div class="chapter-card">
-      <h3>Cavite Chapter</h3>
-      <p>Members: 60</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Tagaytay</h3>
+      <p>Tagaytay City, Cavite</p>
     </div>
     <div class="chapter-card">
-      <h3>Bulacan Chapter</h3>
-      <p>Members: 55</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Dumaguete</h3>
+      <p>Dumaguete City, Negros Oriental</p>
     </div>
     <div class="chapter-card">
-      <h3>Rizal Chapter</h3>
-      <p>Members: 50</p>
+      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
+      <h3>YSP Palawan</h3>
+      <p>Puerto Princesa, Palawan</p>
     </div>
+  </div>
+  <div class="start-chapter-container">
+    <button class="start-chapter-btn">Start a New Chapter</button>
   </div>
 </section>
 
