@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Youth Service Philippines</title>
+  <title>Our Programs - Youth Service Philippines</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -28,6 +28,7 @@
       top: 0;
       z-index: 100;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
     }
 
     .nav-container {
@@ -152,486 +153,99 @@
       box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
     }
 
-    /* HERO SECTION */
-    .hero {
-      background: linear-gradient(rgba(255, 145, 0, 0.473), rgba(255, 255, 255, 0.288)), url('BG1.png') center/cover no-repeat;
-      color: white;
-      padding: 4rem 2rem;
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .hero-text h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      animation: slideDown 0.6s ease;
-    }
-
-    .hero-text p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      animation: slideUp 0.6s ease;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .hero-btn {
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .primary-btn {
-      background: white;
-      color: #ff8c42;
-    }
-
-    .primary-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .secondary-btn {
-      background: rgba(255, 255, 255, 0.3);
-      color: white;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-    }
-
-    .secondary-btn:hover {
-      background: rgba(255, 255, 255, 0.4);
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: 3rem;
-      justify-content: center;
-      align-items: center;
-      margin-top: 3rem;
-      flex-wrap: wrap;
-    }
-
-    .hero-stat-item {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.753);
-      padding: 2rem 2.5rem;
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
-      min-width: 120px;
-      transition: transform 0.3s ease;
-    }
-
-    .hero-stat-item:hover {
-      transform: scale(1.15);
-    }
-
-    .hero-stat-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      background: rgba(255, 138, 42, 0.795);
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .hero-stat-number {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #1f1f1f;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero-stat-label {
-      font-size: 0.9rem;
-      color: #666;
-      font-weight: 500;
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 2rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .stat {
-      background: rgba(255, 255, 255, 0.2);
-      padding: 1.5rem;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .stat:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-5px);
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    }
-
-    .stat h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
     /* PROGRAMS SECTION */
-    .programs {
-      padding: 3rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+    .section {
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #f9f9f9 0%, #fff5f0 100%);
+      min-height: 100vh;
     }
 
-    .programs h2 {
+    .section-title {
       text-align: center;
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: #000;
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+      color: #ff8c42;
+      font-weight: 700;
       position: relative;
       display: inline-block;
       width: 100%;
+      animation: slideDown 0.6s ease-out;
     }
 
-    .programs h2::after {
+    .section-title::after {
       content: '';
       position: absolute;
       width: 100px;
       height: 4px;
       background-color: #ff8c42;
-      bottom: -10px;
+      bottom: -15px;
       left: 50%;
       transform: translateX(-50%);
       border-radius: 2px;
     }
 
-    .programs-subtitle {
-      text-align: center;
-      font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 3rem;
-    }
-
-    .editor-controls {
-      margin: 2rem 0;
-      text-align: center;
-    }
-
-    .edit-btn {
-      background: linear-gradient(135deg, #ff8c42, #ff7b2f);
-      color: white;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
-    }
-
-    .edit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 140, 66, 0.5);
-    }
-
-    .add-program-form {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      border: 2px solid #ff8c42;
-      max-width: 500px;
-      margin: 1rem auto;
-      animation: slideDown 0.4s ease;
-    }
-
-    .add-program-form h3 {
-      color: #ff8c42;
-      margin-bottom: 1rem;
-    }
-
-    .add-program-form input,
-    .add-program-form textarea {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-family: inherit;
-      transition: border-color 0.3s ease;
-    }
-
-    .add-program-form input:focus,
-    .add-program-form textarea:focus {
-      outline: none;
-      border-color: #ff8c42;
-      box-shadow: 0 0 5px rgba(255, 140, 66, 0.3);
-    }
-
-    .add-program-form button {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 0.5rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    #add-program-btn {
-      background: linear-gradient(135deg, #ff8c42, #ff7b2f);
-      color: white;
-    }
-
-    #add-program-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(255, 140, 66, 0.4);
-    }
-
-    #cancel-edit-btn {
-      background: #e0e0e0;
-      color: #333;
-    }
-
-    #cancel-edit-btn:hover {
-      background: #d0d0d0;
-    }
-
-    .programs-container {
+    .cards {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
       margin-top: 3rem;
     }
 
-    .program-card {
+    .card {
       background: white;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
+      cursor: pointer;
       border-top: 4px solid #ff8c42;
     }
 
-    .program-card:hover {
+    .card:hover {
       transform: translateY(-10px);
       box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
     }
 
-    .program-image {
+    .card img {
       width: 100%;
       height: 200px;
       object-fit: cover;
       transition: transform 0.3s ease;
     }
 
-    .program-card:hover .program-image {
+    .card:hover img {
       transform: scale(1.05);
     }
 
-    .program-card h3 {
-      color: #ff8c42;
-      padding: 1rem 1rem 0.5rem;
+    .card-body {
+      padding: 1.5rem;
+      background: white;
+      position: relative;
+    }
+
+    .card-body h3 {
       font-size: 1.3rem;
-    }
-
-    .program-card p {
-      padding: 0 1rem 1rem;
-      color: #666;
-    }
-
-    .learn-more {
-      display: inline-block;
-      padding: 0 1rem 1rem;
       color: #ff8c42;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
     }
 
-    .learn-more:hover {
+    .card:hover .card-body h3 {
       color: #ff7b2f;
     }
 
-    .view-all-container {
-      text-align: center;
-      margin-top: 3rem;
-    }
-
-    .view-all-btn {
-      padding: 0.8rem 1.5rem;
-      border: 2px solid #ff8c42;
-      background: white;
-      color: #ff8c42;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .view-all-btn:hover {
-      background: #ff8c42;
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .delete-btn {
-      width: calc(100% - 2rem);
-      margin: 0 1rem 1rem;
-      padding: 0.7rem;
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .delete-btn:hover {
-      background: #ff5252;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
-    }
-
-    /* CHAPTERS SECTION */
-    .chapters {
-      padding: 3rem 2rem;
-      background: linear-gradient(135deg, #f9f9f9 0%, #fff5f0 100%);
-      margin-bottom: 2rem;
-      margin-top: 0;
-    }
-
-    .chapters h2 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: #000;
-      position: relative;
-      display: inline-block;
-      width: 100%;
-    }
-
-    .chapters h2::after {
-      content: '';
-      position: absolute;
-      width: 100px;
-      height: 4px;
-      background-color: #ff8c42;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 2px;
-    }
-
-    .chapters-subtitle {
-      text-align: center;
-      font-size: 1.1rem;
+    .card-body p {
       color: #666;
-      margin-bottom: 3rem;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
     }
 
-    .chapters-container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .chapter-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: all 0.3s ease;
-      border-left: 4px solid #ff8c42;
-    }
-
-    .chapter-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 20px rgba(255, 140, 66, 0.3);
-      background: linear-gradient(135deg, #fff 0%, #fff5f0 100%);
-    }
-
-    .chapter-icon {
-      font-size: 1.5rem;
-      color: #ff8c42;
-      margin-bottom: 0.5rem;
-    }
-
-    .chapter-card h3 {
-      color: #333;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    .chapter-card p {
-      color: #666;
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    .start-chapter-container {
-      text-align: center;
-      margin-top: 3rem;
-    }
-
-    .start-chapter-btn {
-      padding: 0.8rem 1.5rem;
-      border: 2px solid #ff8c42;
-      background: white;
-      color: #ff8c42;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .start-chapter-btn:hover {
-      background: #ff8c42;
-      color: white;
-      transform: translateY(-2px);
+    .card:hover .card-body p {
+      color: #555;
     }
 
     /* FOOTER */
@@ -657,7 +271,6 @@
       margin-bottom: 1.5rem;
       color: white;
       font-weight: 600;
-    
     }
 
     .footer-logo-section {
@@ -772,7 +385,28 @@
       color: white;
     }
 
-    /* RESPONSIVE DESIGN */
+    /* ANIMATIONS */
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
       .footer-container {
         grid-template-columns: 1fr;
@@ -800,14 +434,12 @@
 
       #nav-menu.active {
         display: flex;
-    
       }
 
       .nav-links {
         flex-direction: column;
         gap: 0;
         padding: 1rem 0;
-        background-color: #e67e3c;
       }
 
       .nav-links li {
@@ -823,43 +455,26 @@
         padding-left: 1.5rem;
       }
 
-      .logo {
-        height: 50px;
+      .section {
+        padding: 40px 15px;
       }
 
-      .sign-in-btn {
-        display: none;
+      .section-title {
+        font-size: 2rem;
+        margin-bottom: 35px;
       }
 
-      .hero-text h1 {
-        font-size: 1.8rem;
+      .cards {
+        gap: 20px;
+        padding: 0 10px;
       }
 
-      .hero-text p {
-        font-size: 1rem;
+      .card-body {
+        padding: 20px;
       }
 
-      .stats {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .programs {
-        padding: 2rem 1rem;
-      }
-
-      .programs-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-      }
-
-      .chapters-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-      }
-
-      .add-program-form {
-        max-width: 100%;
+      .card-body h3 {
+        font-size: 1.2rem;
       }
     }
 
@@ -872,38 +487,35 @@
         height: 40px;
       }
 
-      .hero-text h1 {
-        font-size: 1.5rem;
+      .section-title {
+        font-size: 1.7rem;
       }
 
-      .hero-text p {
-        font-size: 0.9rem;
+      .card img {
+        height: 180px;
       }
 
-      .stat h2 {
-        font-size: 1.5rem;
+      .card-body {
+        padding: 18px;
       }
 
-      .programs h2,
-      .chapters h2 {
-        font-size: 1.5rem;
-      }
-
-      .program-card h3 {
+      .card-body h3 {
         font-size: 1.1rem;
       }
 
-      .chapter-card h3 {
-        font-size: 1rem;
-      }
-
-      .chapters-container {
-        grid-template-columns: 1fr;
-      }
-
-      .edit-btn {
-        padding: 0.6rem 1.2rem;
+      .card-body p {
         font-size: 0.9rem;
+      }
+    }
+
+    /* Touch/Hover Animation */
+    @media (hover: touch) {
+      .card {
+        transform: translateY(0);
+      }
+
+      .card:active {
+        transform: translateY(-8px);
       }
     }
   </style>
@@ -946,150 +558,57 @@
   </div>
 </header>
 
-<!-- HERO -->
-<section id="home" class="hero">
-  <div class="hero-text">
-    <h1>Empowering Youth, Building Communities</h1>
-    <p>Join Youth Service Philippines in creating lasting impact through volunteerism, education, and community development across the nation.</p>
-    <div class="hero-buttons">
-      <button class="hero-btn primary-btn" onclick="window.location.href='membership.html'">Become a Member →</button>
-      <button class="hero-btn secondary-btn" onclick="window.location.href='volunteer.html'">View Opportunities</button>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat-item">
-        <div class="hero-stat-icon"><i class="fas fa-box"></i></div>
-        <div class="hero-stat-number">150</div>
-        <div class="hero-stat-label">Projects Completed</div>
-      </div>
-      <div class="hero-stat-item">
-        <div class="hero-stat-icon"><i class="fas fa-map-pin"></i></div>
-        <div class="hero-stat-number">12</div>
-        <div class="hero-stat-label">Active Chapters</div>
-      </div>
-      <div class="hero-stat-item">
-        <div class="hero-stat-icon"><i class="fas fa-users"></i></div>
-        <div class="hero-stat-number">500</div>
-        <div class="hero-stat-label">Active Members</div>
+<!-- PROGRAMS -->
+<section id="programs" class="section">
+  <h2 class="section-title">Our Programs</h2>
+
+  <div class="cards">
+    <div class="card">
+      <img src="education.png" alt="Education for All">
+      <div class="card-body">
+        <h3>Education for All</h3>
+        <p>Providing quality education and learning opportunities to underserved communities across the Philippines.</p>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- PROGRAMS SECTION -->
-<section id="programs" class="programs">
-  <h2>Our Programs</h2>
-  <p class="programs-subtitle">Making a difference through diverse community initiatives</p>
+    <div class="card">
+      <img src="environmental.png" alt="Environmental Sustainability">
+      <div class="card-body">
+        <h3>Environmental Sustainability</h3>
+        <p>Leading environmental initiatives including clean-up drives, tree planting, and sustainability awareness campaigns.</p>
+      </div>
+    </div>
 
-  <!-- Programs Container -->
-  <div id="programs-container" class="programs-container">
-    <div class="program-card">
-      <img src="education.png" alt="Education for All" class="program-image">
-      <h3>Education for All</h3>
-      <p>Providing quality education and learning opportunities to underserved communities across the Philippines.</p>
-      <a href="#" class="learn-more">Learn More →</a>
+    <div class="card">
+      <img src="health.png" alt="Health & Wellness">
+      <div class="card-body">
+        <h3>Health & Wellness</h3>
+        <p>Promoting health awareness, organizing medical missions, and supporting community health initiatives.</p>
+      </div>
     </div>
-    <div class="program-card">``
-      <img src="environmental.png" alt="Environmental Sustainability" class="program-image">
-      <h3>Environmental Sustainability</h3>
-      <p>Leading environmental initiatives including clean-up drives, tree planting, and sustainability awareness campaigns.</p>
-      <a href="#" class="learn-more">Learn More →</a>
-    </div>
-    <div class="program-card">
-      <img src="health.png" alt="Health & Wellness" class="program-image">
-      <h3>Health & Wellness</h3>
-      <p>Promoting health awareness, organizing medical missions, and supporting community health initiatives.</p>
-      <a href="#" class="learn-more">Learn More →</a>
-    </div>
-    <div class="program-card">
-      <img src="community.png" alt="Community Development" class="program-image">
-      <h3>Community Development</h3>
-      <p>Building stronger communities through infrastructure projects, livelihood programs, and social development initiatives.</p>
-      <a href="#" class="learn-more">Learn More →</a>
-    </div>
-    <div class="program-card">
-      <img src="leadership.png" alt="Youth Leadership" class="program-image">
-      <h3>Youth Leadership</h3>
-      <p>Developing the next generation of leaders through training programs, workshops, and mentorship opportunities.</p>
-      <a href="#" class="learn-more">Learn More →</a>
-    </div>
-    <div class="program-card">
-      <img src="disaster.png" alt="Disaster Response" class="program-image">
-      <h3>Disaster Response</h3>
-      <p>Providing rapid response and relief operations during natural disasters and emergencies across the Philippines.</p>
-      <a href="#" class="learn-more">Learn More →</a>
-    </div>
-  </div>
 
-  <!-- View All Programs Button -->
-  <div class="view-all-container">
-    <button class="view-all-btn" onclick="window.location.href='programs.html'">View All Programs</button>
-  </div>
-</section>
+    <div class="card">
+      <img src="community.png" alt="Community Development">
+      <div class="card-body">
+        <h3>Community Development</h3>
+        <p>Building stronger communities through infrastructure projects, livelihood programs, and social development initiatives.</p>
+      </div>
+    </div>
 
-<!-- CHAPTERS SECTION -->
-<section id="chapters" class="chapters">
-  <h2>Our Chapters</h2>
-  <p class="chapters-subtitle">YSP chapters across the Philippines</p>
-  <div class="chapters-container">
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Manila</h3>
-      <p>Manila, Metro Manila</p>
+    <div class="card">
+      <img src="leadership.png" alt="Youth Leadership">
+      <div class="card-body">
+        <h3>Youth Leadership</h3>
+        <p>Developing the next generation of leaders through training programs, workshops, and mentorship opportunities.</p>
+      </div>
     </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Quezon City</h3>
-      <p>Quezon City, Metro Manila</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Cebu</h3>
-      <p>Cebu City, Cebu</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Davao</h3>
-      <p>Davao City, Davao del Sur</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Baguio</h3>
-      <p>Baguio City, Benguet</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Iloilo</h3>
-      <p>Iloilo City, Iloilo</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Cagayan de Oro</h3>
-      <p>Cagayan de Oro, Misamis Oriental</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Bacolod</h3>
-      <p>Bacolod City, Negros Occidental</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Zamboanga</h3>
-      <p>Zamboanga City, Zamboanga del Sur</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Tagaytay</h3>
-      <p>Tagaytay City, Cavite</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Dumaguete</h3>
-      <p>Dumaguete City, Negros Oriental</p>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-icon"><i class="fas fa-map-pin"></i></div>
-      <h3>YSP Palawan</h3>
-      <p>Puerto Princesa, Palawan</p>
+
+    <div class="card">
+      <img src="disaster.png" alt="Disaster Response">
+      <div class="card-body">
+        <h3>Disaster Response</h3>
+        <p>Providing rapid response and relief operations during natural disasters and emergencies across the Philippines.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1132,7 +651,7 @@
       </div>
       <div class="footer-contact-item">
         <i class="fas fa-phone"></i>
-        <a href="tel:+63917123456">09177798413</a>
+        <a href="tel:+639177798413">09177798413</a>
       </div>
       <div class="footer-contact-item">
         <i class="fas fa-map-marker-alt"></i>
