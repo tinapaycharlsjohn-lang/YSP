@@ -1,489 +1,999 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Volunteer Opportunities - Youth Service Philippines</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Opportunities - Youth Service Philippines</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background-color: #f9f9f9;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
 
-    /* HEADER / NAVBAR */
-    .header {
-      background: linear-gradient(135deg, #fff 0%, #fff5f0 100%);
-      border-bottom: 3px solid #ff8c42;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
+        /* HEADER / NAVBAR */
+        .header {
+            background: linear-gradient(135deg, #fff 0%, #fff5f0 100%);
+            border-bottom: 3px solid #ff8c42;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-    .nav-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .logo {
-      height: 60px;
-      width: auto;
-      transition: transform 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
+        .logo {
+            height: 60px;
+            width: auto;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
 
-    .logo:hover {
-      transform: scale(1.1);
-    }
+        .logo:hover {
+            transform: scale(1.1);
+        }
 
-    .logo-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      object-fit: contain;
-    }
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            object-fit: contain;
+        }
 
-    .logo-text h2 {
-      font-size: 1.50rem;
-      color: #333;
-      margin: 0;
-      font-weight: 700;
-    }
+        .logo-text h2 {
+            font-size: 1.50rem;
+            color: #333;
+            margin: 0;
+            font-weight: 700;
+        }
 
-    .logo-text p {
-      font-size: 1.1rem;
-      color: #ff8c42;
-      margin: 0;
-      font-weight: 600;
-    }
+        .logo-text p {
+            font-size: 1.1rem;
+            color: #ff8c42;
+            margin: 0;
+            font-weight: 600;
+        }
 
-    .hamburger {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #ff8c42;
-      transition: color 0.3s ease;
-    }
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ff8c42;
+            transition: color 0.3s ease;
+        }
 
-    .hamburger:hover {
-      color: #e67e3c;
-    }
+        .hamburger:hover {
+            color: #e67e3c;
+        }
 
-    #nav-menu {
-      display: block;
-    }
+        #nav-menu {
+            display: block;
+        }
 
-    #nav-menu.active {
-      display: block;
-    }
+        #nav-menu.active {
+            display: block;
+        }
 
-    .nav-links {
-      display: flex;
-      list-style: none;
-      gap: 2rem;
-    }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
 
-    .nav-links a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      position: relative;
-    }
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-    .nav-links a:hover {
-      color: #ff8c42;
-    }
+        .nav-links a:hover {
+            color: #ff8c42;
+        }
 
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -5px;
-      left: 0;
-      background-color: #ff8c42;
-      transition: width 0.3s ease;
-    }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #ff8c42;
+            transition: width 0.3s ease;
+        }
 
-    .nav-links a:hover::after {
-      width: 100%;
-    }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-    .sign-in-btn {
-      background: #ff8c42;
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        .sign-in-btn {
+            background: #ff8c42;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .sign-in-btn:hover {
-      background: #ff7b2f;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
-    }
+        .sign-in-btn:hover {
+            background: #ff7b2f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+        }
 
-    /* SECTION */
-    .section {
-      padding: 3rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+        /* SECTION */
+        .section {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .section-title {
-      font-size: 2.5rem;
-      color: #ff8c42;
-      margin-bottom: 2rem;
-      text-align: center;
-    }
+        .section-title {
+            font-size: 2.5rem;
+            color: #ff8c42;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
 
-    /* FOOTER */
-    .footer {
-      background: linear-gradient(135deg, #1a2a3a 0%, #0f1a25 100%);
-      color: white;
-      padding: 3rem 2rem 2rem;
-      border-top: 3px solid #ff8c42;
-      text-align: left;
-    }
+        /* VOLUNTEER CARDS */
+        .volunteer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
 
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3rem;
-      margin-bottom: 2rem;
-    }
+        .volunteer-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
 
-    .footer-column h3 {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-      color: white;
-      font-weight: 600;
-    }
+        .volunteer-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
 
-    .footer-logo-section {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
+        .card-header {
+            background: linear-gradient(135deg, #fff5f0 0%, #ffe8d6 100%);
+            padding: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
 
-    .footer-logo-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: #ff8c42;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
+        .card-header h3 {
+            font-size: 1.4rem;
+            color: #333;
+            margin: 0;
+            font-weight: 700;
+        }
 
-    .footer-logo-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+        .card-body {
+            padding: 1.5rem;
+        }
 
-    .footer-logo-text h4 {
-      font-size: 1.1rem;
-      margin: 0;
-      font-weight: 700;
-      color: white;
-    }
+        .card-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
 
-    .footer-logo-text p {
-      font-size: 0.85rem;
-      color: #ff8c42;
-      margin: 0;
-      font-weight: 600;
-    }
+        .card-info-item i {
+            color: #ff8c42;
+            font-size: 1.1rem;
+            margin-top: 0.2rem;
+            min-width: 20px;
+        }
 
-    .footer-description {
-      font-size: 0.95rem;
-      color: #b0b0b0;
-      line-height: 1.6;
-    }
+        .card-info-item .label {
+            font-weight: 600;
+            color: #333;
+            min-width: 120px;
+        }
 
-    .footer-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+        .card-info-item .value {
+            color: #666;
+        }
 
-    .footer-links li {
-      margin-bottom: 0.8rem;
-    }
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
 
-    .footer-links a {
-      color: #b0b0b0;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-    }
+        .sdg-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
 
-    .footer-links a:hover {
-      color: #ff8c42;
-    }
+        .sdg-tag {
+            display: inline-block;
+            background: #ff8c42;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
 
-    .footer-contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-    }
+        .sdg-tag.quality-education {
+            background: #e74c3c;
+        }
 
-    .footer-contact-item i {
-      color: #ff8c42;
-      font-size: 1.2rem;
-      width: 20px;
-    }
+        .sdg-tag.reduced-inequalities {
+            background: #d946a6;
+        }
 
-    .footer-contact-item a {
-      color: #b0b0b0;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
+        .sdg-tag.climate-action {
+            background: #27ae60;
+        }
 
-    .footer-contact-item a:hover {
-      color: #ff8c42;
-    }
+        .sdg-tag.life-on-land {
+            background: #16a34a;
+        }
 
-    .footer-bottom {
-      border-top: 1px solid rgba(255, 140, 66, 0.3);
-      padding-top: 2rem;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #b0b0b0;
-    }
+        .sdg-tag.clean-water {
+            background: #3498db;
+        }
 
-    .footer-bottom p {
-      margin: 0.5rem 0;
-    }
+        .card-contact {
+            border-top: 1px solid #f0f0f0;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
 
-    .footer-bottom a {
-      color: #ff8c42;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
+        .contact-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
 
-    .footer-bottom a:hover {
-      color: white;
-    }
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
 
-    @media (max-width: 768px) {
-      .footer-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
+        .contact-info i {
+            color: #ff8c42;
+            min-width: 18px;
+        }
 
-      .nav-container {
-        padding: 1rem;
-      }
+        .contact-info a {
+            color: #ff8c42;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
-      .hamburger {
-        display: block;
-      }
+        .contact-info a:hover {
+            color: #ff7b2f;
+            text-decoration: underline;
+        }
 
-      #nav-menu {
-        display: none;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background: white;
-        flex-direction: column;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      }
+        .join-btn {
+            width: 100%;
+            background: #ff8c42;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
 
-      #nav-menu.active {
-        display: flex;
-      }
+        .join-btn:hover {
+            background: #ff7b2f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+        }
 
-      .nav-links {
-        flex-direction: column;
-        gap: 0;
-        padding: 1rem 0;
-      }
+        /* LOGIN MODAL */
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
 
-      .nav-links li {
-        padding: 0.8rem 1.5rem;
-      }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-      .nav-links a::after {
-        display: none;
-      }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        }
 
-      .nav-links a:hover {
-        background: #fff5f0;
-        padding-left: 1.5rem;
-      }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
 
-      .logo {
-        height: 50px;
-      }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
 
-      .sign-in-btn {
-        display: none;
-      }
-    }
+        .modal-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+            margin: 0;
+        }
 
-    @media (max-width: 480px) {
-      .nav-container {
-        padding: 0.8rem;
-      }
+        .close {
+            color: #aaa;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            border: none;
+            background: none;
+            padding: 0;
+        }
 
-      .logo {
-        height: 40px;
-      }
-    }
-  </style>
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff8c42;
+            box-shadow: 0 0 5px rgba(255, 140, 66, 0.3);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #ff8c42;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #ff7b2f;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: linear-gradient(135deg, #1a2a3a 0%, #0f1a25 100%);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            border-top: 3px solid #ff8c42;
+            text-align: left;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .footer-logo-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ff8c42;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .footer-logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .footer-logo-text h4 {
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 700;
+            color: white;
+        }
+
+        .footer-logo-text p {
+            font-size: 0.85rem;
+            color: #ff8c42;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .footer-description {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: #ff8c42;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .footer-contact-item i {
+            color: #ff8c42;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .footer-contact-item a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-contact-item a:hover {
+            color: #ff8c42;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 140, 66, 0.3);
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+
+        .footer-bottom p {
+            margin: 0.5rem 0;
+        }
+
+        .footer-bottom a {
+            color: #ff8c42;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            #nav-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+
+            #nav-menu.active {
+                display: flex;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+            }
+
+            .nav-links li {
+                padding: 0.8rem 1.5rem;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .nav-links a:hover {
+                background: #fff5f0;
+                padding-left: 1.5rem;
+            }
+
+            .logo {
+                height: 50px;
+            }
+
+            .sign-in-btn {
+                display: none;
+            }
+
+            .volunteer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0.8rem;
+            }
+
+            .logo {
+                height: 40px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20% auto;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <!-- HEADER / NAVBAR -->
 <header class="header">
-  <div class="nav-container">
+    <div class="nav-container">
+        <div class="logo">
+            <img src="YSP LOGO.png" alt="Youth Service Philippines" class="logo-icon">
+            <div class="logo-text">
+                <h2>Youth Service</h2>
+                <p>Philippines</p>
+            </div>
+        </div>
 
-    <!-- Logo -->
-    <div class="logo">
-      <img src="YSP LOGO.png" alt="Youth Service Philippines" class="logo-icon">
-      <div class="logo-text">
-        <h2>Youth Service</h2>
-        <p>Philippines</p>
-      </div>
+        <button class="hamburger" id="hamburger">&#9776;</button>
+
+        <nav id="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="programs.html">Programs</a></li>
+                <li><a href="membership.html">Membership & Chapter</a></li>
+                <li><a href="volunteer.html">Volunteer Opportunities</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <button class="sign-in-btn">
+            <i class="fas fa-arrow-right-to-bracket"></i>
+            Sign In
+        </button>
     </div>
-
-    <!-- Hamburger Menu -->
-    <button class="hamburger" id="hamburger">&#9776;</button>
-
-    <!-- Navigation -->
-    <nav id="nav-menu">
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="programs.html">Programs</a></li>
-        <li><a href="membership.html">Membership & Chapter</a></li>
-        <li><a href="volunteer.html">Volunteer Opportunities</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-
-    <!-- Sign In Button -->
-    <button class="sign-in-btn">
-      <i class="fas fa-arrow-right-to-bracket"></i>
-      Sign In
-    </button>
-
-  </div>
 </header>
 
 <!-- VOLUNTEER -->
 <section id="volunteer" class="section">
-  <h2 class="section-title">Volunteer Opportunities</h2>
+    <h2 class="section-title">Volunteer Opportunities</h2>
 
-  <div class="volunteer-card">
-    <h3>Tree Planting Activity</h3>
-    <p><strong>Date:</strong> March 20, 2026</p>
-    <p><strong>Chapter:</strong> YSP Manila</p>
-    <p><strong>SDGs Impacted:</strong> SDG 13 – Climate Action</p>
-    <p><strong>Contact:</strong> Juan Dela Cruz – 09123456789</p>
-  </div>
+    <div class="volunteer-container">
+        <!-- Event Card 1 -->
+        <div class="volunteer-card">
+            <div class="card-header">
+                <h3>Coastal Clean-up Drive</h3>
+            </div>
+            <div class="card-body">
+                <div class="card-info-item">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                        <span class="label">Event Date</span>
+                        <span class="value">2026-02-15</span>
+                    </div>
+                </div>
+
+                <div class="card-info-item">
+                    <i class="fas fa-map-pin"></i>
+                    <div>
+                        <span class="label">Organizing Chapter</span>
+                        <span class="value">YSP Manila</span>
+                    </div>
+                </div>
+
+                <p class="card-description">Join us for a coastal clean-up activity at Manila Bay. Help us collect trash and raise awareness about marine pollution. All materials will be provided.</p>
+
+                <div class="card-info-item">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                        <span class="label">SDGs Impacted</span>
+                    </div>
+                </div>
+
+                <div class="sdg-tags">
+                    <span class="sdg-tag clean-water">Clean Water</span>
+                    <span class="sdg-tag">Life Below Water</span>
+                    <span class="sdg-tag climate-action">Climate Action</span>
+                </div>
+
+                <div class="card-contact">
+                    <div class="contact-label">Contact Chapter Head for Sign-up:</div>
+                    <div class="contact-info">
+                        <i class="fas fa-user"></i>
+                        <span>Maria Santos</span>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:maria.santos@ysp-manila.org">maria.santos@ysp-manila.org</a>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:+639172345678">+63 917 234 5678</a>
+                    </div>
+                </div>
+
+                <button class="join-btn" onclick="openLoginModal(this)">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    Join this Event
+                </button>
+            </div>
+        </div>
+
+        <!-- Event Card 2 -->
+        <div class="volunteer-card">
+            <div class="card-header">
+                <h3>Community Learning Center Opening</h3>
+            </div>
+            <div class="card-body">
+                <div class="card-info-item">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                        <span class="label">Event Date</span>
+                        <span class="value">2026-02-20</span>
+                    </div>
+                </div>
+
+                <div class="card-info-item">
+                    <i class="fas fa-map-pin"></i>
+                    <div>
+                        <span class="label">Organizing Chapter</span>
+                        <span class="value">YSP Cebu</span>
+                    </div>
+                </div>
+
+                <p class="card-description">Celebrate with us as we open a new community learning center in Cebu. Volunteers needed for setup, activities coordination, and teaching assistance.</p>
+
+                <div class="card-info-item">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                        <span class="label">SDGs Impacted</span>
+                    </div>
+                </div>
+
+                <div class="sdg-tags">
+                    <span class="sdg-tag quality-education">Quality Education</span>
+                    <span class="sdg-tag reduced-inequalities">Reduced Inequalities</span>
+                </div>
+
+                <div class="card-contact">
+                    <div class="contact-label">Contact Chapter Head for Sign-up:</div>
+                    <div class="contact-info">
+                        <i class="fas fa-user"></i>
+                        <span>Juan Dela Cruz</span>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:juan.delacruz@ysp-cebu.org">juan.delacruz@ysp-cebu.org</a>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:+639173456789">+63 917 345 6789</a>
+                    </div>
+                </div>
+
+                <button class="join-btn" onclick="openLoginModal(this)">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    Join this Event
+                </button>
+            </div>
+        </div>
+
+        <!-- Event Card 3 -->
+        <div class="volunteer-card">
+            <div class="card-header">
+                <h3>Tree Planting Initiative</h3>
+            </div>
+            <div class="card-body">
+                <div class="card-info-item">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                        <span class="label">Event Date</span>
+                        <span class="value">2026-03-05</span>
+                    </div>
+                </div>
+
+                <div class="card-info-item">
+                    <i class="fas fa-map-pin"></i>
+                    <div>
+                        <span class="label">Organizing Chapter</span>
+                        <span class="value">YSP Baguio</span>
+                    </div>
+                </div>
+
+                <p class="card-description">Help us plant 500 trees in the Baguio mountain area. This reforestation project aims to restore degraded forest areas and combat climate change.</p>
+
+                <div class="card-info-item">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                        <span class="label">SDGs Impacted</span>
+                    </div>
+                </div>
+
+                <div class="sdg-tags">
+                    <span class="sdg-tag life-on-land">Life on Land</span>
+                    <span class="sdg-tag climate-action">Climate Action</span>
+                    <span class="sdg-tag">Sustainable Cities</span>
+                </div>
+
+                <div class="card-contact">
+                    <div class="contact-label">Contact Chapter Head for Sign-up:</div>
+                    <div class="contact-info">
+                        <i class="fas fa-user"></i>
+                        <span>Anna Reyes</span>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:anna.reyes@ysp-baguio.org">anna.reyes@ysp-baguio.org</a>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:+639174567890">+63 917 456 7890</a>
+                    </div>
+                </div>
+
+                <button class="join-btn" onclick="openLoginModal(this)">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    Join this Event
+                </button>
+            </div>
+        </div>
+    </div>
 </section>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="login-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Member Login</h2>
+            <button class="close" onclick="closeLoginModal()">&times;</button>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Login to Join Event</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #666;">
+            Not a member? <a href="membership.html" style="color: #ff8c42; text-decoration: none; font-weight: 600;">Join us</a>
+        </p>
+    </div>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-container">
-    <!-- Footer Column 1: Logo & Description -->
-    <div class="footer-column">
-      <div class="footer-logo-section">
-        <div class="footer-logo-icon">
-          <img src="YSP LOGO.png" alt="Youth Service Philippines">
+    <div class="footer-container">
+        <div class="footer-column">
+            <div class="footer-logo-section">
+                <div class="footer-logo-icon">
+                    <img src="YSP LOGO.png" alt="Youth Service Philippines">
+                </div>
+                <div class="footer-logo-text">
+                    <h4>Youth Service</h4>
+                    <p>Philippines</p>
+                </div>
+            </div>
+            <p class="footer-description">Empowering Filipino youth to create positive change through community service, leadership development, and volunteerism.</p>
         </div>
-        <div class="footer-logo-text">
-          <h4>Youth Service</h4>
-          <p>Philippines</p>
+
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="#">About Us</a></li>
+                <li><a href="programs.html">Our Programs</a></li>
+                <li><a href="membership.html">Become a Member</a></li>
+                <li><a href="volunteer.html">Volunteer Opportunities</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
         </div>
-      </div>
-      <p class="footer-description">Empowering Filipino youth to create positive change through community service, leadership development, and volunteerism.</p>
+
+        <div class="footer-column">
+            <h3>Get in Touch</h3>
+            <div class="footer-contact-item">
+                <i class="fas fa-envelope"></i>
+                <a>phyouthservice@gmail.com</a>
+            </div>
+            <div class="footer-contact-item">
+                <i class="fas fa-phone"></i>
+                <a href="tel:+639177798413">09177798413</a>
+            </div>
+            <div class="footer-contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Youth Service Philippines</span>
+            </div>
+        </div>
     </div>
 
-    <!-- Footer Column 2: Quick Links -->
-    <div class="footer-column">
-      <h3>Quick Links</h3>
-      <ul class="footer-links">
-        <li><a href="#">About Us</a></li>
-        <li><a href="programs.html">Our Programs</a></li>
-        <li><a href="membership.html">Become a Member</a></li>
-        <li><a href="volunteer.html">Volunteer Opportunities</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
+    <div class="footer-bottom">
+        <p>Made with <span style="color: #ff8c42;">❤</span> by Youth Service Philippines</p>
+        <p>&copy; 2026 Youth Service Philippines. All rights reserved.</p>
     </div>
-
-    <!-- Footer Column 3: Get in Touch -->
-    <div class="footer-column">
-      <h3>Get in Touch</h3>
-      <div class="footer-contact-item">
-        <i class="fas fa-envelope"></i>
-        <a>phyouthservice@gmail.com</a>
-      </div>
-      <div class="footer-contact-item">
-        <i class="fas fa-phone"></i>
-        <a href="tel:+639177798413">09177798413</a>
-      </div>
-      <div class="footer-contact-item">
-        <i class="fas fa-map-marker-alt"></i>
-        <span>Youth Service Philippines</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer Bottom -->
-  <div class="footer-bottom">
-    <p>Made with <span style="color: #ff8c42;">❤</span> by Youth Service Philippines</p>
-    <p>&copy; 2026 Youth Service Philippines. All rights reserved.</p>
-  </div>
 </footer>
 
-<!-- HAMBURGER SCRIPT -->
+<!-- SCRIPTS -->
 <script>
-  const hamburger = document.getElementById("hamburger");
-  const navMenu = document.getElementById("nav-menu");
+    // Hamburger Menu
+    const hamburger = document.getElementById("hamburger");
+    const navMenu = document.getElementById("nav-menu");
 
-  hamburger.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
-  });
+    hamburger.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+    });
+
+    // Login Modal Functions
+    function openLoginModal(button) {
+        document.getElementById("loginModal").style.display = "block";
+        // Store event name for reference
+        const eventName = button.closest('.volunteer-card').querySelector('h3').textContent;
+        document.getElementById("loginForm").dataset.eventName = eventName;
+    }
+
+    function closeLoginModal() {
+        document.getElementById("loginModal").style.display = "none";
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById("loginModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Handle Login
+    function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        const eventName = document.getElementById("loginForm").dataset.eventName;
+        
+        // Here you would normally validate credentials and submit to server
+        alert(`Thank you! You have successfully joined the "${eventName}" event. A confirmation email has been sent to ${email}.`);
+        
+        // Reset form and close modal
+        document.getElementById("loginForm").reset();
+        closeLoginModal();
+    }
 </script>
 
 </body>
