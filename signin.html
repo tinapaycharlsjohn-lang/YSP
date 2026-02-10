@@ -115,7 +115,7 @@
       display: block;
       font-size: 0.85rem;
       color: #666;
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
       font-weight: 500;
     }
 
@@ -123,49 +123,35 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 1rem;
+      background: #f5f5f5;
+      border: 2px solid #e0e0e0;
+      border-radius: 50px;
+      padding: 4px;
+      width: fit-content;
+      margin: 0 auto;
     }
 
     .role-option {
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: #999;
-      font-weight: 500;
+      font-weight: 600;
+      padding: 0.6rem 1.5rem;
+      cursor: pointer;
+      border-radius: 40px;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      background: transparent;
+      border: none;
     }
 
     .role-option.active {
-      color: #ff8c42;
-      font-weight: 600;
+      color: white;
+      background: #ff8c42;
+      font-weight: 700;
     }
 
     .toggle {
-      width: 60px;
-      height: 32px;
-      background: #e8e8e8;
-      border-radius: 999px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.25s;
-    }
-
-    .toggle::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 26px;
-      height: 26px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-      transition: left 0.25s;
-    }
-
-    .toggle.on {
-      background: #ff8c42;
-    }
-
-    .toggle.on::after {
-      left: 31px;
+      display: none;
     }
 
     .submit-btn {
@@ -238,9 +224,8 @@
   <div class="role-toggle-section">
       <label class="role-label">Select Your Role</label>
       <div class="role-toggle-container">
-        <span class="role-option active" id="roleLabel1">Chapter</span>
-        <div id="toggle" class="toggle" role="switch" aria-checked="false" tabindex="0"></div>
-        <span class="role-option" id="roleLabel2">Admin</span>
+        <span class="role-option active" id="roleLabel1" data-role="chapter">Chapter</span>
+        <span class="role-option" id="roleLabel2" data-role="admin">Admin</span>
       </div>
       <input type="hidden" id="roleInput" name="role" value="chapter">
     </div>
@@ -250,7 +235,7 @@
       <label for="email">Email Address</label>
       <div class="input-icon-wrapper">
         <i class="fas fa-envelope"></i>
-        <input type="text" id="email" name="email" placeholder="admin@youthserviceph.org" required>
+        <input type="text" id="email" name="email" placeholder="example@email.com" required>
       </div>
     </div>
 
@@ -274,7 +259,6 @@
 
 <script>
   (function(){
-    const toggle = document.getElementById('toggle');
     const roleInput = document.getElementById('roleInput');
     const portalType = document.getElementById('portalType');
     const roleLabel1 = document.getElementById('roleLabel1');
@@ -282,15 +266,11 @@
 
     function setRole(isAdmin){
       if(isAdmin){
-        toggle.classList.add('on');
-        toggle.setAttribute('aria-checked', 'true');
         roleInput.value = 'admin';
         portalType.textContent = 'Administrator Portal';
         roleLabel1.classList.remove('active');
         roleLabel2.classList.add('active');
       } else {
-        toggle.classList.remove('on');
-        toggle.setAttribute('aria-checked', 'false');
         roleInput.value = 'chapter';
         portalType.textContent = 'Chapter Portal';
         roleLabel1.classList.add('active');
@@ -298,9 +278,9 @@
       }
     }
 
-    // toggle by click or keyboard
-    toggle.addEventListener('click', ()=> setRole(!toggle.classList.contains('on')));
-    toggle.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setRole(!toggle.classList.contains('on')); }});
+    // click handlers for role options
+    roleLabel1.addEventListener('click', ()=> setRole(false));
+    roleLabel2.addEventListener('click', ()=> setRole(true));
 
     // form submit: redirect to the appropriate page
     document.getElementById('signinForm').addEventListener('submit', function(e){
