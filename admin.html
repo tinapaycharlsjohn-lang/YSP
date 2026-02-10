@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Youth Service Philippines</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; }
+    
+    .header { background: linear-gradient(135deg, #fff 0%, #fff5f0 100%); border-bottom: 3px solid #ff8c42; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 1rem 0; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 1400px; margin: 0 auto; }
+    .logo { display: flex; align-items: center; gap: 0.8rem; }
+    .logo-icon { width: 50px; height: 50px; border-radius: 50%; object-fit: contain; }
+    .logo-text h2 { font-size: 1.3rem; margin: 0; font-weight: 700; }
+    .logo-text p { color: #ff8c42; margin: 0; font-weight: 600; }
+    .nav-links { display: flex; list-style: none; gap: 2rem; }
+    .nav-links a { text-decoration: none; color: #333; font-weight: 500; }
+    .sign-in-btn { background: #ff8c42; color: white; padding: 0.6rem 1rem; border-radius: 5px; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; font-weight: 600; }
+
+    .admin-header { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; }
+    .admin-header h1 { font-size: 2.2rem; color: #333; font-weight: 700; margin-bottom: 0.25rem; }
+    .admin-header .subtitle { color: #ff8c42; font-size: 0.95rem; }
+    .back-btn { background: white; color: #333; border: 1px solid #e0e0e0; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .back-btn:hover { background: #f9f9f9; }
+
+    .stats-grid { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .stat-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ff8c42; }
+    .stat-card .label { color: #666; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 2.2rem; font-weight: 800; color: #333; }
+    .stat-card .icon { float: right; font-size: 2rem; color: #ffd9c0; }
+
+    .quick-actions { max-width: 1400px; margin: 2rem auto; padding: 2rem; background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%); border-radius: 12px; }
+    .quick-actions h3 { color: white; font-size: 1.3rem; margin-bottom: 1.25rem; }
+    .action-buttons { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .action-btn { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); padding: 0.7rem 1.3rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+    .action-btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.6); }
+
+    .tabs-section { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+    .tabs-nav { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #e0e0e0; }
+    .tab-btn { background: transparent; border: none; padding: 1rem 1.5rem; cursor: pointer; font-weight: 600; color: #999; font-size: 0.95rem; position: relative; }
+    .tab-btn.active { color: #333; }
+    .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background: #ff8c42; }
+    .tab-btn:hover { color: #333; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .stats-box { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .stats-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .stats-box h3 { font-size: 1.2rem; color: #333; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+    .stats-box h3 i { color: #ff8c42; font-size: 1.3rem; }
+    .edit-btn { background: white; color: #333; border: 1px solid #e0e0e0; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+    .edit-btn:hover { background: #f9f9f9; }
+
+    .stats-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+    .stats-item { text-align: left; }
+    .stats-item .label { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500; }
+    .stats-item .number { font-size: 2rem; font-weight: 800; color: #333; }
+
+    @media (max-width: 1024px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .action-buttons { gap: 0.75rem; }
+      .action-btn { padding: 0.6rem 1rem; font-size: 0.85rem; }
+    }
+
+    @media (max-width: 768px) {
+      .admin-header { flex-direction: column; gap: 1rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .tabs-nav { overflow-x: auto; }
+      .action-buttons { gap: 0.5rem; }
+      .action-btn { flex: 1 1 calc(50% - 0.25rem); }
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- ADMIN HEADER -->
+<div class="admin-header">
+  <div>
+    <h1>Admin Dashboard</h1>
+    <p class="subtitle">Manage YSP website content and settings</p>
+  </div>
+  <a href="index.html" class="back-btn">Back to Website</a>
+</div>
+
+<!-- STATS GRID -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-file-alt"></i></div>
+    <div class="label">Total Programs</div>
+    <div class="value">6</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-map-pin"></i></div>
+    <div class="label">Total Chapters</div>
+    <div class="value">12</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-calendar"></i></div>
+    <div class="label">Active Events</div>
+    <div class="value">3</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-users"></i></div>
+    <div class="label">Total Members</div>
+    <div class="value">500</div>
+  </div>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="quick-actions">
+  <h3>Quick Actions</h3>
+  <div class="action-buttons">
+    <button class="action-btn"><i class="fas fa-plus"></i> Add Program</button>
+    <button class="action-btn"><i class="fas fa-plus"></i> Add Chapter</button>
+    <button class="action-btn"><i class="fas fa-plus"></i> Add Event</button>
+    <button class="action-btn"><i class="fas fa-plus"></i> Add Member</button>
+  </div>
+</div>
+
+<!-- TABS SECTION -->
+<div class="tabs-section">
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="statistics">Statistics</button>
+    <button class="tab-btn" data-tab="programs">Programs</button>
+    <button class="tab-btn" data-tab="chapters">Chapters</button>
+    <button class="tab-btn" data-tab="events">Events</button>
+    <button class="tab-btn" data-tab="members">Members</button>
+    <button class="tab-btn" data-tab="contact">Contact</button>
+  </div>
+
+  <!-- Statistics Tab -->
+  <div class="tab-content active" id="statistics">
+    <div class="stats-box">
+      <div class="stats-box-header">
+        <h3><i class="fas fa-chart-bar"></i> Website Statistics</h3>
+        <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+      </div>
+      <div class="stats-items">
+        <div class="stats-item">
+          <div class="label">Projects Completed</div>
+          <div class="number">150</div>
+        </div>
+        <div class="stats-item">
+          <div class="label">Active Chapters</div>
+          <div class="number">12</div>
+        </div>
+        <div class="stats-item">
+          <div class="label">Active Members</div>
+          <div class="number">500</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Programs Tab -->
+  <div class="tab-content" id="programs">
+    <div class="stats-box">
+      <h3>Programs Management</h3>
+      <p style="color: #666; margin-top: 1rem;">Program management interface coming soon.</p>
+    </div>
+  </div>
+
+  <!-- Chapters Tab -->
+  <div class="tab-content" id="chapters">
+    <div class="stats-box">
+      <h3>Chapters Management</h3>
+      <p style="color: #666; margin-top: 1rem;">Chapters management interface coming soon.</p>
+    </div>
+  </div>
+
+  <!-- Events Tab -->
+  <div class="tab-content" id="events">
+    <div class="stats-box">
+      <h3>Events Management</h3>
+      <p style="color: #666; margin-top: 1rem;">Events management interface coming soon.</p>
+    </div>
+  </div>
+
+  <!-- Members Tab -->
+  <div class="tab-content" id="members">
+    <div class="stats-box">
+      <h3>Members Management</h3>
+      <p style="color: #666; margin-top: 1rem;">Members management interface coming soon.</p>
+    </div>
+  </div>
+
+  <!-- Contact Tab -->
+  <div class="tab-content" id="contact">
+    <div class="stats-box">
+      <h3>Contact Information</h3>
+      <p style="color: #666; margin-top: 1rem;">Contact management interface coming soon.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tabName = this.getAttribute('data-tab');
+      
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Remove active from all buttons
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      
+      // Show selected tab and mark button as active
+      document.getElementById(tabName).classList.add('active');
+      this.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

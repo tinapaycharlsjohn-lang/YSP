@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter Dashboard - Youth Service Philippines</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; }
+    
+    .header { background: linear-gradient(135deg, #fff 0%, #fff5f0 100%); border-bottom: 3px solid #ff8c42; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 1rem 0; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 1400px; margin: 0 auto; }
+    .logo { display: flex; align-items: center; gap: 0.8rem; }
+    .logo-icon { width: 50px; height: 50px; border-radius: 50%; object-fit: contain; }
+    .logo-text h2 { font-size: 1.3rem; margin: 0; font-weight: 700; }
+    .logo-text p { color: #ff8c42; margin: 0; font-weight: 600; }
+    .nav-links { display: flex; list-style: none; gap: 2rem; }
+    .nav-links a { text-decoration: none; color: #333; font-weight: 500; }
+    .sign-in-btn { background: #ff8c42; color: white; padding: 0.6rem 1rem; border-radius: 5px; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; font-weight: 600; }
+
+    .chapter-header { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; }
+    .chapter-header h1 { font-size: 2.2rem; color: #333; font-weight: 700; margin-bottom: 0.25rem; }
+    .chapter-header .subtitle { color: #ff8c42; font-size: 0.95rem; }
+    .back-btn { background: white; color: #333; border: 1px solid #e0e0e0; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .back-btn:hover { background: #f9f9f9; }
+
+    .stats-grid { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .stat-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ff8c42; }
+    .stat-card .label { color: #666; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 2.2rem; font-weight: 800; color: #333; }
+    .stat-card .icon { float: right; font-size: 2rem; color: #ffd9c0; }
+
+    .event-creation { max-width: 1400px; margin: 2rem auto; padding: 2rem; background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .event-creation h3 { color: white; font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .event-creation p { color: rgba(255,255,255,0.9); font-size: 0.95rem; }
+    .new-event-btn { background: white; color: #ff8c42; border: none; padding: 0.7rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+    .new-event-btn:hover { background: #f9f9f9; }
+
+    .tabs-section { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+    .tabs-nav { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; background: white; border-radius: 8px; padding: 0.5rem; width: fit-content; }
+    .tab-btn { background: transparent; border: none; padding: 0.75rem 1.5rem; cursor: pointer; font-weight: 600; color: #666; font-size: 0.95rem; border-radius: 6px; transition: all 0.2s; }
+    .tab-btn.active { background: white; color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .tab-btn:hover { color: #333; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .event-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+    .event-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
+    .event-title { font-size: 1.2rem; color: #333; font-weight: 700; }
+    .event-meta { color: #999; font-size: 0.9rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
+    .event-meta i { color: #ff8c42; }
+    .event-description { color: #666; font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem; }
+    .event-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .event-tag { background: #fff3e8; color: #ff8c42; padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem; }
+    .event-tag i { font-size: 0.75rem; }
+    
+    .event-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .event-action-btn { background: white; border: 1px solid #e0e0e0; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s; }
+    .event-action-btn:hover { background: #f9f9f9; border-color: #ff8c42; }
+    .event-action-btn.delete { color: #d32f2f; }
+    .event-action-btn.delete:hover { background: #ffebee; border-color: #d32f2f; }
+
+    .empty-state { text-align: center; padding: 2rem; color: #999; }
+    .empty-state i { font-size: 2.5rem; color: #ddd; margin-bottom: 1rem; }
+
+    @media (max-width: 1024px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .event-creation { flex-direction: column; text-align: center; gap: 1rem; }
+    }
+
+    @media (max-width: 768px) {
+      .chapter-header { flex-direction: column; gap: 1rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .event-header { flex-direction: column; }
+      .event-actions { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="nav-container">
+    <div class="logo">
+      <img src="YSP LOGO.png" alt="Youth Service Philippines" class="logo-icon">
+      <div class="logo-text"><h2>Youth Service</h2><p>Philippines</p></div>
+    </div>
+    <nav id="nav-menu"><ul class="nav-links"><li><a href="index.html">Home</a></li></ul></nav>
+    <a href="index.html" class="sign-in-btn"><i class="fas fa-home"></i> Back to Website</a>
+  </div>
+</header>
+
+<!-- CHAPTER HEADER -->
+<div class="chapter-header">
+  <div>
+    <h1>Chapter Head Dashboard</h1>
+    <p class="subtitle">Managing YSP Manila</p>
+  </div>
+  <a href="index.html" class="back-btn">Back to Website</a>
+</div>
+
+<!-- STATS GRID -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-calendar"></i></div>
+    <div class="label">My Events</div>
+    <div class="value">1</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-users"></i></div>
+    <div class="label">Total Participants</div>
+    <div class="value">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-check-circle"></i></div>
+    <div class="label">Pending Approvals</div>
+    <div class="value">0</div>
+  </div>
+</div>
+
+<!-- EVENT CREATION SECTION -->
+<div class="event-creation">
+  <div>
+    <h3>Create New Volunteer Opportunity</h3>
+    <p>Post a new event for members to join</p>
+  </div>
+  <button class="new-event-btn"><i class="fas fa-plus"></i> New Event</button>
+</div>
+
+<!-- TABS SECTION -->
+<div class="tabs-section">
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="my-events">My Events</button>
+    <button class="tab-btn" data-tab="pending-approvals">Pending Approvals</button>
+  </div>
+
+  <!-- My Events Tab -->
+  <div class="tab-content active" id="my-events">
+    <div class="event-card">
+      <div class="event-header">
+        <div>
+          <div class="event-title">Coastal Clean-up Drive</div>
+          <div class="event-meta">
+            <span><i class="fas fa-calendar"></i> February 14, 2026</span>
+            <span><i class="fas fa-users"></i> 0 participants</span>
+          </div>
+        </div>
+      </div>
+      <div class="event-description">
+        Join us for a coastal clean-up activity at Manila Bay. Help us collect trash and raise awareness about marine pollution. All materials will be provided.
+      </div>
+      <div class="event-tags">
+        <span class="event-tag"><i class="fas fa-droplet"></i> Clean Water</span>
+        <span class="event-tag"><i class="fas fa-water"></i> Life Below Water</span>
+        <span class="event-tag"><i class="fas fa-leaf"></i> Climate Action</span>
+      </div>
+      <div class="event-actions">
+        <button class="event-action-btn"><i class="fas fa-users"></i> Participants</button>
+        <button class="event-action-btn"><i class="fas fa-edit"></i> Edit</button>
+        <button class="event-action-btn delete"><i class="fas fa-trash"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Approvals Tab -->
+  <div class="tab-content" id="pending-approvals">
+    <div class="empty-state">
+      <i class="fas fa-inbox"></i>
+      <p>No pending approvals at this time.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tabName = this.getAttribute('data-tab');
+      
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Remove active from all buttons
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      
+      // Show selected tab and mark button as active
+      document.getElementById(tabName).classList.add('active');
+      this.classList.add('active');
+    });
+  });
+
+  // New Event button handler
+  document.querySelector('.new-event-btn').addEventListener('click', function() {
+    alert('Create new event form coming soon.');
+  });
+</script>
+
+</body>
+</html>
