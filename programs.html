@@ -563,56 +563,49 @@
 <section id="programs" class="section">
   <h2 class="section-title">Our Programs</h2>
 
-  <div class="cards">
-    <div class="card">
-      <img src="education.png" alt="Education for All">
-      <div class="card-body">
-        <h3>Education for All</h3>
-        <p>Providing quality education and learning opportunities to underserved communities across the Philippines.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="education.png" alt="Environmental Sustainability">
-      <div class="card-body">
-        <h3>Environmental Sustainability</h3>
-        <p>Leading environmental initiatives including clean-up drives, tree planting, and sustainability awareness campaigns.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="health.png" alt="Health & Wellness">
-      <div class="card-body">
-        <h3>Health & Wellness</h3>
-        <p>Promoting health awareness, organizing medical missions, and supporting community health initiatives.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="community.png" alt="Community Development">
-      <div class="card-body">
-        <h3>Community Development</h3>
-        <p>Building stronger communities through infrastructure projects, livelihood programs, and social development initiatives.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="leadership.png" alt="Youth Leadership">
-      <div class="card-body">
-        <h3>Youth Leadership</h3>
-        <p>Developing the next generation of leaders through training programs, workshops, and mentorship opportunities.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="disaster.png" alt="Disaster Response">
-      <div class="card-body">
-        <h3>Disaster Response</h3>
-        <p>Providing rapid response and relief operations during natural disasters and emergencies across the Philippines.</p>
-      </div>
-    </div>
-  </div>
+  <div class="cards" id="public-programs"></div>
 </section>
+
+<script>
+  (function(){
+    const storageKey = 'ysp_programs';
+    const defaultPrograms = [
+      { id: 'p1', title: 'Education for All', image: 'education.png', desc: 'Providing quality education and learning opportunities to underserved communities across the Philippines.' },
+      { id: 'p2', title: 'Environmental Sustainability', image: 'environmental.png', desc: 'Leading environmental initiatives including clean-up drives, tree planting, and sustainability awareness campaigns.' },
+      { id: 'p3', title: 'Health & Wellness', image: 'health.png', desc: 'Promoting health awareness, organizing medical missions, and supporting community health initiatives.' },
+      { id: 'p4', title: 'Community Development', image: 'community.png', desc: 'Building stronger communities through infrastructure projects, livelihood programs, and social development initiatives.' },
+      { id: 'p5', title: 'Youth Leadership', image: 'leadership.png', desc: 'Developing the next generation of leaders through training programs, workshops, and mentorship opportunities.' },
+      { id: 'p6', title: 'Disaster Response', image: 'disaster.png', desc: 'Providing rapid response and relief operations during natural disasters and emergencies across the Philippines.' }
+    ];
+
+    function getPrograms(){
+      const raw = localStorage.getItem(storageKey);
+      if(raw) return JSON.parse(raw);
+      localStorage.setItem(storageKey, JSON.stringify(defaultPrograms));
+      return defaultPrograms.slice();
+    }
+
+    function render(){
+      const list = getPrograms();
+      const container = document.getElementById('public-programs');
+      if(!container) return;
+      container.innerHTML = '';
+      list.forEach(p => {
+        const card = document.createElement('div'); card.className = 'card';
+        const img = document.createElement('img'); img.src = p.image || ''; img.alt = p.title;
+        const body = document.createElement('div'); body.className = 'card-body';
+        const h3 = document.createElement('h3'); h3.textContent = p.title;
+        const pdesc = document.createElement('p'); pdesc.textContent = p.desc;
+        body.appendChild(h3); body.appendChild(pdesc);
+        card.appendChild(img); card.appendChild(body);
+        container.appendChild(card);
+      });
+    }
+
+    window.addEventListener('storage', function(e){ if(e.key === storageKey) render(); });
+    document.addEventListener('DOMContentLoaded', render);
+  })();
+</script>
 
 <!-- FOOTER -->
 <footer class="footer">
