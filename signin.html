@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - Youth Service Philippines</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+
+    .signin-container {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      padding: 3rem 2.5rem;
+      text-align: center;
+    }
+
+    .signin-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .logo-circle {
+      width: 90px;
+      height: 90px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo-circle img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    .signin-header h1 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .signin-header .portal-type {
+      font-size: 1rem;
+      color: #999;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .input-icon-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon-wrapper i {
+      position: absolute;
+      left: 12px;
+      color: #ccc;
+      font-size: 1rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 2.75rem;
+      border: 1px solid #e6e6e6;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #ff8c42;
+      box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+    }
+
+    .role-toggle-section {
+      margin: 2rem 0;
+      padding: 1.5rem 0;
+      border-top: 1px solid #f0f0f0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .role-label {
+      display: block;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .role-toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .role-option {
+      font-size: 0.9rem;
+      color: #999;
+      font-weight: 500;
+    }
+
+    .role-option.active {
+      color: #ff8c42;
+      font-weight: 600;
+    }
+
+    .toggle {
+      width: 60px;
+      height: 32px;
+      background: #e8e8e8;
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 26px;
+      height: 26px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      transition: left 0.25s;
+    }
+
+    .toggle.on {
+      background: #ff8c42;
+    }
+
+    .toggle.on::after {
+      left: 31px;
+    }
+
+    .submit-btn {
+      background: #ff8c42;
+      color: white;
+      border: none;
+      padding: 0.85rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      width: 100%;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .submit-btn:hover {
+      background: #ff7b2f;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: #999;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: #ff8c42;
+    }
+
+    @media (max-width: 600px) {
+      .signin-container {
+        margin: 1rem;
+        padding: 2rem 1.5rem;
+      }
+
+      .signin-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .logo-circle {
+        width: 75px;
+        height: 75px;
+      }
+
+      .logo-circle img {
+        width: 55px;
+        height: 55px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="signin-container">
+  <div class="signin-header">
+    <div class="logo-circle">
+      <img src="YSP LOGO.png" alt="Youth Service Philippines">
+    </div>
+    <h1>Youth Service Philippines</h1>
+    <p class="portal-type" id="portalType">Chapter Portal</p>
+  </div>
+
+  <div class="role-toggle-section">
+      <label class="role-label">Select Your Role</label>
+      <div class="role-toggle-container">
+        <span class="role-option active" id="roleLabel1">Chapter</span>
+        <div id="toggle" class="toggle" role="switch" aria-checked="false" tabindex="0"></div>
+        <span class="role-option" id="roleLabel2">Admin</span>
+      </div>
+      <input type="hidden" id="roleInput" name="role" value="chapter">
+    </div>
+    
+  <form id="signinForm">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-envelope"></i>
+        <input type="text" id="email" name="email" placeholder="admin@youthserviceph.org" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+      </div>
+    </div>
+
+
+    <button type="submit" class="submit-btn">
+      <i class="fas fa-arrow-right"></i>
+      Sign In
+    </button>
+  </form>
+
+  <a href="index.html" class="back-link">← Back to Website</a>
+</div>
+
+<script>
+  (function(){
+    const toggle = document.getElementById('toggle');
+    const roleInput = document.getElementById('roleInput');
+    const portalType = document.getElementById('portalType');
+    const roleLabel1 = document.getElementById('roleLabel1');
+    const roleLabel2 = document.getElementById('roleLabel2');
+
+    function setRole(isAdmin){
+      if(isAdmin){
+        toggle.classList.add('on');
+        toggle.setAttribute('aria-checked', 'true');
+        roleInput.value = 'admin';
+        portalType.textContent = 'Administrator Portal';
+        roleLabel1.classList.remove('active');
+        roleLabel2.classList.add('active');
+      } else {
+        toggle.classList.remove('on');
+        toggle.setAttribute('aria-checked', 'false');
+        roleInput.value = 'chapter';
+        portalType.textContent = 'Chapter Portal';
+        roleLabel1.classList.add('active');
+        roleLabel2.classList.remove('active');
+      }
+    }
+
+    // toggle by click or keyboard
+    toggle.addEventListener('click', ()=> setRole(!toggle.classList.contains('on')));
+    toggle.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setRole(!toggle.classList.contains('on')); }});
+
+    // form submit: redirect to the appropriate page
+    document.getElementById('signinForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const role = roleInput.value;
+      if(role === 'admin'){
+        window.location.href = 'admin.html';
+      } else {
+        window.location.href = 'chapter.html';
+      }
+    });
+
+    // initialize
+    setRole(false);
+  })();
+</script>
+
+</body>
+</html>
