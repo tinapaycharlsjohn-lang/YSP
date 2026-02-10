@@ -160,6 +160,146 @@
       min-height: 100vh;
     }
 
+    /* HERO / INTRO SECTION */
+    .hero {
+      background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%);
+      color: white;
+      padding: 60px 20px;
+    }
+
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      /* default for wide screens: place text on the left */
+      flex-direction: row;
+    }
+
+    .hero-text {
+      max-width: 800px;
+      text-align: left;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.05;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.9);
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta-btn {
+      background: white;
+      color: #ff6a00;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    /* STATS */
+    .stats {
+      padding: 18px 12px;
+      background: transparent;
+    }
+
+    .stat-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 1.25rem;
+      flex-wrap: nowrap;
+      align-items: center;
+      text-align: center;
+    }
+
+    .stat {
+      flex: 0 1 180px;
+      padding: 6px 8px;
+      transform-origin: center;
+      transition: transform 240ms cubic-bezier(0.2,0.8,0.2,1), box-shadow 240ms;
+    }
+
+    .icon-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #fde8d6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 6px;
+      color: #ff8c42;
+      font-size: 20px;
+      transition: width 240ms, height 240ms, font-size 240ms, background-color 240ms;
+    }
+
+    .stat .number {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 4px;
+      transition: font-size 240ms;
+    }
+
+    .stat .label {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    /* ensure compact layout on small screens: allow wrapping */
+    @media (max-width: 768px) {
+      .hero-container {
+        flex-direction: column;
+      }
+
+      .stat-grid {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .stat {
+        flex: 1 1 45%;
+      }
+    }
+
+    /* Hover expansion (desktop only) */
+    @media (hover: hover) {
+      .stat:hover {
+        transform: translateY(-6px) scale(1.06);
+    
+      }
+
+      .stat:hover .icon-circle {
+        width: 68px;
+        height: 68px;
+        font-size: 22px;
+      }
+
+      .stat:hover .number {
+        font-size: 1.6rem;
+      }
+    }
+
     .section-title {
       text-align: center;
       font-size: 2.5rem;
@@ -557,6 +697,45 @@
 
   </div>
 </header>
+
+
+
+<!-- HERO / INTRO -->
+<section id="hero" class="hero">
+  <div class="hero-container">
+    <div class="hero-text">
+      <h1>Empowering Youth, Building Communities</h1>
+      <p>Join Youth Service Philippines in creating lasting impact through volunteerism, education, and community development across the nation.</p>
+      <a class="cta-btn" href="membership.html">Become a Member <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="hero-cta">
+      <!-- reserved for future image or form -->
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="icon-circle"><i class="fas fa-gift"></i></div>
+      <div class="number">150</div>
+      <div class="label">Projects Completed</div>
+    </div>
+
+    <div class="stat">
+      <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+      <div class="number">12</div>
+      <div class="label">Active Chapters</div>
+    </div>
+
+    <div class="stat">
+      <div class="icon-circle"><i class="fas fa-users"></i></div>
+      <div class="number">500</div>
+      <div class="label">Active Members</div>
+    </div>
+  </div>
+</section>
 
 <!-- PROGRAMS -->
 <section id="programs" class="section">
