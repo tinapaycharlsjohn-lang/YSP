@@ -3,568 +3,190 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us - Youth Service Philippines</title>
+  <title>Chapter Dashboard - Youth Service Philippines</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; }
+    
+    .header { background: linear-gradient(135deg, #fff 0%, #fff5f0 100%); border-bottom: 3px solid #ff8c42; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 1rem 0; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 1400px; margin: 0 auto; }
+    .logo { display: flex; align-items: center; gap: 0.8rem; }
+    .logo-icon { width: 50px; height: 50px; border-radius: 50%; object-fit: contain; }
+    .logo-text h2 { font-size: 1.3rem; margin: 0; font-weight: 700; }
+    .logo-text p { color: #ff8c42; margin: 0; font-weight: 600; }
+    .nav-links { display: flex; list-style: none; gap: 2rem; }
+    .nav-links a { text-decoration: none; color: #333; font-weight: 500; }
+    .sign-in-btn { background: #ff8c42; color: white; padding: 0.6rem 1rem; border-radius: 5px; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; font-weight: 600; }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f5f5;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    .chapter-header { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; }
+    .chapter-header h1 { font-size: 2.2rem; color: #333; font-weight: 700; margin-bottom: 0.25rem; }
+    .chapter-header .subtitle { color: #ff8c42; font-size: 0.95rem; }
+    .back-btn { background: white; color: #333; border: 1px solid #e0e0e0; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .back-btn:hover { background: #f9f9f9; }
 
-    .header {
-      background: linear-gradient(135deg, #fff 0%, #fff5f0 100%);
-      border-bottom: 3px solid #ff8c42;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      padding: 1rem 0;
-    }
+    .stats-grid { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .stat-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ff8c42; }
+    .stat-card .label { color: #666; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 2.2rem; font-weight: 800; color: #333; }
+    .stat-card .icon { float: right; font-size: 2rem; color: #ffd9c0; }
 
-    .nav-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .event-creation { max-width: 1400px; margin: 2rem auto; padding: 2rem; background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .event-creation h3 { color: white; font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .event-creation p { color: rgba(255,255,255,0.9); font-size: 0.95rem; }
+    .new-event-btn { background: white; color: #ff8c42; border: none; padding: 0.7rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+    .new-event-btn:hover { background: #f9f9f9; }
 
-    .logo {
-      height: 60px;
-      width: auto;
-      transition: transform 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
+    .tabs-section { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+    .tabs-nav { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; background: white; border-radius: 8px; padding: 0.5rem; width: fit-content; }
+    .tab-btn { background: transparent; border: none; padding: 0.75rem 1.5rem; cursor: pointer; font-weight: 600; color: #666; font-size: 0.95rem; border-radius: 6px; transition: all 0.2s; }
+    .tab-btn.active { background: white; color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .tab-btn:hover { color: #333; }
 
-    .logo:hover {
-      transform: scale(1.1);
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-    .logo-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      object-fit: contain;
-    }
+    .event-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+    .event-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
+    .event-title { font-size: 1.2rem; color: #333; font-weight: 700; }
+    .event-meta { color: #999; font-size: 0.9rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
+    .event-meta i { color: #ff8c42; }
+    .event-description { color: #666; font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem; }
+    .event-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .event-tag { background: #fff3e8; color: #ff8c42; padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem; }
+    .event-tag i { font-size: 0.75rem; }
+    
+    .event-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .event-action-btn { background: white; border: 1px solid #e0e0e0; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s; }
+    .event-action-btn:hover { background: #f9f9f9; border-color: #ff8c42; }
+    .event-action-btn.delete { color: #d32f2f; }
+    .event-action-btn.delete:hover { background: #ffebee; border-color: #d32f2f; }
 
-    .logo-text h2 {
-      font-size: 1.50rem;
-      color: #333;
-      margin: 0;
-      font-weight: 700;
-    }
+    .empty-state { text-align: center; padding: 2rem; color: #999; }
+    .empty-state i { font-size: 2.5rem; color: #ddd; margin-bottom: 1rem; }
 
-    .logo-text p {
-      font-size: 1.1rem;
-      color: #ff8c42;
-      margin: 0;
-      font-weight: 600;
-    }
-
-    .hamburger {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #ff8c42;
-      transition: color 0.3s ease;
-    }
-
-    .hamburger:hover {
-      color: #e67e3c;
-    }
-
-    #nav-menu {
-      display: block;
-    }
-
-    #nav-menu.active {
-      display: block;
-    }
-
-    .nav-links {
-      display: flex;
-      list-style: none;
-      gap: 2rem;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .nav-links a:hover {
-      color: #ff8c42;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -5px;
-      left: 0;
-      background-color: #ff8c42;
-      transition: width 0.3s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .sign-in-btn {
-      background: #ff8c42;
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-    }
-
-    .sign-in-btn:hover {
-      background: #ff7b2f;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
-    }
-
-    #contact {
-      flex: 1;
-      max-width: 1200px;
-      margin: 3rem auto;
-      padding: 2rem;
-      width: 100%;
-    }
-
-    .section-title {
-      color: #333;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      text-align: center;
-      font-weight: 700;
-    }
-
-    .section-subtitle {
-      color: #666;
-      text-align: center;
-      margin-bottom: 3rem;
-      font-size: 1rem;
-    }
-
-    .contact-cards {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-      margin-bottom: 3rem;
-    }
-
-    .contact-card {
-      background: #fff8f0;
-      padding: 2.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    .contact-card:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-
-    .contact-card i {
-      color: #ff8c42;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    .contact-card h3 {
-      color: #333;
-      margin-bottom: 1rem;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .contact-card p {
-      color: #666;
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-
-    .contact-card a,
-    .contact-card .phone {
-      color: #ff8c42;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .contact-card a:hover {
-      text-decoration: underline;
-    }
-
-    .visit-btn {
-      background: white;
-      color: #ff8c42;
-      border: 2px solid #ff8c42;
-      padding: 0.8rem 2rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .visit-btn:hover {
-      background: #ff8c42;
-      color: white;
-    }
-
-    .cta-section {
-      background: #ff8c42;
-      color: white;
-      padding: 3rem 2rem;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .cta-section h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      font-weight: 700;
-    }
-
-    .cta-section p {
-      font-size: 1rem;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-
-    .cta-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .cta-btn {
-      background: white;
-      color: #ff8c42;
-      padding: 0.8rem 2rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .cta-btn:hover {
-      transform: scale(1.05);
-    }
-
-    .footer {
-      background: #1a2a3a;
-      color: white;
-      padding: 3rem 2rem 2rem;
-      margin-top: auto;
-    }
-
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3rem;
-      margin-bottom: 2rem;
-    }
-
-    .footer-column h3 {
-      font-size: 1.1rem;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-    }
-
-    .footer-logo-section {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .footer-logo-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: #ff8c42;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .footer-logo-text h4 {
-      font-size: 1rem;
-      margin: 0;
-      font-weight: 700;
-    }
-
-    .footer-logo-text p {
-      font-size: 0.85rem;
-      color: #ff8c42;
-      margin: 0;
-    }
-
-    .footer-description {
-      font-size: 0.9rem;
-      color: #b0b0b0;
-      line-height: 1.6;
-    }
-
-    .footer-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-links li {
-      margin-bottom: 0.8rem;
-    }
-
-    .footer-links a {
-      color: #b0b0b0;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    .footer-links a:hover {
-      color: #ff8c42;
-    }
-
-    .footer-contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-    }
-
-    .footer-contact-item i {
-      color: #ff8c42;
-      font-size: 1.1rem;
-      width: 20px;
-    }
-
-    .footer-contact-item a {
-      color: #b0b0b0;
-      text-decoration: none;
-    }
-
-    .footer-contact-item a:hover {
-      color: #ff8c42;
-    }
-
-    .footer-bottom {
-      border-top: 1px solid rgba(255, 140, 66, 0.3);
-      padding-top: 2rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: #b0b0b0;
+    @media (max-width: 1024px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .event-creation { flex-direction: column; text-align: center; gap: 1rem; }
     }
 
     @media (max-width: 768px) {
-      .contact-cards {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .hamburger {
-        display: block;
-      }
-
-      .nav-links {
-        position: absolute;
-        top: 70px;
-        left: -100%;
-        flex-direction: column;
-        background-color: #ff8c42;
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        gap: 0;
-        padding: 1rem 0;
-      }
-
-      .nav-links.active {
-        left: 0;
-      }
-
-      .nav-links a {
-        display: block;
-        padding: 1rem;
-        color: white;
-      }
-
-      .section-title {
-        font-size: 2rem;
-      }
+      .chapter-header { flex-direction: column; gap: 1rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .event-header { flex-direction: column; }
+      .event-actions { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
 
-<!-- HEADER / NAVBAR -->
-<header class="header">
-  <div class="nav-container">
-    <div class="logo">
-      <img src="YSP LOGO.png" alt="Youth Service Philippines" class="logo-icon">
-      <div class="logo-text">
-        <h2>Youth Service</h2>
-        <p>Philippines</p>
-      </div>
-    </div>
 
-    <button class="hamburger" id="hamburger">&#9776;</button>
-
-    <nav id="nav-menu">
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="programs.html">Programs</a></li>
-        <li><a href="membership.html">Membership & Chapter</a></li>
-        <li><a href="volunteer.html">Volunteer Opportunities</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-
-    <a href="signin.html" class="sign-in-btn">
-      <i class="fas fa-arrow-right-to-bracket"></i>
-      Editor Access Sign In
-    </a>
+<!-- CHAPTER HEADER -->
+<div class="chapter-header">
+  <div>
+    <h1>Chapter Head Dashboard</h1>
+    <p class="subtitle">Managing YSP Manila</p>
   </div>
-</header>
+  <a href="index.html" class="back-btn">Back to Website</a>
+</div>
 
-<!-- CONTACT -->
-<section id="contact">
-  <h2 class="section-title">Contact Us</h2>
-  <p class="section-subtitle">Have questions? We'd love to hear from you. Get in touch with Youth Service Philippines.</p>
+<!-- STATS GRID -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-calendar"></i></div>
+    <div class="label">My Events</div>
+    <div class="value">1</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-users"></i></div>
+    <div class="label">Total Participants</div>
+    <div class="value">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon"><i class="fas fa-check-circle"></i></div>
+    <div class="label">Pending Approvals</div>
+    <div class="value">0</div>
+  </div>
+</div>
 
-  <div class="contact-cards">
-    <div class="contact-card">
-      <i class="fas fa-envelope"></i>
-      <h3>Email</h3>
-      <p>Send us an email anytime</p>
-      <a href="mailto:info@youthserviceph.org">info@youthserviceph.org</a>
-    </div>
+<!-- EVENT CREATION SECTION -->
+<div class="event-creation">
+  <div>
+    <h3>Create New Volunteer Opportunity</h3>
+    <p>Post a new event for members to join</p>
+  </div>
+  <button class="new-event-btn"><i class="fas fa-plus"></i> New Event</button>
+</div>
 
-    <div class="contact-card">
-      <i class="fas fa-phone"></i>
-      <h3>Phone</h3>
-      <p>Call us during business hours</p>
-      <span class="phone">+63 917 123 4567</span>
-    </div>
-
-    <div class="contact-card">
-      <i class="fas fa-facebook"></i>
-      <h3>Facebook</h3>
-      <p>Follow us on Facebook</p>
-      <a href="https://www.facebook.com/YOUTHSERVICEPHILIPPINES" target="_blank">Youth Service Philippines</a>
-      <button class="visit-btn">Visit Page</button>
-    </div>
-
-    <div class="contact-card">
-      <i class="fas fa-map-marker-alt"></i>
-      <h3>Address</h3>
-      <p>Our office location</p>
-      <span>123 Volunteer Street, Manila, Philippines 1000</span>
-    </div>
+<!-- TABS SECTION -->
+<div class="tabs-section">
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="my-events">My Events</button>
+    <button class="tab-btn" data-tab="pending-approvals">Pending Approvals</button>
   </div>
 
-  <div class="cta-section">
-    <h2>Ready to Get Involved?</h2>
-    <p>Whether you want to volunteer, become a member, or start a chapter in your community, we're here to help you make a difference.</p>
-    <div class="cta-buttons">
-      <button class="cta-btn">Become a Member</button>
-      <button class="cta-btn">Volunteer Now</button>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-column">
-      <div class="footer-logo-section">
-        <div class="footer-logo-icon"></div>
-        <div class="footer-logo-text">
-          <h4>Youth Service</h4>
-          <p>Philippines</p>
+  <!-- My Events Tab -->
+  <div class="tab-content active" id="my-events">
+    <div class="event-card">
+      <div class="event-header">
+        <div>
+          <div class="event-title">Coastal Clean-up Drive</div>
+          <div class="event-meta">
+            <span><i class="fas fa-calendar"></i> February 14, 2026</span>
+            <span><i class="fas fa-users"></i> 0 participants</span>
+          </div>
         </div>
       </div>
-      <p class="footer-description">Empowering Filipino youth to create positive change through community service, leadership development, and volunteerism.</p>
-    </div>
-
-    <div class="footer-column">
-      <h3>Quick Links</h3>
-      <ul class="footer-links">
-        <li><a href="#">About Us</a></li>
-        <li><a href="programs.html">Our Programs</a></li>
-        <li><a href="membership.html">Become a Member</a></li>
-        <li><a href="volunteer.html">Volunteer Opportunities</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-column">
-      <h3>Get in Touch</h3>
-      <div class="footer-contact-item">
-        <i class="fas fa-envelope"></i>
-        <a href="mailto:phyouthservice@gmail.com">phyouthservice@gmail.com</a>
+      <div class="event-description">
+        Join us for a coastal clean-up activity at Manila Bay. Help us collect trash and raise awareness about marine pollution. All materials will be provided.
       </div>
-      <div class="footer-contact-item">
-        <i class="fas fa-phone"></i>
-        <a href="tel:+639177798413">+63 917 123 4567</a>
+      <div class="event-tags">
+        <span class="event-tag"><i class="fas fa-droplet"></i> Clean Water</span>
+        <span class="event-tag"><i class="fas fa-water"></i> Life Below Water</span>
+        <span class="event-tag"><i class="fas fa-leaf"></i> Climate Action</span>
+      </div>
+      <div class="event-actions">
+        <button class="event-action-btn"><i class="fas fa-users"></i> Participants</button>
+        <button class="event-action-btn"><i class="fas fa-edit"></i> Edit</button>
+        <button class="event-action-btn delete"><i class="fas fa-trash"></i> Delete</button>
       </div>
     </div>
   </div>
 
-  <div class="footer-bottom">
-    <p>Made with <span style="color: #ff8c42;">❤</span> by Youth Service Philippines</p>
-    <p>&copy; 2026 Youth Service Philippines. All rights reserved.</p>
+  <!-- Pending Approvals Tab -->
+  <div class="tab-content" id="pending-approvals">
+    <div class="empty-state">
+      <i class="fas fa-inbox"></i>
+      <p>No pending approvals at this time.</p>
+    </div>
   </div>
-</footer>
+</div>
 
 <script>
-  const hamburger = document.getElementById("hamburger");
-  const navMenu = document.getElementById("nav-menu");
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tabName = this.getAttribute('data-tab');
+      
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Remove active from all buttons
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      
+      // Show selected tab and mark button as active
+      document.getElementById(tabName).classList.add('active');
+      this.classList.add('active');
+    });
+  });
 
-  hamburger.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
+  // New Event button handler
+  document.querySelector('.new-event-btn').addEventListener('click', function() {
+    alert('Create new event form coming soon.');
   });
 </script>
 
