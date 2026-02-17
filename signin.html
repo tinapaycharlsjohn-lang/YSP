@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In - Youth Service Philippines</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -258,13 +259,49 @@
 </div>
 
 <script>
-  (function(){
+  function initApp(){
+    console.log('initApp called');
+    
+    // Check if Supabase is available
+    if(!window.supabase){
+      console.warn('Supabase not loaded yet, retrying...');
+      setTimeout(initApp, 200);
+      return;
+    }
+    
+    console.log('Script starting... Supabase loaded:', window.supabase);
+    
+    // Initialize Supabase with your credentials
+    const supabaseUrl = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
+    
+    let supabase;
+    try {
+      // Try to create client
+      const createClient = window.supabase.createClient;
+      if(!createClient){
+        console.error('createClient not found in supabase object');
+        setTimeout(initApp, 200);
+        return;
+      }
+      supabase = createClient(supabaseUrl, supabaseKey);
+      console.log('Supabase client created successfully');
+    } catch(err) {
+      console.error('Supabase init error:', err);
+      alert('Failed to initialize Supabase: ' + err.message);
+      return;
+    }
+
     const roleInput = document.getElementById('roleInput');
     const portalType = document.getElementById('portalType');
     const roleLabel1 = document.getElementById('roleLabel1');
     const roleLabel2 = document.getElementById('roleLabel2');
+    const signinForm = document.getElementById('signinForm');
+    
+    console.log('DOM elements found');
 
     function setRole(isAdmin){
+      console.log('setRole called with isAdmin:', isAdmin);
       if(isAdmin){
         roleInput.value = 'admin';
         portalType.textContent = 'Administrator Portal';
@@ -276,26 +313,113 @@
         roleLabel1.classList.add('active');
         roleLabel2.classList.remove('active');
       }
+      console.log('Role set to:', roleInput.value);
     }
 
-    // click handlers for role options
-    roleLabel1.addEventListener('click', ()=> setRole(false));
-    roleLabel2.addEventListener('click', ()=> setRole(true));
+    // click handlers for role toggle
+    roleLabel1.addEventListener('click', function(){
+      console.log('Chapter button clicked');
+      setRole(false);
+    });
+    
+    roleLabel2.addEventListener('click', function(){
+      console.log('Admin button clicked');
+      setRole(true);
+    });
 
-    // form submit: redirect to the appropriate page
-    document.getElementById('signinForm').addEventListener('submit', function(e){
+    console.log('Event listeners attached');
+
+    // form submit: authenticate against Supabase accounts table
+    signinForm.addEventListener('submit', async function(e){
       e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
       const role = roleInput.value;
-      if(role === 'admin'){
-        window.location.href = 'admin.html';
-      } else {
-        window.location.href = 'chapter.html';
+
+      console.log('Form submitted with email:', email, 'role:', role);
+
+      if(!email || !password){
+        alert('Please enter email and password.');
+        return;
+      }
+
+      const submitBtn = signinForm.querySelector('.submit-btn');
+      const originalHTML = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
+      try {
+        console.log('Querying accounts table...');
+        
+        // Query accounts table in Supabase
+        const { data, error } = await supabase
+          .from('accounts')
+          .select('*')
+          .eq('email', email)
+          .eq('role', role)
+          .single();
+
+        console.log('Query response:', { data, error });
+
+        if(error){
+          console.error('Database error:', error.message);
+          alert('Login failed: ' + error.message);
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+          return;
+        }
+
+        if(!data){
+          console.error('No user found');
+          alert('Invalid email or role.');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+          return;
+        }
+
+        console.log('User found, checking password...');
+        
+        // Compare password with plain text password in database
+        const passwordMatch = password === data.password;
+        console.log('Password match:', passwordMatch);
+        
+        if(passwordMatch){
+          console.log('Login successful!');
+          // Successfully logged in - store user info
+          localStorage.setItem('userRole', data.role);
+          localStorage.setItem('userEmail', email);
+          localStorage.setItem('userId', data.id);
+          
+          // Redirect based on role
+          if(role === 'admin'){
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'chapter.html';
+          }
+        } else {
+          alert('Incorrect password.');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+        }
+      } catch(err){
+        console.error('Login error:', err);
+        alert('Error: ' + err.message);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHTML;
       }
     });
 
-    // initialize
+    // initialize default role
     setRole(false);
-  })();
+    console.log('App initialization complete');
+  }
+  
+  // Wait for DOM to be ready, then init
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    setTimeout(initApp, 100);
+  }
 </script>
 
 </body>
