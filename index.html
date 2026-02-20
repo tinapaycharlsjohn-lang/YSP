@@ -718,33 +718,57 @@
 
 <script>
   (function(){
-    const storageKey = 'ysp_stats';
+    const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
 
-    function applyStats(stats){
-      document.querySelectorAll('.stat .number').forEach(el => {
-        const key = el.getAttribute('data-stat');
-        if(key && stats[key] != null) el.textContent = stats[key];
-      });
+    const { createClient } = window.supabase;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Load and apply statistics from Supabase
+    async function loadStatistics(){
+      try {
+        console.log('📊 Loading statistics from Supabase...');
+        const { data, error } = await supabase
+          .from('statistics')
+          .select('stat_key, stat_value');
+
+        if(error) throw error;
+
+        // Apply to page
+        data.forEach(stat => {
+          const el = document.querySelector(`.stat .number[data-stat="${stat.stat_key}"]`);
+          if(el){
+            el.textContent = stat.stat_value;
+          }
+        });
+
+        console.log('✅ Statistics loaded successfully');
+      } catch (error) {
+        console.error('Error loading statistics:', error);
+      }
     }
 
-    document.addEventListener('DOMContentLoaded', function(){
-      let raw = localStorage.getItem(storageKey);
-      if(!raw){
-        const seed = {};
-        document.querySelectorAll('.stat .number').forEach(el => {
-          const k = el.getAttribute('data-stat');
-          if(k) seed[k] = el.textContent.trim();
-        });
-        localStorage.setItem(storageKey, JSON.stringify(seed));
-        raw = JSON.stringify(seed);
-      }
-      try{ applyStats(JSON.parse(raw)); }catch(e){}
-    });
+    // Real-time subscription
+    const subscription = supabase
+      .channel('statistics_changes')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'statistics' },
+        (payload) => {
+          console.log('🔄 Statistics updated:', payload.new);
+          loadStatistics();
+        }
+      )
+      .subscribe((status) => {
+        console.log('📡 Statistics real-time subscription:', status);
+      });
 
-    window.addEventListener('storage', function(e){
-      if(e.key === storageKey && e.newValue){
-        try{ applyStats(JSON.parse(e.newValue)); }catch(e){}
-      }
+    // Load on page ready
+    document.addEventListener('DOMContentLoaded', loadStatistics);
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      supabase.removeChannel(subscription);
     });
   })();
 </script>
