@@ -6,6 +6,7 @@
   <title>Admin Dashboard - Youth Service Philippines</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; }
@@ -87,6 +88,113 @@
       .tabs-nav { overflow-x: auto; }
       .action-buttons { gap: 0.5rem; }
       .action-btn { flex: 1 1 calc(50% - 0.25rem); }
+    }
+
+    /* Modal styles */
+    .modal-overlay { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      bottom: 0; 
+      background: rgba(0,0,0,0.5); 
+      display: none; 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 5000;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content { 
+      background: white; 
+      border-radius: 12px; 
+      padding: 2rem; 
+      max-width: 500px; 
+      width: 90%; 
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .modal-header { 
+      font-size: 1.5rem; 
+      font-weight: 700; 
+      margin-bottom: 1.5rem; 
+      color: #333;
+    }
+    .form-group { 
+      margin-bottom: 1.2rem; 
+    }
+    .form-group label { 
+      display: block; 
+      margin-bottom: 0.5rem; 
+      font-weight: 600; 
+      color: #333;
+      font-size: 0.95rem;
+    }
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group input[type="file"] {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .image-preview {
+      margin-top: 0.8rem;
+      width: 100%;
+      height: 180px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #f5f5f5;
+      display: none;
+    }
+    .image-preview.active { display: block; }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      justify-content: flex-end;
+    }
+    .modal-btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .modal-btn.primary {
+      background: #ff8c42;
+      color: white;
+    }
+    .modal-btn.primary:hover { background: #e67e36; }
+    .modal-btn.secondary {
+      background: #f0f0f0;
+      color: #333;
+      border: 1px solid #e0e0e0;
+    }
+    .modal-btn.secondary:hover { background: #e8e8e8; }
+    .modal-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -195,6 +303,32 @@
   </div>
 </div>
 
+<!-- Program Modal -->
+<div class="modal-overlay" id="program-modal">
+  <div class="modal-content">
+    <div class="modal-header" id="modal-header">Add Program</div>
+    <form id="program-form">
+      <div class="form-group">
+        <label for="program-title">Program Title</label>
+        <input type="text" id="program-title" placeholder="e.g., Education for All" required>
+      </div>
+      <div class="form-group">
+        <label for="program-description">Description</label>
+        <textarea id="program-description" placeholder="Describe the program..." required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="program-image">Program Image <span id="image-required">(required)</span></label>
+        <input type="file" id="program-image" accept="image/*">
+        <img id="image-preview" class="image-preview" alt="Image preview">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="modal-btn primary" id="save-program-btn">Save Program</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -294,114 +428,342 @@
     });
   })();
 
-  // Programs admin editor: load programs, render editable cards, save to localStorage
+  // Programs admin editor with Supabase integration
   (function(){
-    const storageKey = 'ysp_programs';
-    const defaultPrograms = [
-      { id: 'p1', title: 'Education for All', image: 'education.png', desc: 'Providing quality education and learning opportunities to underserved communities across the Philippines.' },
-      { id: 'p2', title: 'Environmental Sustainability', image: 'environmental.png', desc: 'Leading environmental initiatives including clean-up drives, tree planting, and sustainability awareness campaigns.' },
-      { id: 'p3', title: 'Health & Wellness', image: 'health.png', desc: 'Promoting health awareness, organizing medical missions, and supporting community health initiatives.' },
-      { id: 'p4', title: 'Community Development', image: 'community.png', desc: 'Building stronger communities through infrastructure projects, livelihood programs, and social development initiatives.' },
-      { id: 'p5', title: 'Youth Leadership', image: 'leadership.png', desc: 'Developing the next generation of leaders through training programs, workshops, and mentorship opportunities.' },
-      { id: 'p6', title: 'Disaster Response', image: 'disaster.png', desc: 'Providing rapid response and relief operations during natural disasters and emergencies across the Philippines.' }
-    ];
+    const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
 
-    function getPrograms(){
-      const raw = localStorage.getItem(storageKey);
-      if(raw) return JSON.parse(raw);
-      localStorage.setItem(storageKey, JSON.stringify(defaultPrograms));
-      return defaultPrograms.slice();
+    const { createClient } = window.supabase;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let currentEditingId = null;
+    let programsCache = [];
+
+    // Verify Supabase connection
+    console.log('🔗 Supabase initialized:', { url: SUPABASE_URL });
+
+    // Modal functions
+    window.closeModal = function(){
+      document.getElementById('program-modal').classList.remove('active');
+      document.getElementById('program-form').reset();
+      document.getElementById('image-preview').classList.remove('active');
+      currentEditingId = null;
+    };
+
+    function openModal(isEdit, program = null){
+      const modal = document.getElementById('program-modal');
+      const header = document.getElementById('modal-header');
+      const form = document.getElementById('program-form');
+      const imageInput = document.getElementById('program-image');
+      const imageRequired = document.getElementById('image-required');
+      
+      if(isEdit && program){
+        header.textContent = 'Edit Program';
+        document.getElementById('program-title').value = program.title;
+        document.getElementById('program-description').value = program.description;
+        currentEditingId = program.id;
+        imageInput.removeAttribute('required');
+        imageRequired.textContent = '(optional - leave blank to keep current image)';
+        
+        // Show image preview if exists
+        if(program.image_data){
+          const preview = document.getElementById('image-preview');
+          preview.src = program.image_data;
+          preview.classList.add('active');
+        }
+      } else {
+        header.textContent = 'Add Program';
+        form.reset();
+        document.getElementById('image-preview').classList.remove('active');
+        currentEditingId = null;
+        imageInput.setAttribute('required', 'required');
+        imageRequired.textContent = '(required)';
+      }
+      
+      modal.classList.add('active');
     }
 
-    function savePrograms(list){
-      localStorage.setItem(storageKey, JSON.stringify(list));
+    window.editProgram = function(id){
+      const program = programsCache.find(p => p.id === id);
+      if(program) openModal(true, program);
+    };
+
+    // Image preview
+    document.getElementById('program-image').addEventListener('change', function(){
+      const file = this.files[0];
+      if(!file) return;
+      
+      // Compress image before preview
+      compressImage(file, (compressedBase64) => {
+        const preview = document.getElementById('image-preview');
+        preview.src = compressedBase64;
+        preview.classList.add('active');
+        showToast('Image compressed and ready', 'success');
+      });
+    });
+
+    // Image compression function
+    function compressImage(file, callback){
+      const reader = new FileReader();
+      reader.onload = function(event){
+        const img = new Image();
+        img.onload = function(){
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 600;
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions
+          if(width > height){
+            if(width > MAX_WIDTH){
+              height = Math.round((height * MAX_WIDTH) / width);
+              width = MAX_WIDTH;
+            }
+          } else {
+            if(height > MAX_HEIGHT){
+              width = Math.round((width * MAX_HEIGHT) / height);
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG with lower quality
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+          console.log(`📸 Image compressed: ${(file.size / 1024).toFixed(2)}KB → ${(compressedBase64.length / 1024).toFixed(2)}KB`);
+          callback(compressedBase64);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
     }
 
-    function el(tag, attrs = {}, children = []){
-      const e = document.createElement(tag);
-      Object.entries(attrs).forEach(([k,v])=>{ if(k === 'class') e.className = v; else if(k === 'html') e.innerHTML = v; else e.setAttribute(k,v); });
-      (Array.isArray(children)?children:[children]).forEach(c=>{ if(!c) return; if(typeof c === 'string') e.appendChild(document.createTextNode(c)); else e.appendChild(c); });
-      return e;
+    // Form submission
+    document.getElementById('program-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      
+      const title = document.getElementById('program-title').value;
+      const desc = document.getElementById('program-description').value;
+      const imageInput = document.getElementById('program-image');
+      const saveBtn = document.getElementById('save-program-btn');
+      
+      // Validate that image is provided for new programs
+      if(!currentEditingId && !imageInput.files[0]){
+        showToast('Please select an image for the program', 'error');
+        return;
+      }
+      
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<span class="loading-spinner"></span>';
+
+      try {
+        let imageData = null;
+        
+        // If a new image is selected, compress it
+        if(imageInput.files[0]){
+          const file = imageInput.files[0];
+          
+          imageData = await new Promise((resolve) => {
+            compressImage(file, (compressedBase64) => {
+              resolve(compressedBase64);
+            });
+          });
+        } else if(currentEditingId){
+          // If editing and no new image, keep the old one
+          const existing = programsCache.find(p => p.id === currentEditingId);
+          imageData = existing ? existing.image_data : null;
+        }
+
+        if(currentEditingId){
+          // Update existing program
+          console.log('📝 Updating program:', currentEditingId);
+          const { error } = await supabase
+            .from('programs')
+            .update({
+              title: title,
+              description: desc,
+              image_data: imageData,
+              updated_at: new Date()
+            })
+            .eq('id', currentEditingId);
+
+          if(error) throw error;
+          console.log('✅ Program updated successfully');
+          showToast('Program updated successfully', 'success');
+        } else {
+          // Insert new program
+          console.log('➕ Adding new program');
+          const { error } = await supabase
+            .from('programs')
+            .insert([{
+              title: title,
+              description: desc,
+              image_data: imageData
+            }]);
+
+          if(error) throw error;
+          console.log('✅ Program added successfully');
+          showToast('Program added successfully', 'success');
+        }
+
+        window.closeModal();
+        await loadPrograms();
+      } catch (error) {
+        console.error('Error saving program:', error);
+        showToast('Error saving program: ' + error.message, 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = 'Save Program';
+      }
+    });
+
+    // Load programs from Supabase
+    async function loadPrograms(){
+      try {
+        console.log('📦 Loading programs from Supabase...');
+        const { data, error } = await supabase
+          .from('programs')
+          .select('*')
+          .order('created_at', { ascending: true });
+
+        if(error){
+          console.error('❌ Supabase error:', error);
+          throw error;
+        }
+        
+        programsCache = data || [];
+        console.log('✅ Programs loaded:', programsCache.length, 'programs');
+        renderPrograms();
+      } catch (error) {
+        console.error('Error loading programs:', error);
+        showToast('Error loading programs: ' + error.message, 'error');
+      }
     }
 
-    function renderAdmin(){
-      const list = getPrograms();
+    // Render programs
+    function renderPrograms(){
       const container = document.getElementById('admin-programs-list');
       if(!container) return;
+      
       container.innerHTML = '';
-      list.forEach((p, idx) => {
-        const card = el('div',{class:'program-card'});
-        const img = el('img',{class:'program-img', src:p.image||'','alt':p.title});
-        const body = el('div',{class:'program-body'});
-        const titleIn = el('input',{type:'text',class:'program-title', value:p.title, placeholder:'Program title'});
-        const descIn = el('textarea',{class:'program-desc'}, p.desc);
-        const fileIn = el('input',{type:'file', accept:'image/*', class:'program-file'});
-        const controls = el('div',{class:'controls'});
-        const saveBtn = el('button',{class:'action-btn', style:'background:#ff8c42;color:#fff;border:none;'}, 'Save');
-        const removeBtn = el('button',{class:'action-btn', style:'background:#fff;color:#333;border:1px solid #e0e0e0;'}, 'Delete');
-
-        // preview selected image immediately
-        fileIn.addEventListener('change', function(){
-          const f = fileIn.files && fileIn.files[0];
-          if(!f) return;
-          const fr = new FileReader();
-          fr.onload = function(ev){ img.src = ev.target.result; showToast('Image selected (preview shown)', 'success'); };
-          fr.readAsDataURL(f);
-        });
-
-        saveBtn.addEventListener('click', function(){
-          const updated = getPrograms();
-          const entry = updated[idx];
-          entry.title = titleIn.value;
-          entry.desc = descIn.value;
-          const file = fileIn.files && fileIn.files[0];
-          if(file){
-            const fr = new FileReader();
-            saveBtn.disabled = true;
-            fr.onload = function(ev){ entry.image = ev.target.result; savePrograms(updated); saveBtn.disabled = false; showToast('Program saved', 'success'); };
-            fr.readAsDataURL(file);
-          } else {
-            savePrograms(updated);
-            showToast('Program saved', 'success');
-          }
-          img.src = entry.image || img.src;
-        });
-
-        removeBtn.addEventListener('click', function(){
-          if(!confirm('Delete this program?')) return;
-          const updated = getPrograms();
-          updated.splice(idx,1);
-          savePrograms(updated);
-          renderAdmin();
-          showToast('Program deleted', 'warn');
-        });
-
-        controls.appendChild(fileIn);
-        controls.appendChild(saveBtn);
-        controls.appendChild(removeBtn);
-        body.appendChild(titleIn);
-        body.appendChild(descIn);
+      
+      programsCache.forEach(program => {
+        const card = document.createElement('div');
+        card.className = 'program-card';
+        
+        const img = document.createElement('img');
+        img.className = 'program-img';
+        img.src = program.image_data || '';
+        img.alt = program.title;
+        
+        const body = document.createElement('div');
+        body.className = 'program-body';
+        
+        const title = document.createElement('div');
+        title.style.fontWeight = '600';
+        title.style.fontSize = '0.95rem';
+        title.textContent = program.title;
+        
+        const desc = document.createElement('div');
+        desc.style.fontSize = '0.85rem';
+        desc.style.color = '#666';
+        desc.style.lineHeight = '1.4';
+        desc.textContent = program.description.substring(0, 100) + (program.description.length > 100 ? '...' : '');
+        
+        const controls = document.createElement('div');
+        controls.className = 'controls';
+        controls.style.gap = '0.5rem';
+        
+        const editBtn = document.createElement('button');
+        editBtn.className = 'action-btn';
+        editBtn.style.background = '#ff8c42';
+        editBtn.style.color = '#fff';
+        editBtn.style.border = 'none';
+        editBtn.style.flex = '1';
+        editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
+        editBtn.onclick = () => window.editProgram(program.id);
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'action-btn';
+        deleteBtn.style.background = '#fff';
+        deleteBtn.style.color = '#333';
+        deleteBtn.style.border = '1px solid #e0e0e0';
+        deleteBtn.style.flex = '1';
+        deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+        deleteBtn.onclick = () => deleteProgram(program.id);
+        
+        controls.appendChild(editBtn);
+        controls.appendChild(deleteBtn);
+        
+        body.appendChild(title);
+        body.appendChild(desc);
         body.appendChild(controls);
+        
         card.appendChild(img);
         card.appendChild(body);
+        
         container.appendChild(card);
       });
     }
 
-    document.getElementById('add-program-btn').addEventListener('click', function(){
-      const list = getPrograms();
-      const id = 'p' + (Date.now());
-      list.push({id:id, title:'New Program', image:'', desc:'Program description'});
-      savePrograms(list);
-      renderAdmin();
-      showToast('Program added', 'success');
+    // Delete program
+    async function deleteProgram(id){
+      if(!confirm('Are you sure you want to delete this program?')) return;
+      
+      try {
+        const { error } = await supabase
+          .from('programs')
+          .delete()
+          .eq('id', id);
+
+        if(error) throw error;
+        
+        showToast('Program deleted successfully', 'warn');
+        await loadPrograms();
+      } catch (error) {
+        console.error('Error deleting program:', error);
+        showToast('Error deleting program: ' + error.message, 'error');
+      }
+    }
+
+    window.deleteProgram = deleteProgram;
+
+    // Add program button
+    const addBtn = document.getElementById('add-program-btn');
+    if(addBtn){
+      addBtn.addEventListener('click', function(){
+        openModal(false);
+      });
+    }
+
+    // Real-time subscription
+    const subscription = supabase
+      .channel('programs_changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'programs' },
+        (payload) => {
+          console.log('🔄 Real-time update received:', payload);
+          loadPrograms();
+        }
+      )
+      .subscribe((status) => {
+        console.log('📡 Real-time subscription status:', status);
+      });
+
+    // Initial load
+    loadPrograms();
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      supabase.removeChannel(subscription);
     });
-
-    window.addEventListener('storage', function(e){ if(e.key === storageKey) renderAdmin(); });
-
-    // initial render
-    renderAdmin();
   })();
+
 
   // Toast helper
   function showToast(message, type = 'success', duration = 3000){
