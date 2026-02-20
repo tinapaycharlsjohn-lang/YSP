@@ -21,11 +21,13 @@
     .nav-links a { text-decoration: none; color: #333; font-weight: 500; }
     .sign-in-btn { background: #ff8c42; color: white; padding: 0.6rem 1rem; border-radius: 5px; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; font-weight: 600; }
 
-    .admin-header { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; }
-    .admin-header h1 { font-size: 2.2rem; color: #333; font-weight: 700; margin-bottom: 0.25rem; }
-    .admin-header .subtitle { color: #ff8c42; font-size: 0.95rem; }
-    .back-btn { background: white; color: #333; border: 1px solid #e0e0e0; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-    .back-btn:hover { background: #f9f9f9; }
+    .admin-header { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%); border-radius: 0 0 12px 12px; box-shadow: 0 6px 20px rgba(255,140,66,0.15); }
+    .admin-header > div { display: flex; align-items: center; gap: 1.2rem; flex: 1; }
+    .admin-header .logo-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.15); padding: 0.5rem; object-fit: contain; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .admin-header h1 { font-size: 2.2rem; color: white; font-weight: 700; margin-bottom: 0.25rem; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .admin-header .subtitle { color: rgba(255,255,255,0.85); font-size: 0.95rem; }
+    .back-btn { background: rgba(255,255,255,0.15); color: white; border: 1.5px solid rgba(255,255,255,0.3); padding: 0.7rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.25s ease; display: flex; align-items: center; gap: 0.5rem; }
+    .back-btn:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
     .stats-grid { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
     .stat-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ff8c42; }
@@ -48,23 +50,64 @@
     .toast.warn { background: linear-gradient(90deg,#f59e0b,#fb923c); }
     .toast.error { background: linear-gradient(90deg,#ef4444,#f97316); }
 
-    .quick-actions { max-width: 1400px; margin: 2rem auto; padding: 2rem; background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%); border-radius: 12px; }
-    .quick-actions h3 { color: white; font-size: 1.3rem; margin-bottom: 1.25rem; }
-    .action-buttons { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .action-btn { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); padding: 0.7rem 1.3rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; }
-    .action-btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.6); }
-
     .tabs-section { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
-    .tabs-nav { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #e0e0e0; }
-    .tab-btn { background: transparent; border: none; padding: 1rem 1.5rem; cursor: pointer; font-weight: 600; color: #999; font-size: 0.95rem; position: relative; }
-    .tab-btn.active { color: #333; }
-    .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background: #ff8c42; }
-    .tab-btn:hover { color: #333; }
+    .tabs-nav { 
+      display: flex; 
+      gap: 0.8rem; 
+      background: linear-gradient(90deg, #f5f7fa 0%, #eef2f6 100%);
+      padding: 0.8rem 1rem;
+      border-radius: 12px 12px 0 0;
+      border-bottom: 3px solid #ff8c42;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      flex-wrap: wrap;
+    }
+    .tab-btn { 
+      background: linear-gradient(135deg, #f0f4f9 0%, #e8eef5 100%);
+      border: 1.5px solid #dfe4ea;
+      padding: 0.8rem 1.5rem; 
+      cursor: pointer; 
+      font-weight: 600; 
+      color: #666; 
+      font-size: 0.95rem; 
+      position: relative;
+      border-radius: 8px 8px 0 0;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .tab-btn:hover { 
+      background: linear-gradient(135deg, #e0e6f0 0%, #d8dff0 100%);
+      color: #333;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .tab-btn.active { 
+      background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%);
+      color: white; 
+      border-color: #ff8c42;
+      box-shadow: 0 4px 12px rgba(255,140,66,0.25);
+    }
+    .tab-btn.active::after { 
+      display: none;
+    }
 
     .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    .tab-content.active { display: block; animation: fadeInContent 0.3s ease; }
+    @keyframes fadeInContent {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-    .stats-box { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .stats-box { 
+      background: white; 
+      padding: 2rem; 
+      border-radius: 0 8px 8px 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1.5px solid #f0f4f9;
+      border-top: none;
+    }
     .stats-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
     .stats-box h3 { font-size: 1.2rem; color: #333; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
     .stats-box h3 i { color: #ff8c42; font-size: 1.3rem; }
@@ -97,92 +140,200 @@
       left: 0; 
       right: 0; 
       bottom: 0; 
-      background: rgba(0,0,0,0.5); 
+      background: rgba(0,0,0,0.6); 
       display: none; 
       justify-content: center; 
       align-items: center; 
       z-index: 5000;
+      backdrop-filter: blur(2px);
     }
-    .modal-overlay.active { display: flex; }
+    .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
     .modal-content { 
       background: white; 
-      border-radius: 12px; 
-      padding: 2rem; 
-      max-width: 500px; 
+      border-radius: 14px; 
+      padding: 0;
+      max-width: 520px; 
       width: 90%; 
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.25);
+      overflow: hidden;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-content::before {
+      content: '';
+      display: block;
+      height: 4px;
+      background: linear-gradient(90deg, #ff6a00 0%, #ff8c42 100%);
     }
     .modal-header { 
-      font-size: 1.5rem; 
+      font-size: 1.4rem; 
       font-weight: 700; 
-      margin-bottom: 1.5rem; 
+      margin-bottom: 1.8rem;
       color: #333;
+      padding: 2rem 2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .modal-header::before {
+      content: '\f007';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 600;
+      color: #ff8c42;
+      font-size: 1.3rem;
+    }
+    .modal-header[id*="member"]::before {
+      content: '\f234';
+      font-weight: 600;
     }
     .form-group { 
-      margin-bottom: 1.2rem; 
+      margin-bottom: 1.5rem;
+      padding: 0 2rem;
+    }
+    .form-group:last-of-type {
+      margin-bottom: 2rem;
     }
     .form-group label { 
       display: block; 
-      margin-bottom: 0.5rem; 
+      margin-bottom: 0.7rem; 
       font-weight: 600; 
       color: #333;
       font-size: 0.95rem;
+      text-transform: capitalize;
+      letter-spacing: 0.3px;
     }
     .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="number"],
     .form-group textarea,
-    .form-group input[type="file"] {
+    .form-group input[type="file"],
+    .form-group select {
       width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
+      padding: 0.8rem 0.95rem;
+      border: 1.5px solid #dfe4ea;
+      border-radius: 8px;
       font-family: inherit;
       font-size: 0.95rem;
+      background: #fafbfc;
+      transition: all 0.25s ease;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
+    .form-group input[type="number"]:focus,
+    .form-group textarea:focus,
+    .form-group input[type="file"]:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #ff8c42;
+      background: white;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.02), 0 0 0 3px rgba(255,140,66,0.1);
+    }
+    .form-group input[type="text"]:hover,
+    .form-group input[type="email"]:hover,
+    .form-group input[type="number"]:hover,
+    .form-group textarea:hover,
+    .form-group select:hover {
+      border-color: #ffb399;
+      background: white;
     }
     .form-group textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 90px;
+      font-family: inherit;
+    }
+    .form-group select {
+      cursor: pointer;
+      padding-right: 2.5rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff8c42' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.95rem center;
+      appearance: none;
+      padding-right: 2.5rem;
     }
     .image-preview {
       margin-top: 0.8rem;
       width: 100%;
-      height: 180px;
-      border-radius: 6px;
+      height: 200px;
+      border-radius: 10px;
       object-fit: cover;
-      background: #f5f5f5;
+      background: linear-gradient(135deg, #f5f7fa 0%, #eef2f6 100%);
       display: none;
+      border: 2px solid #e0e6f0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-    .image-preview.active { display: block; }
+    .image-preview.active { 
+      display: block;
+      animation: imageReveal 0.3s ease;
+    }
+    @keyframes imageReveal {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
     .modal-actions {
       display: flex;
       gap: 1rem;
-      margin-top: 2rem;
+      padding: 0 2rem 2rem;
       justify-content: flex-end;
+      margin-top: 0.5rem;
     }
     .modal-btn {
-      padding: 0.7rem 1.5rem;
-      border-radius: 6px;
+      padding: 0.8rem 1.8rem;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
       font-weight: 600;
       font-size: 0.95rem;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .modal-btn:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(-1px);
     }
     .modal-btn.primary {
-      background: #ff8c42;
+      background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%);
       color: white;
     }
-    .modal-btn.primary:hover { background: #e67e36; }
-    .modal-btn.secondary {
-      background: #f0f0f0;
-      color: #333;
-      border: 1px solid #e0e0e0;
+    .modal-btn.primary:hover { 
+      background: linear-gradient(135deg, #e85e00 0%, #ff7a2e 100%);
     }
-    .modal-btn.secondary:hover { background: #e8e8e8; }
+    .modal-btn.primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+    }
+    .modal-btn.secondary {
+      background: white;
+      color: #333;
+      border: 1.5px solid #dfe4ea;
+    }
+    .modal-btn.secondary:hover { 
+      background: #f8f9fb;
+      border-color: #c5cad4;
+    }
+    .modal-btn.secondary:active {
+      transform: translateY(0);
+      background: #f0f2f7;
+    }
     .modal-btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      transform: none;
+    }
+    .modal-btn:disabled:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .loading-spinner {
       display: inline-block;
@@ -196,6 +347,89 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    /* Member view modal enhancements */
+    #member-view-modal .modal-content {
+      max-width: 480px;
+    }
+    #member-view-modal .modal-header {
+      color: #333;
+    }
+    #member-view-content {
+      padding: 0 2rem 1.5rem;
+    }
+    #member-view-content > div {
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      background: #fafbfc;
+      border-radius: 8px;
+      border-left: 3px solid #ff8c42;
+      animation: slideInContent 0.3s ease;
+    }
+    @keyframes slideInContent {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    #member-view-content strong {
+      color: #333;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ff8c42;
+    }
+    #member-view-content span {
+      color: #333;
+      font-size: 0.95rem;
+      word-break: break-word;
+    }
+
+    /* Program Modal enhancements */
+    #modal-header::before {
+      content: '\f7f3';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 600;
+      color: #ff8c42;
+      font-size: 1.3rem;
+      margin-right: 0.5rem;
+    }
+
+    /* Form input enhancements for file uploads */
+    .form-group input[type="file"] {
+      padding: 0.8rem;
+      cursor: pointer;
+      color: #666;
+    }
+    .form-group input[type="file"]::file-selector-button {
+      background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-right: 0.8rem;
+      transition: all 0.2s ease;
+    }
+    .form-group input[type="file"]::file-selector-button:hover {
+      background: linear-gradient(135deg, #e85e00 0%, #ff7a2e 100%);
+      transform: scale(1.02);
+    }
+
+    /* Members list animation */
+    @keyframes slideInList {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
@@ -204,24 +438,16 @@
 <!-- ADMIN HEADER -->
 <div class="admin-header">
   <div>
-    <h1>Admin Dashboard</h1>
-    <p class="subtitle">Manage YSP website content and settings</p>
+    <img src="YSP LOGO.png" alt="YSP Logo" class="logo-icon">
+    <div>
+      <h1>Admin Dashboard</h1>
+      <p class="subtitle">Manage YSP website content and settings</p>
+    </div>
   </div>
   <a href="index.html" class="back-btn">Back to Website</a>
 </div>
 
 <!-- STATS GRID removed: admin dashboard now manages stats via the Statistics tab -->
-
-<!-- QUICK ACTIONS -->
-<div class="quick-actions">
-  <h3>Quick Actions</h3>
-  <div class="action-buttons">
-    <button class="action-btn"><i class="fas fa-plus"></i> Add Program</button>
-    <button class="action-btn"><i class="fas fa-plus"></i> Add Chapter</button>
-    <button class="action-btn"><i class="fas fa-plus"></i> Add Event</button>
-    <button class="action-btn"><i class="fas fa-plus"></i> Add Member</button>
-  </div>
-</div>
 
 <!-- TABS SECTION -->
 <div class="tabs-section">
@@ -244,15 +470,15 @@
       <div class="stats-items">
         <div class="stats-item">
           <div class="label">Projects Completed</div>
-          <div class="number" data-stat="projects">150</div>
+          <div class="number" data-stat="projects">--</div>
         </div>
         <div class="stats-item">
           <div class="label">Active Chapters</div>
-          <div class="number" data-stat="chapters">12</div>
+          <div class="number" data-stat="chapters">--</div>
         </div>
         <div class="stats-item">
           <div class="label">Active Members</div>
-          <div class="number" data-stat="members">500</div>
+          <div class="number" data-stat="members">--</div>
         </div>
       </div>
     </div>
@@ -262,9 +488,9 @@
   <div class="tab-content" id="programs">
     <div class="stats-box">
       <h3>Programs Management</h3>
-      <p style="color: #666; margin-top: 1rem;">Manage programs below. Changes save to localStorage and update public pages in real time.</p>
+      <p style="color: #666; margin-top: 1rem;">Manage programs</p>
       <div style="margin-top:1rem; display:flex; gap:0.5rem;">
-        <button id="add-program-btn" class="action-btn" style="background:#fff; color:#333; border:1px solid #e0e0e0;">+ Add Program</button>
+        <button id="add-program-btn" class="tab-action-btn primary">+ Add Program</button>
       </div>
       <div id="admin-programs-list" style="margin-top:1.25rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem;"></div>
     </div>
@@ -289,8 +515,22 @@
   <!-- Members Tab -->
   <div class="tab-content" id="members">
     <div class="stats-box">
-      <h3>Members Management</h3>
-      <p style="color: #666; margin-top: 1rem;">Members management interface coming soon.</p>
+      <h3><i class="fas fa-users"></i> Members Management</h3>
+      <p style="color: #666; margin-top: 1rem;">Manage organization members with Supabase database.</p>
+      
+      <!-- Add Member Button -->
+      <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+        <button id="add-member-btn" class="tab-action-btn primary">
+          <i class="fas fa-plus"></i> Add Member
+        </button>
+        
+        <!-- Search Bar -->
+        <input type="text" id="member-search" placeholder="Search members by name..." 
+          style="flex: 1; min-width: 200px; padding: 0.6rem; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem;">
+      </div>
+
+      <!-- Members List -->
+      <div id="members-list" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;"></div>
     </div>
   </div>
 
@@ -307,7 +547,7 @@
 <div class="modal-overlay" id="program-modal">
   <div class="modal-content">
     <div class="modal-header" id="modal-header">Add Program</div>
-    <form id="program-form">
+    <form id="program-form" style="padding: 0 2rem 2rem;">
       <div class="form-group">
         <label for="program-title">Program Title</label>
         <input type="text" id="program-title" placeholder="e.g., Education for All" required>
@@ -326,6 +566,73 @@
         <button type="submit" class="modal-btn primary" id="save-program-btn">Save Program</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Member Modal (Add/Edit) -->
+<div class="modal-overlay" id="member-modal">
+  <div class="modal-content">
+    <div class="modal-header" id="member-modal-header">Add Member</div>
+    <form id="member-form" style="padding: 0 2rem 2rem;">
+      <div class="form-group">
+        <label for="member-name">Full Name</label>
+        <input type="text" id="member-name" placeholder="e.g., John Doe" required>
+      </div>
+      <div class="form-group">
+        <label for="member-age">Age</label>
+        <input type="number" id="member-age" placeholder="e.g., 25" min="1" max="120">
+      </div>
+      <div class="form-group">
+        <label for="member-sex">Sex</label>
+        <select id="member-sex">
+          <option value="">Select...</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="member-email">Email</label>
+        <input type="email" id="member-email" placeholder="e.g., john@example.com">
+      </div>
+      <div class="form-group">
+        <label for="member-address">Local Address</label>
+        <textarea id="member-address" placeholder="e.g., 123 Main St, City, Province"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn secondary" onclick="closeMemberModal()">Cancel</button>
+        <button type="submit" class="modal-btn primary" id="save-member-btn">Save Member</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Member View Modal -->
+<div class="modal-overlay" id="member-view-modal">
+  <div class="modal-content">
+    <div class="modal-header">Member Details</div>
+    <div id="member-view-content">
+      <div>
+        <strong>Name:</strong> <span id="view-name"></span>
+      </div>
+      <div>
+        <strong>Age:</strong> <span id="view-age"></span>
+      </div>
+      <div>
+        <strong>Sex:</strong> <span id="view-sex"></span>
+      </div>
+      <div>
+        <strong>Email:</strong> <span id="view-email"></span>
+      </div>
+      <div>
+        <strong>Local Address:</strong> <span id="view-address"></span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="modal-btn secondary" onclick="closeMemberViewModal()">Close</button>
+      <button type="button" class="modal-btn primary" id="edit-member-btn"><i class="fas fa-edit"></i> Edit</button>
+      <button type="button" class="modal-btn" style="background: linear-gradient(135deg, #ef4444, #f97316); color: white; border: none;" id="delete-member-btn"><i class="fas fa-trash"></i> Delete</button>
+    </div>
   </div>
 </div>
 
@@ -350,44 +657,76 @@
     });
   });
 
-  // Statistics editing and localStorage sync
+  // Statistics editing with Supabase sync
   (function(){
-    const storageKey = 'ysp_stats';
+    const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
 
-    function seedFromDOM(){
-      const seed = {};
-      document.querySelectorAll('.stats-item .number').forEach(el => {
-        const key = el.getAttribute('data-stat');
-        if(key) seed[key] = el.textContent.trim();
-      });
-      return seed;
+    const { createClient } = window.supabase;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const statKeys = {
+      'projects': 'Projects Completed',
+      'chapters': 'Active Chapters',
+      'members': 'Active Members'
+    };
+
+    // Load statistics from Supabase
+    async function loadStatistics(){
+      try {
+        console.log('📊 Loading statistics from Supabase...');
+        const { data, error } = await supabase
+          .from('statistics')
+          .select('stat_key, stat_value')
+          .in('stat_key', Object.keys(statKeys));
+
+        if(error) throw error;
+
+        const statsMap = {};
+        data.forEach(stat => {
+          statsMap[stat.stat_key] = stat.stat_value;
+        });
+
+        // Apply to admin UI
+        document.querySelectorAll('.stats-item .number').forEach(el => {
+          const key = el.getAttribute('data-stat');
+          if(key && statsMap[key] != null){
+            el.textContent = statsMap[key];
+          }
+        });
+
+        console.log('✅ Statistics loaded:', statsMap);
+      } catch (error) {
+        console.error('Error loading statistics:', error);
+        showToast('Error loading statistics: ' + error.message, 'error');
+      }
     }
 
-    function getStats(){
-      const raw = localStorage.getItem(storageKey);
-      if(raw) return JSON.parse(raw);
-      const s = seedFromDOM();
-      localStorage.setItem(storageKey, JSON.stringify(s));
-      return s;
+    // Update statistic in Supabase
+    async function updateStatistic(key, value){
+      try {
+        const { error } = await supabase
+          .from('statistics')
+          .update({ stat_value: parseInt(value) })
+          .eq('stat_key', key);
+
+        if(error) throw error;
+        console.log(`✅ Updated ${key} to ${value}`);
+      } catch (error) {
+        console.error('Error updating statistic:', error);
+        showToast('Error updating statistic: ' + error.message, 'error');
+      }
     }
 
-    function applyStatsToAdmin(stats){
-      document.querySelectorAll('.stats-item .number').forEach(el => {
-        const key = el.getAttribute('data-stat');
-        if(key && stats[key] != null) el.textContent = stats[key];
-      });
-    }
-
-    const stats = getStats();
-    applyStatsToAdmin(stats);
-
+    // Edit button functionality
     const editBtn = document.querySelector('.edit-btn');
-    editBtn.addEventListener('click', function(){
+    editBtn.addEventListener('click', async function(){
       const isEditing = this.dataset.mode === 'editing';
       if(!isEditing){
-        // enter editing mode
+        // Enter editing mode
         this.innerHTML = '<i class="fas fa-save"></i> Save';
         this.dataset.mode = 'editing';
+        
         document.querySelectorAll('.stats-item .number').forEach(el => {
           const key = el.getAttribute('data-stat');
           const input = document.createElement('input');
@@ -402,29 +741,63 @@
           el.replaceWith(input);
         });
       } else {
-        // save
-        const inputs = document.querySelectorAll('.stats-input');
-        const newStats = getStats();
-        inputs.forEach(inp => {
-          const k = inp.getAttribute('data-stat');
-          newStats[k] = inp.value;
-          const div = document.createElement('div');
-          div.className = 'number';
-          div.setAttribute('data-stat', k);
-          div.textContent = inp.value;
-          inp.replaceWith(div);
-        });
-        localStorage.setItem(storageKey, JSON.stringify(newStats));
-        this.innerHTML = '<i class="fas fa-edit"></i> Edit';
-        this.dataset.mode = '';
+        // Save mode
+        editBtn.disabled = true;
+        editBtn.innerHTML = '<span class="loading-spinner"></span>';
+
+        try {
+          const inputs = document.querySelectorAll('.stats-input');
+          const updatePromises = [];
+
+          inputs.forEach(inp => {
+            const key = inp.getAttribute('data-stat');
+            const value = inp.value;
+            updatePromises.push(updateStatistic(key, value));
+            
+            // Create display element
+            const div = document.createElement('div');
+            div.className = 'number';
+            div.setAttribute('data-stat', key);
+            div.textContent = value;
+            inp.replaceWith(div);
+          });
+
+          // Wait for all updates to complete
+          await Promise.all(updatePromises);
+          
+          showToast('Statistics updated successfully', 'success');
+          this.innerHTML = '<i class="fas fa-edit"></i> Edit';
+          this.dataset.mode = '';
+        } catch (error) {
+          console.error('Error saving statistics:', error);
+          showToast('Error saving statistics', 'error');
+        } finally {
+          editBtn.disabled = false;
+        }
       }
     });
 
-    // update admin UI when changes happen in other tabs
-    window.addEventListener('storage', function(e){
-      if(e.key === storageKey && e.newValue){
-        applyStatsToAdmin(JSON.parse(e.newValue));
-      }
+    // Real-time subscription
+    const subscription = supabase
+      .channel('statistics_changes')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'statistics' },
+        (payload) => {
+          console.log('🔄 Statistics updated:', payload.new);
+          loadStatistics();
+        }
+      )
+      .subscribe((status) => {
+        console.log('📡 Statistics real-time subscription:', status);
+      });
+
+    // Initial load
+    loadStatistics();
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      supabase.removeChannel(subscription);
     });
   })();
 
@@ -775,6 +1148,336 @@
     requestAnimationFrame(()=> t.classList.add('show'));
     setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=> t.remove(),260); }, duration);
   }
+
+  // Members management with Supabase
+  (function(){
+    const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
+
+    const { createClient } = window.supabase;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let membersCache = [];
+    let currentEditingMemberId = null;
+    let currentViewingMemberId = null;
+
+    console.log('👥 Members management initialized');
+
+    // Modal control functions
+    window.closeMemberModal = function(){
+      document.getElementById('member-modal').classList.remove('active');
+      document.getElementById('member-form').reset();
+      currentEditingMemberId = null;
+    };
+
+    window.closeMemberViewModal = function(){
+      document.getElementById('member-view-modal').classList.remove('active');
+      currentViewingMemberId = null;
+    };
+
+    function openMemberModal(isEdit, member = null){
+      const modal = document.getElementById('member-modal');
+      const header = document.getElementById('member-modal-header');
+      const form = document.getElementById('member-form');
+
+      if(isEdit && member){
+        header.textContent = 'Edit Member';
+        document.getElementById('member-name').value = member.name || '';
+        document.getElementById('member-age').value = member.age || '';
+        document.getElementById('member-sex').value = member.sex || '';
+        document.getElementById('member-email').value = member.email || '';
+        document.getElementById('member-address').value = member.local_address || '';
+        currentEditingMemberId = member.id;
+        document.getElementById('save-member-btn').textContent = 'Update Member';
+      } else {
+        header.textContent = 'Add Member';
+        form.reset();
+        currentEditingMemberId = null;
+        document.getElementById('save-member-btn').textContent = 'Add Member';
+      }
+
+      modal.classList.add('active');
+    }
+
+    function openMemberViewModal(member){
+      currentViewingMemberId = member.id;
+      document.getElementById('view-name').textContent = member.name || '--';
+      document.getElementById('view-age').textContent = member.age ? member.age + ' years' : '--';
+      document.getElementById('view-sex').textContent = member.sex || '--';
+      document.getElementById('view-email').textContent = member.email || '--';
+      document.getElementById('view-address').textContent = member.local_address || '--';
+
+      document.getElementById('member-view-modal').classList.add('active');
+    }
+
+    // Load members from Supabase
+    async function loadMembers(searchQuery = ''){
+      try {
+        console.log('👥 Loading members from Supabase...');
+        let query = supabase
+          .from('members')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        const { data, error } = await query;
+
+        if(error) throw error;
+
+        membersCache = data || [];
+
+        // Filter by search query
+        let filteredMembers = membersCache;
+        if(searchQuery){
+          filteredMembers = membersCache.filter(m => 
+            m.name.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        }
+
+        console.log('✅ Loaded', membersCache.length, 'members');
+        renderMembersList(filteredMembers);
+      } catch (error) {
+        console.error('Error loading members:', error);
+        showToast('Error loading members: ' + error.message, 'error');
+      }
+    }
+
+    // Render members list
+    function renderMembersList(members){
+      const container = document.getElementById('members-list');
+      if(!container) return;
+
+      container.innerHTML = '';
+
+      if(members.length === 0){
+        container.innerHTML = '<div style="text-align: center; color: #999; padding: 2rem; background: #fafbfc; border-radius: 8px; border: 1px dashed #dfe4ea;">No members found</div>';
+        return;
+      }
+
+      members.forEach((member, index) => {
+        const item = document.createElement('div');
+        item.style.cssText = `
+          display: flex;
+          align-items: center;
+          gap: 1.2rem;
+          background: white;
+          padding: 1.2rem 1.5rem;
+          border-radius: 8px;
+          border: 1.5px solid #e8ebf0;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+          animation: slideInList 0.3s ease ${index * 0.05}s both;
+        `;
+        
+        item.onmouseover = () => {
+          item.style.borderColor = '#ff8c42';
+          item.style.boxShadow = '0 6px 16px rgba(255,140,66,0.12)';
+          item.style.transform = 'translateX(4px)';
+        };
+        
+        item.onmouseout = () => {
+          item.style.borderColor = '#e8ebf0';
+          item.style.boxShadow = '0 2px 4px rgba(0,0,0,0.03)';
+          item.style.transform = 'translateX(0)';
+        };
+
+        // Member avatar
+        const avatar = document.createElement('div');
+        avatar.style.cssText = `
+          min-width: 48px;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #ff6a00, #ff8c42);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 700;
+          font-size: 1.2rem;
+          box-shadow: 0 2px 8px rgba(255,140,66,0.2);
+        `;
+        avatar.textContent = (member.name || 'M').charAt(0).toUpperCase();
+
+        // Member info
+        const info = document.createElement('div');
+        info.style.cssText = 'flex: 1; min-width: 0;';
+        info.innerHTML = `
+          <div style="font-weight: 600; color: #333; font-size: 0.95rem; margin-bottom: 0.3rem;">${member.name}</div>
+          <div style="color: #999; font-size: 0.85rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            ${member.age ? `<span><i class="fas fa-birthday-cake" style="color: #ff8c42; margin-right: 0.3rem;"></i>${member.age} years</span>` : ''}
+            ${member.sex ? `<span><i class="fas fa-${member.sex === 'Male' ? 'mars' : member.sex === 'Female' ? 'venus' : 'user'}" style="color: #ff8c42; margin-right: 0.3rem;"></i>${member.sex}</span>` : ''}
+            ${member.email ? `<span title="${member.email}"><i class="fas fa-envelope" style="color: #ff8c42; margin-right: 0.3rem;"></i><a href="mailto:${member.email}" style="color: #ff8c42; text-decoration: none;" onclick="event.stopPropagation();">${member.email.split('@')[0]}</a></span>` : ''}
+          </div>
+        `;
+
+        // Action indicator
+        const indicator = document.createElement('div');
+        indicator.style.cssText = `
+          color: #ff8c42;
+          font-size: 1.2rem;
+          opacity: 0.5;
+          transition: all 0.2s ease;
+        `;
+        indicator.innerHTML = '<i class="fas fa-chevron-right"></i>';
+
+        item.addEventListener('mouseenter', () => {
+          indicator.style.opacity = '1';
+          indicator.style.transform = 'translateX(4px)';
+        });
+
+        item.addEventListener('mouseleave', () => {
+          indicator.style.opacity = '0.5';
+          indicator.style.transform = 'translateX(0)';
+        });
+
+        item.appendChild(avatar);
+        item.appendChild(info);
+        item.appendChild(indicator);
+
+        item.onclick = () => openMemberViewModal(member);
+        container.appendChild(item);
+      });
+    }
+
+    // Form submission
+    document.getElementById('member-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+
+      const name = document.getElementById('member-name').value;
+      const age = document.getElementById('member-age').value ? parseInt(document.getElementById('member-age').value) : null;
+      const sex = document.getElementById('member-sex').value;
+      const email = document.getElementById('member-email').value;
+      const address = document.getElementById('member-address').value;
+
+      if(!name.trim()){
+        showToast('Please enter member name', 'error');
+        return;
+      }
+
+      const saveBtn = document.getElementById('save-member-btn');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<span class="loading-spinner"></span>';
+
+      try {
+        if(currentEditingMemberId){
+          // Update member
+          console.log('📝 Updating member:', currentEditingMemberId);
+          const { error } = await supabase
+            .from('members')
+            .update({
+              name,
+              age,
+              sex,
+              email,
+              local_address: address
+            })
+            .eq('id', currentEditingMemberId);
+
+          if(error) throw error;
+          console.log('✅ Member updated');
+          showToast('Member updated successfully', 'success');
+        } else {
+          // Add member
+          console.log('➕ Adding new member');
+          const { error } = await supabase
+            .from('members')
+            .insert([{
+              name,
+              age,
+              sex,
+              email,
+              local_address: address
+            }]);
+
+          if(error) throw error;
+          console.log('✅ Member added');
+          showToast('Member added successfully', 'success');
+        }
+
+        window.closeMemberModal();
+        await loadMembers();
+      } catch (error) {
+        console.error('Error saving member:', error);
+        showToast('Error saving member: ' + error.message, 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = currentEditingMemberId ? 'Update Member' : 'Add Member';
+      }
+    });
+
+    // Edit member
+    document.getElementById('edit-member-btn').addEventListener('click', function(){
+      const member = membersCache.find(m => m.id === currentViewingMemberId);
+      if(member){
+        window.closeMemberViewModal();
+        openMemberModal(true, member);
+      }
+    });
+
+    // Delete member
+    document.getElementById('delete-member-btn').addEventListener('click', async function(){
+      if(!confirm('Are you sure you want to delete this member?')) return;
+
+      try {
+        const { error } = await supabase
+          .from('members')
+          .delete()
+          .eq('id', currentViewingMemberId);
+
+        if(error) throw error;
+
+        console.log('🗑️ Member deleted');
+        showToast('Member deleted successfully', 'warn');
+        window.closeMemberViewModal();
+        await loadMembers();
+      } catch (error) {
+        console.error('Error deleting member:', error);
+        showToast('Error deleting member: ' + error.message, 'error');
+      }
+    });
+
+    // Add member button
+    const addMemberBtn = document.getElementById('add-member-btn');
+    if(addMemberBtn){
+      addMemberBtn.addEventListener('click', () => openMemberModal(false));
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('member-search');
+    if(searchInput){
+      searchInput.addEventListener('input', function(){
+        const query = this.value;
+        const filtered = membersCache.filter(m => 
+          m.name.toLowerCase().includes(query.toLowerCase())
+        );
+        renderMembersList(filtered);
+      });
+    }
+
+    // Real-time subscription
+    const subscription = supabase
+      .channel('members_changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'members' },
+        (payload) => {
+          console.log('🔄 Members updated:', payload.eventType);
+          loadMembers();
+        }
+      )
+      .subscribe((status) => {
+        console.log('📡 Members real-time subscription:', status);
+      });
+
+    // Initial load
+    loadMembers();
+
+    // Cleanup
+    window.addEventListener('beforeunload', () => {
+      supabase.removeChannel(subscription);
+    });
+  })();
 </script>
 
 </body>
