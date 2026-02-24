@@ -214,6 +214,7 @@
     .form-group input[type="text"],
     .form-group input[type="email"],
     .form-group input[type="number"],
+    .form-group input[type="password"],
     .form-group textarea,
     .form-group input[type="file"],
     .form-group select {
@@ -230,6 +231,7 @@
     .form-group input[type="text"]:focus,
     .form-group input[type="email"]:focus,
     .form-group input[type="number"]:focus,
+    .form-group input[type="password"]:focus,
     .form-group textarea:focus,
     .form-group input[type="file"]:focus,
     .form-group select:focus {
@@ -241,6 +243,7 @@
     .form-group input[type="text"]:hover,
     .form-group input[type="email"]:hover,
     .form-group input[type="number"]:hover,
+    .form-group input[type="password"]:hover,
     .form-group textarea:hover,
     .form-group select:hover {
       border-color: #ffb399;
@@ -640,7 +643,7 @@
       </div>
       <div class="form-group">
         <label for="member-age">Age</label>
-        <input type="number" id="member-age" placeholder="e.g., 25" min="1" max="120">
+          <input type="number" id="member-age" placeholder="e.g., 25" min="18" max="120">
       </div>
       <div class="form-group">
         <label for="member-sex">Sex</label>
@@ -714,12 +717,16 @@
             <input type="email" id="chapter-email" placeholder="email@example.com">
           </div>
           <div class="form-group">
+            <label for="chapter-password">Password</label>
+            <input type="password" id="chapter-password" placeholder="Set a password for chapter head">
+          </div>
+          <div class="form-group">
             <label for="chapter-phone">Mobile Number</label>
             <input type="text" id="chapter-phone" placeholder="+63...">
           </div>
           <div class="form-group">
             <label for="chapter-age">Age</label>
-            <input type="number" id="chapter-age" min="0" max="120">
+            <input type="number" id="chapter-age" min="18" max="120">
           </div>
           <div class="modal-actions">
             <button type="button" class="modal-btn secondary" onclick="closeChapterModal()">Cancel</button>
@@ -727,9 +734,30 @@
           </div>
         </form>
       </div>
-    </div>
+      </div>
 
-<script>
+      <!-- Chapter Password Modal -->
+      <div class="modal-overlay" id="chapter-password-modal">
+        <div class="modal-content">
+          <div class="modal-header">Update Chapter Password</div>
+          <form id="chapter-password-form" style="padding: 0 2rem 2rem;">
+            <div class="form-group">
+              <label for="current-chapter-password">Current Password</label>
+              <input type="password" id="current-chapter-password" placeholder="Enter current password">
+            </div>
+            <div class="form-group">
+              <label for="new-chapter-password">New Password</label>
+              <input type="password" id="new-chapter-password" placeholder="Enter new password">
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="modal-btn secondary" onclick="closePasswordModal()">Cancel</button>
+              <button type="submit" class="modal-btn primary" id="update-password-btn">Update Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+  <script>
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const tabName = this.getAttribute('data-tab');
@@ -1430,13 +1458,19 @@
       e.preventDefault();
 
       const name = document.getElementById('member-name').value;
-      const age = document.getElementById('member-age').value ? parseInt(document.getElementById('member-age').value) : null;
+      const ageVal = document.getElementById('member-age').value;
+      const age = ageVal ? parseInt(ageVal) : null;
       const sex = document.getElementById('member-sex').value;
       const email = document.getElementById('member-email').value;
       const address = document.getElementById('member-address').value;
 
       if(!name.trim()){
         showToast('Please enter member name', 'error');
+        return;
+      }
+
+      if(age !== null && age < 18){
+        showToast('Member must be at least 18 years old', 'error');
         return;
       }
 
@@ -1642,16 +1676,66 @@
       const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
       let chaptersCache = [];
+      let currentEditingChapterId = null;
+      let currentPasswordChapterId = null;
 
       // Modal helpers
       window.closeChapterModal = function(){
         document.getElementById('chapter-modal').classList.remove('active');
         document.getElementById('chapter-form').reset();
+        currentEditingChapterId = null;
       };
 
-      function openChapterModal(){
-        document.getElementById('chapter-modal').classList.add('active');
+      function openChapterModal(isEdit = false, chapter = null){
+        const modal = document.getElementById('chapter-modal');
+        const form = document.getElementById('chapter-form');
+        const header = modal.querySelector('.modal-header');
+        const saveBtn = document.getElementById('save-chapter-btn');
+
+        const pwGroup = document.getElementById('chapter-password') ? document.getElementById('chapter-password').closest('.form-group') : null;
+        const pwDisplayId = 'chapter-password-display';
+
+        if(isEdit && chapter){
+          header.textContent = 'Edit Chapter';
+          document.getElementById('chapter-location').value = chapter.location || '';
+          document.getElementById('chapter-head').value = chapter.head_name || chapter.assigned_head || '';
+          document.getElementById('chapter-email').value = chapter.head_email || '';
+          document.getElementById('chapter-phone').value = chapter.phone || '';
+          document.getElementById('chapter-age').value = chapter.age || '';
+          // show password in plain text per request (insecure)
+          if(pwGroup) pwGroup.style.display = 'none';
+          let disp = document.getElementById(pwDisplayId);
+          if(!disp){
+            disp = document.createElement('div');
+            disp.id = pwDisplayId;
+            disp.className = 'form-group';
+            disp.style.marginBottom = '1.5rem';
+            disp.innerHTML = '<label>Password</label><div style="padding:0.8rem 0.95rem;border:1.5px solid #dfe4ea;border-radius:8px;background:#fafbfc;color:#333;">' + (chapter.head_password ? escapeHtml(chapter.head_password) : '') + '</div>';
+            // insert before phone field
+            const phoneGroup = document.getElementById('chapter-phone') ? document.getElementById('chapter-phone').closest('.form-group') : null;
+            if(phoneGroup && phoneGroup.parentNode) phoneGroup.parentNode.insertBefore(disp, phoneGroup);
+          }
+          document.getElementById('chapter-password').value = '';
+          currentEditingChapterId = chapter.id;
+          saveBtn.textContent = 'Update Chapter';
+        } else {
+          header.textContent = 'Add Chapter';
+          form.reset();
+          currentEditingChapterId = null;
+          // ensure password input visible for add mode
+          if(pwGroup) pwGroup.style.display = '';
+          const existingDisp = document.getElementById(pwDisplayId);
+          if(existingDisp && existingDisp.parentNode) existingDisp.parentNode.removeChild(existingDisp);
+          saveBtn.textContent = 'Add Chapter';
+        }
+
+        modal.classList.add('active');
       }
+
+      window.editChapter = function(id){
+        const ch = chaptersCache.find(c => c.id === id);
+        if(ch) openChapterModal(true, ch);
+      };
 
       // Load chapters
       async function loadChapters(){
@@ -1682,15 +1766,29 @@
 
           const left = document.createElement('div');
           left.style.cssText = 'min-width:0;';
-          left.innerHTML = `<div style="font-weight:700;color:#333;">${escapeHtml(ch.head_name || ch.assigned_head || '--')}</div>
-                            <div style="color:#666;font-size:0.9rem;">${escapeHtml(ch.location || '--')}</div>
-                            <div style="color:#999;font-size:0.85rem;margin-top:6px;">${ch.head_email ? escapeHtml(ch.head_email) : ''} ${ch.phone ? ' • ' + escapeHtml(ch.phone) : ''}</div>`;
+          // Emphasize location with icon, then show chapter head and a cohesive info row (email • phone • age)
+          const locationHtml = `<div style="font-weight:700;color:#333;font-size:0.98rem;"><i class="fas fa-map-marker-alt" style="color:#ff8c42;margin-right:0.6rem;"></i><strong>${escapeHtml(ch.location || '--')}</strong></div>`;
+          const headHtml = `<div style="color:#444;font-weight:600;margin-top:4px;">${escapeHtml(ch.head_name || ch.assigned_head || '--')}</div>`;
+          const infoPieces = [];
+          if(ch.head_email) infoPieces.push(`<span title="${escapeHtml(ch.head_email)}"><i class="fas fa-envelope" style="color:#ff8c42;margin-right:0.45rem;"></i><a href=\"mailto:${escapeHtml(ch.head_email)}\" style=\"color:#ff8c42;text-decoration:none;\" onclick=\"event.stopPropagation();\">${escapeHtml((ch.head_email||'').split('@')[0])}</a></span>`);
+          if(ch.phone) infoPieces.push(`<span><i class="fas fa-mobile-alt" style="color:#ff8c42;margin-right:0.45rem;"></i>${escapeHtml(ch.phone)}</span>`);
+          if(ch.age) infoPieces.push(`<span><i class="fas fa-birthday-cake" style="color:#ff8c42;margin-right:0.45rem;"></i>${escapeHtml(String(ch.age))} yrs</span>`);
+          const infoHtml = `<div style="color:#666;font-size:0.88rem;margin-top:6px;display:flex;gap:0.75rem;flex-wrap:wrap;">${infoPieces.join(' • ')}</div>`;
+
+          left.innerHTML = locationHtml + headHtml + infoHtml;
 
           const right = document.createElement('div');
           right.style.cssText = 'display:flex;gap:0.5rem;align-items:center;';
-          const age = document.createElement('div');
-          age.style.cssText = 'color:#666;font-weight:600;';
-          age.textContent = ch.age ? ch.age + ' yrs' : '';
+
+          const editBtn = document.createElement('button');
+          editBtn.className = 'btn btn-sm btn-outline';
+          editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
+          editBtn.onclick = (e) => { e.stopPropagation(); window.editChapter(ch.id); };
+
+          const pwdBtn = document.createElement('button');
+          pwdBtn.className = 'btn btn-sm btn-outline';
+          pwdBtn.innerHTML = '<i class="fas fa-key"></i> Update Password';
+          pwdBtn.onclick = (e) => { e.stopPropagation(); window.openPasswordModal(ch.id); };
 
           const del = document.createElement('button');
           del.className = 'btn btn-sm btn-outline';
@@ -1709,7 +1807,8 @@
             }
           };
 
-          right.appendChild(age);
+          right.appendChild(editBtn);
+          right.appendChild(pwdBtn);
           right.appendChild(del);
 
           item.appendChild(left);
@@ -1720,6 +1819,20 @@
 
       // Escape helper
       function escapeHtml(str){ return String(str || '').replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
+      // Hash password using Web Crypto (SHA-256) and return hex digest
+      async function hashPassword(pw){
+        if(!pw) return null;
+        try {
+          const enc = new TextEncoder();
+          const data = enc.encode(pw);
+          const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          return hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+        } catch (err){
+          console.error('Error hashing password:', err);
+          return null;
+        }
+      }
 
       // Submit form
       document.getElementById('chapter-form').addEventListener('submit', async function(e){
@@ -1733,13 +1846,36 @@
           const head_name = document.getElementById('chapter-head').value.trim();
           const head_email = document.getElementById('chapter-email').value.trim();
           const phone = document.getElementById('chapter-phone').value.trim();
-          const age = document.getElementById('chapter-age').value ? parseInt(document.getElementById('chapter-age').value) : null;
+          const ageVal = document.getElementById('chapter-age').value;
+          const age = ageVal ? parseInt(ageVal) : null;
+          const passwordRaw = document.getElementById('chapter-password').value || null;
+          let passwordHash = null;
+
+          // Enforce minimum age
+          if(age !== null && age < 18){
+            showToast('Chapter head must be at least 18 years old', 'error');
+            return;
+          }
+
+          // NOTE: storing plaintext as requested (insecure). send raw password to DB if provided
+          if(passwordRaw){
+            passwordHash = null; // no hash used
+          }
 
           if(!location || !head_name){ showToast('Please provide location and chapter head name', 'error'); return; }
 
-          const { error } = await supabase.from('chapters').insert([{ location, head_name, head_email, phone, age }]);
-          if(error) throw error;
-          showToast('Chapter head added', 'success');
+          const payload = { location, head_name, head_email, phone, age };
+          if(passwordRaw) payload.head_password = passwordRaw;
+
+          if(currentEditingChapterId){
+            const { error } = await supabase.from('chapters').update(payload).eq('id', currentEditingChapterId);
+            if(error) throw error;
+            showToast('Chapter updated', 'success');
+          } else {
+            const { error } = await supabase.from('chapters').insert([payload]);
+            if(error) throw error;
+            showToast('Chapter head added', 'success');
+          }
           closeChapterModal();
           await loadChapters();
         } catch (err){
@@ -1751,9 +1887,71 @@
         }
       });
 
+      // Password modal helpers
+      window.closePasswordModal = function(){
+        const modal = document.getElementById('chapter-password-modal');
+        if(modal) modal.classList.remove('active');
+        currentPasswordChapterId = null;
+        const form = document.getElementById('chapter-password-form');
+        if(form) form.reset();
+      };
+
+      window.openPasswordModal = function(chapterId){
+        const modal = document.getElementById('chapter-password-modal');
+        const ch = chaptersCache.find(c => c.id === chapterId);
+        if(!ch){ showToast('Chapter not found', 'error'); return; }
+        currentPasswordChapterId = chapterId;
+        // clear inputs
+        document.getElementById('current-chapter-password').value = '';
+        document.getElementById('new-chapter-password').value = '';
+        // update header to show which chapter
+        const header = modal.querySelector('.modal-header');
+        header.textContent = 'Update Password — ' + (ch.location || ch.head_name || 'Chapter');
+        modal.classList.add('active');
+      };
+
+      // Handle password update submit
+      document.getElementById('chapter-password-form').addEventListener('submit', async function(e){
+        e.preventDefault();
+        const btn = document.getElementById('update-password-btn');
+        btn.disabled = true;
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="loading-spinner"></span>';
+        try {
+          const currentPw = document.getElementById('current-chapter-password').value || '';
+          const newPw = document.getElementById('new-chapter-password').value || '';
+          if(!newPw){ showToast('Please enter a new password', 'error'); return; }
+          const ch = chaptersCache.find(c => c.id === currentPasswordChapterId);
+          if(!ch){ showToast('Chapter not found', 'error'); return; }
+
+          const storedPw = ch.head_password || null;
+          if(storedPw){
+            // verify current password (plaintext compare because stored as plaintext per request)
+            if(!currentPw){ showToast('Please enter current password', 'error'); return; }
+            if(currentPw !== storedPw){ showToast('Current password is incorrect', 'error'); return; }
+          } else {
+            // no stored password — confirm admin wants to set one
+            const ok = confirm('No existing password is set for this chapter. Set a new password?');
+            if(!ok) return;
+          }
+
+          const { error } = await supabase.from('chapters').update({ head_password: newPw }).eq('id', currentPasswordChapterId);
+          if(error) throw error;
+          showToast('Password updated', 'success');
+          closePasswordModal();
+          await loadChapters();
+        } catch (err){
+          console.error('Error updating password:', err);
+          showToast('Error updating password: ' + (err.message || err), 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = orig;
+        }
+      });
+
       // Add button
       const addChapterBtn = document.getElementById('add-chapter-btn');
-      if(addChapterBtn) addChapterBtn.addEventListener('click', openChapterModal);
+      if(addChapterBtn) addChapterBtn.addEventListener('click', () => openChapterModal(false));
 
       // Search
       const searchInput = document.getElementById('chapter-search');
