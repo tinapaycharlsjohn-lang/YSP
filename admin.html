@@ -535,7 +535,14 @@
   <div class="tab-content" id="chapters">
     <div class="stats-box">
       <h3>Chapters Management</h3>
-      <p style="color: #666; margin-top: 1rem;">Chapters management interface coming soon.</p>
+      <p style="color: #666; margin-top: 1rem;">Manage chapters and chapter heads. Add, search, and view chapter head entries.</p>
+
+      <div style="margin-top:1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+        <button id="add-chapter-btn" class="btn btn-primary btn-large"><i class="fas fa-plus"></i> Add Chapter</button>
+        <input id="chapter-search" type="text" placeholder="Search chapter heads by name or location..." style="flex:1; min-width:220px; padding:0.6rem; border:1px solid #e0e0e0; border-radius:6px;">
+      </div>
+
+      <div id="chapters-list" style="margin-top:1rem; display:flex; flex-direction:column; gap:0.75rem;"></div>
     </div>
   </div>
 
@@ -688,6 +695,39 @@
     </div>
   </div>
 </div>
+
+    <!-- Chapter Modal (Add) -->
+    <div class="modal-overlay" id="chapter-modal">
+      <div class="modal-content">
+        <div class="modal-header">Add Chapter</div>
+        <form id="chapter-form" style="padding: 0 2rem 2rem;">
+          <div class="form-group">
+            <label for="chapter-location">Chapter Location</label>
+            <input type="text" id="chapter-location" placeholder="e.g., Quezon City" required>
+          </div>
+          <div class="form-group">
+            <label for="chapter-head">Assigned Chapter Head</label>
+            <input type="text" id="chapter-head" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label for="chapter-email">Chapter Head Email</label>
+            <input type="email" id="chapter-email" placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label for="chapter-phone">Mobile Number</label>
+            <input type="text" id="chapter-phone" placeholder="+63...">
+          </div>
+          <div class="form-group">
+            <label for="chapter-age">Age</label>
+            <input type="number" id="chapter-age" min="0" max="120">
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="modal-btn secondary" onclick="closeChapterModal()">Cancel</button>
+            <button type="submit" class="modal-btn primary" id="save-chapter-btn">Add Chapter</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
 <script>
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1591,6 +1631,156 @@
         .subscribe((status) => console.log('Contact realtime status:', status));
 
       window.addEventListener('beforeunload', () => { supabase.removeChannel(subscription); });
+    })();
+
+    // Chapters management (admin) — Supabase-backed
+    (function(){
+      const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
+
+      const { createClient } = window.supabase;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      let chaptersCache = [];
+
+      // Modal helpers
+      window.closeChapterModal = function(){
+        document.getElementById('chapter-modal').classList.remove('active');
+        document.getElementById('chapter-form').reset();
+      };
+
+      function openChapterModal(){
+        document.getElementById('chapter-modal').classList.add('active');
+      }
+
+      // Load chapters
+      async function loadChapters(){
+        try {
+          const { data, error } = await supabase.from('chapters').select('*').order('created_at', { ascending: false });
+          if(error) throw error;
+          chaptersCache = data || [];
+          renderChapters(chaptersCache);
+        } catch (err){
+          console.error('Error loading chapters:', err);
+          showToast('Error loading chapters: ' + (err.message || err), 'error');
+        }
+      }
+
+      // Render chapters list
+      function renderChapters(list){
+        const container = document.getElementById('chapters-list');
+        if(!container) return;
+        container.innerHTML = '';
+        if(list.length === 0){
+          container.innerHTML = '<div style="text-align:center;color:#999;padding:1rem;background:#fafbfc;border-radius:8px;border:1px dashed #dfe4ea;">No chapters yet</div>';
+          return;
+        }
+
+        list.forEach(ch => {
+          const item = document.createElement('div');
+          item.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0.9rem;border-radius:8px;background:white;border:1px solid #eef2f6;box-shadow:0 2px 6px rgba(0,0,0,0.03);';
+
+          const left = document.createElement('div');
+          left.style.cssText = 'min-width:0;';
+          left.innerHTML = `<div style="font-weight:700;color:#333;">${escapeHtml(ch.head_name || ch.assigned_head || '--')}</div>
+                            <div style="color:#666;font-size:0.9rem;">${escapeHtml(ch.location || '--')}</div>
+                            <div style="color:#999;font-size:0.85rem;margin-top:6px;">${ch.head_email ? escapeHtml(ch.head_email) : ''} ${ch.phone ? ' • ' + escapeHtml(ch.phone) : ''}</div>`;
+
+          const right = document.createElement('div');
+          right.style.cssText = 'display:flex;gap:0.5rem;align-items:center;';
+          const age = document.createElement('div');
+          age.style.cssText = 'color:#666;font-weight:600;';
+          age.textContent = ch.age ? ch.age + ' yrs' : '';
+
+          const del = document.createElement('button');
+          del.className = 'btn btn-sm btn-outline';
+          del.innerHTML = '<i class="fas fa-trash"></i> Delete';
+          del.onclick = async (e) => {
+            e.stopPropagation();
+            if(!confirm('Delete this chapter head?')) return;
+            try {
+              const { error } = await supabase.from('chapters').delete().eq('id', ch.id);
+              if(error) throw error;
+              showToast('Chapter removed', 'warn');
+              await loadChapters();
+            } catch (err){
+              console.error('Error deleting chapter:', err);
+              showToast('Error deleting: ' + (err.message || err), 'error');
+            }
+          };
+
+          right.appendChild(age);
+          right.appendChild(del);
+
+          item.appendChild(left);
+          item.appendChild(right);
+          container.appendChild(item);
+        });
+      }
+
+      // Escape helper
+      function escapeHtml(str){ return String(str || '').replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
+
+      // Submit form
+      document.getElementById('chapter-form').addEventListener('submit', async function(e){
+        e.preventDefault();
+        const btn = document.getElementById('save-chapter-btn');
+        btn.disabled = true;
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="loading-spinner"></span>';
+        try {
+          const location = document.getElementById('chapter-location').value.trim();
+          const head_name = document.getElementById('chapter-head').value.trim();
+          const head_email = document.getElementById('chapter-email').value.trim();
+          const phone = document.getElementById('chapter-phone').value.trim();
+          const age = document.getElementById('chapter-age').value ? parseInt(document.getElementById('chapter-age').value) : null;
+
+          if(!location || !head_name){ showToast('Please provide location and chapter head name', 'error'); return; }
+
+          const { error } = await supabase.from('chapters').insert([{ location, head_name, head_email, phone, age }]);
+          if(error) throw error;
+          showToast('Chapter head added', 'success');
+          closeChapterModal();
+          await loadChapters();
+        } catch (err){
+          console.error('Error adding chapter:', err);
+          showToast('Error adding chapter: ' + (err.message || err), 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = orig;
+        }
+      });
+
+      // Add button
+      const addChapterBtn = document.getElementById('add-chapter-btn');
+      if(addChapterBtn) addChapterBtn.addEventListener('click', openChapterModal);
+
+      // Search
+      const searchInput = document.getElementById('chapter-search');
+      if(searchInput){
+        searchInput.addEventListener('input', function(){
+          const q = this.value.trim().toLowerCase();
+          if(!q) return renderChapters(chaptersCache);
+          const filtered = chaptersCache.filter(c => {
+            return (c.head_name && c.head_name.toLowerCase().includes(q)) || (c.location && c.location.toLowerCase().includes(q)) || (c.head_email && c.head_email.toLowerCase().includes(q));
+          });
+          renderChapters(filtered);
+        });
+      }
+
+      // Realtime subscription
+      const sub = supabase
+        .channel('chapters_changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'chapters' }, (payload) => {
+          console.log('Chapters changed:', payload);
+          loadChapters();
+        })
+        .subscribe((status) => console.log('Chapters realtime:', status));
+
+      // Initial load
+      loadChapters();
+
+      window.addEventListener('beforeunload', () => supabase.removeChannel(sub));
     })();
 </script>
 
