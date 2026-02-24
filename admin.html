@@ -335,6 +335,41 @@
     .modal-btn:disabled:hover {
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
+    /* Unified button system for admin actions */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.98rem;
+      cursor: pointer;
+      border: none;
+      transition: all 200ms ease;
+      box-shadow: 0 6px 18px rgba(17,24,39,0.06);
+    }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.65; cursor: not-allowed; }
+    .btn-primary {
+      background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%);
+      color: #fff;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(255,140,66,0.18); }
+    .btn-large { padding: 0.9rem 1.25rem; font-size: 1.05rem; border-radius: 12px; }
+    .btn-sm { padding: 0.55rem 0.8rem; font-size: 0.9rem; border-radius: 8px; }
+    .btn-outline {
+      background: white;
+      color: #333;
+      border: 1.5px solid #e6e9ee;
+    }
+    .btn-danger {
+      background: linear-gradient(135deg,#ef4444 0%, #f97316 100%);
+      color: #fff;
+    }
+    /* Ensure action buttons inside program cards are evenly sized */
+    .program-card .controls .btn { flex: 1 1 0; }
+    .tabs-section .actions { display:flex; gap:0.75rem; align-items:center; }
     .loading-spinner {
       display: inline-block;
       width: 20px;
@@ -489,8 +524,8 @@
     <div class="stats-box">
       <h3>Programs Management</h3>
       <p style="color: #666; margin-top: 1rem;">Manage programs</p>
-      <div style="margin-top:1rem; display:flex; gap:0.5rem;">
-        <button id="add-program-btn" class="tab-action-btn primary">+ Add Program</button>
+      <div style="margin-top:1rem; display:flex; gap:0.5rem;" class="actions">
+        <button id="add-program-btn" class="btn btn-large btn-primary">+ Add Program</button>
       </div>
       <div id="admin-programs-list" style="margin-top:1.25rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem;"></div>
     </div>
@@ -516,11 +551,11 @@
   <div class="tab-content" id="members">
     <div class="stats-box">
       <h3><i class="fas fa-users"></i> Members Management</h3>
-      <p style="color: #666; margin-top: 1rem;">Manage organization members with Supabase database.</p>
+      <p style="color: #666; margin-top: 1rem;">Manage organization members</p>
       
       <!-- Add Member Button -->
-      <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-        <button id="add-member-btn" class="tab-action-btn primary">
+      <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;" class="actions">
+        <button id="add-member-btn" class="btn btn-large btn-primary">
           <i class="fas fa-plus"></i> Add Member
         </button>
         
@@ -535,10 +570,28 @@
   </div>
 
   <!-- Contact Tab -->
+  <!-- Contact Tab -->
   <div class="tab-content" id="contact">
     <div class="stats-box">
       <h3>Contact Information</h3>
-      <p style="color: #666; margin-top: 1rem;">Contact management interface coming soon.</p>
+      <p style="color: #666; margin-top: 1rem;">Edit site contact information below</p>
+      <div style="margin-top:1rem; display:grid; gap:0.75rem;">
+        <label style="font-weight:600; color:#333;">Email
+          <input type="email" id="admin-contact-email" placeholder="email@example.com" style="width:100%; padding:0.6rem; border-radius:6px; border:1px solid #e6e9ee; margin-top:0.4rem;">
+        </label>
+        <label style="font-weight:600; color:#333;">Phone
+          <input type="text" id="admin-contact-phone" placeholder="+63..." style="width:100%; padding:0.6rem; border-radius:6px; border:1px solid #e6e9ee; margin-top:0.4rem;">
+        </label>
+        <label style="font-weight:600; color:#333;">Address
+          <textarea id="admin-contact-address" placeholder="Office address..." style="width:100%; padding:0.6rem; border-radius:6px; border:1px solid #e6e9ee; margin-top:0.4rem;"></textarea>
+        </label>
+        <label style="font-weight:600; color:#333;">Facebook Page
+          <input type="url" id="admin-contact-facebook" placeholder="https://facebook.com/..." style="width:100%; padding:0.6rem; border-radius:6px; border:1px solid #e6e9ee; margin-top:0.4rem;">
+        </label>
+        <div style="display:flex; gap:0.75rem; justify-content:flex-end; margin-top:0.5rem;">
+          <button id="save-contact-btn" class="btn btn-primary btn-large"><i class="fas fa-save"></i> Save Contact</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -631,7 +684,7 @@
     <div class="modal-actions">
       <button type="button" class="modal-btn secondary" onclick="closeMemberViewModal()">Close</button>
       <button type="button" class="modal-btn primary" id="edit-member-btn"><i class="fas fa-edit"></i> Edit</button>
-      <button type="button" class="modal-btn" style="background: linear-gradient(135deg, #ef4444, #f97316); color: white; border: none;" id="delete-member-btn"><i class="fas fa-trash"></i> Delete</button>
+      <button type="button" class="btn btn-danger" id="delete-member-btn"><i class="fas fa-trash"></i> Delete</button>
     </div>
   </div>
 </div>
@@ -1052,20 +1105,12 @@
         controls.style.gap = '0.5rem';
         
         const editBtn = document.createElement('button');
-        editBtn.className = 'action-btn';
-        editBtn.style.background = '#ff8c42';
-        editBtn.style.color = '#fff';
-        editBtn.style.border = 'none';
-        editBtn.style.flex = '1';
+        editBtn.className = 'btn btn-sm btn-primary';
         editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
         editBtn.onclick = () => window.editProgram(program.id);
-        
+
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'action-btn';
-        deleteBtn.style.background = '#fff';
-        deleteBtn.style.color = '#333';
-        deleteBtn.style.border = '1px solid #e0e0e0';
-        deleteBtn.style.flex = '1';
+        deleteBtn.className = 'btn btn-sm btn-outline';
         deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
         deleteBtn.onclick = () => deleteProgram(program.id);
         
@@ -1478,6 +1523,75 @@
       supabase.removeChannel(subscription);
     });
   })();
+
+    // Contact management (admin) — Supabase-backed, realtime
+    (function(){
+      const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
+
+      const { createClient } = window.supabase;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      async function loadContact(){
+        try {
+          const { data, error } = await supabase.from('contact').select('*').eq('id', 1).maybeSingle();
+          if(error) throw error;
+          const c = data || { email: 'phyouthservice@gmail.com', phone: '+639177798413', address: '123 Volunteer Street, Manila, Philippines 1000', facebook: 'https://www.facebook.com/YOUTHSERVICEPHILIPPINES' };
+          const e = document.getElementById('admin-contact-email');
+          const p = document.getElementById('admin-contact-phone');
+          const a = document.getElementById('admin-contact-address');
+          const f = document.getElementById('admin-contact-facebook');
+          if(e) e.value = c.email || '';
+          if(p) p.value = c.phone || '';
+          if(a) a.value = c.address || '';
+          if(f) f.value = c.facebook || '';
+        } catch (err){
+          console.error('Error loading contact:', err);
+          showToast('Error loading contact info: ' + (err.message || err), 'error');
+        }
+      }
+
+      async function saveContact(){
+        const btn = document.getElementById('save-contact-btn');
+        if(!btn) return;
+        btn.disabled = true;
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="loading-spinner"></span>';
+
+        try {
+          const email = document.getElementById('admin-contact-email').value.trim();
+          const phone = document.getElementById('admin-contact-phone').value.trim();
+          const address = document.getElementById('admin-contact-address').value.trim();
+          const facebook = document.getElementById('admin-contact-facebook').value.trim();
+
+          const { error } = await supabase.from('contact').upsert({ id: 1, email, phone, address, facebook });
+          if(error) throw error;
+          showToast('Contact information saved', 'success');
+        } catch (err){
+          console.error('Error saving contact:', err);
+          showToast('Error saving contact: ' + (err.message || err), 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = orig;
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function(){
+        const saveBtn = document.getElementById('save-contact-btn');
+        if(saveBtn) saveBtn.addEventListener('click', saveContact);
+        loadContact();
+      });
+
+      const subscription = supabase
+        .channel('contact_changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'contact' }, (payload) => {
+          console.log('Contact changed:', payload);
+          loadContact();
+        })
+        .subscribe((status) => console.log('Contact realtime status:', status));
+
+      window.addEventListener('beforeunload', () => { supabase.removeChannel(subscription); });
+    })();
 </script>
 
 </body>
