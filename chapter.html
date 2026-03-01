@@ -6,6 +6,7 @@
   <title>Chapter Dashboard - Youth Service Philippines</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; }
@@ -23,8 +24,37 @@
     .chapter-header { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; }
     .chapter-header h1 { font-size: 2.2rem; color: #333; font-weight: 700; margin-bottom: 0.25rem; }
     .chapter-header .subtitle { color: #ff8c42; font-size: 0.95rem; }
-    .back-btn { background: white; color: #333; border: 1px solid #e0e0e0; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-    .back-btn:hover { background: #f9f9f9; }
+
+    /* Admin-style header (copied from admin.html) */
+    .admin-header { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%); border-radius: 0 0 12px 12px; box-shadow: 0 6px 20px rgba(255,140,66,0.15); }
+    .admin-header > div { display: flex; align-items: center; gap: 1.2rem; flex: 1; }
+    .admin-header .logo-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.15); padding: 0.5rem; object-fit: contain; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .admin-header h1 { font-size: 2.2rem; color: white; font-weight: 700; margin-bottom: 0.25rem; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .admin-header .subtitle { color: rgba(255,255,255,0.85); font-size: 0.95rem; }
+    .back-btn { background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; }
+    .back-btn:hover { background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+
+    /* Chapter head info box */
+    .chapter-info { max-width: 1400px; margin: 1.5rem auto; padding: 1.25rem 1.25rem; background: white; border-radius: 10px; box-shadow: 0 6px 18px rgba(17,24,39,0.04); display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; align-items: stretch; }
+    .chapter-info .info-row { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem; border-radius: 8px; background: linear-gradient(180deg, #fff 0%, #fff 100%); }
+    .chapter-info .info-icon { width:44px; height:44px; border-radius:8px; background:#fff3e8; color:#ff8c42; display:flex; align-items:center; justify-content:center; font-size:1.05rem; box-shadow: 0 6px 14px rgba(17,24,39,0.04); }
+    .chapter-info .info-text { display:flex; flex-direction:column; }
+    .chapter-info .info-text .label { color:#666; font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; }
+    .chapter-info .info-text .value { color:#111827; font-size:1.05rem; font-weight:800; }
+    .chapter-info .info-text .value.primary { font-size:1.15rem; }
 
     .stats-grid { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
     .stat-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ff8c42; }
@@ -39,13 +69,54 @@
     .new-event-btn:hover { background: #f9f9f9; }
 
     .tabs-section { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
-    .tabs-nav { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; background: white; border-radius: 8px; padding: 0.5rem; width: fit-content; }
-    .tab-btn { background: transparent; border: none; padding: 0.75rem 1.5rem; cursor: pointer; font-weight: 600; color: #666; font-size: 0.95rem; border-radius: 6px; transition: all 0.2s; }
-    .tab-btn.active { background: white; color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .tab-btn:hover { color: #333; }
+    .tabs-nav { 
+      display: flex; 
+      gap: 0.8rem; 
+      background: linear-gradient(90deg, #f5f7fa 0%, #eef2f6 100%);
+      padding: 0.8rem 1rem;
+      border-radius: 12px 12px 0 0;
+      border-bottom: 3px solid #ff8c42;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      flex-wrap: wrap;
+    }
+    .tab-btn { 
+      background: linear-gradient(135deg, #f0f4f9 0%, #e8eef5 100%);
+      border: 1.5px solid #dfe4ea;
+      padding: 0.8rem 1.5rem; 
+      cursor: pointer; 
+      font-weight: 600; 
+      color: #666; 
+      font-size: 0.95rem; 
+      position: relative;
+      border-radius: 8px 8px 0 0;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .tab-btn:hover { 
+      background: linear-gradient(135deg, #e0e6f0 0%, #d8dff0 100%);
+      color: #333;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .tab-btn.active { 
+      background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%);
+      color: white; 
+      border-color: #ff8c42;
+      box-shadow: 0 4px 12px rgba(255,140,66,0.25);
+    }
+    .tab-btn.active::after { 
+      display: none;
+    }
 
     .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    .tab-content.active { display: block; animation: fadeInContent 0.28s ease; }
+    @keyframes fadeInContent {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
     .event-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
     .event-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
@@ -77,49 +148,81 @@
       .event-header { flex-direction: column; }
       .event-actions { flex-wrap: wrap; }
     }
+
+    /* Add Event modal + SDG selector styles */
+    .add-event-btn { background: linear-gradient(135deg,#ff6a00,#ff8c42); color: white; border: none; padding: 0.9rem 1.25rem; border-radius: 10px; font-weight:800; font-size:1rem; cursor:pointer; box-shadow: 0 8px 26px rgba(255,140,66,0.14); display:inline-flex; align-items:center; gap:0.6rem; margin: 0.5rem; }
+    .add-event-btn .fa-plus { font-size:1.05rem; }
+
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 5000; }
+    .modal-overlay.active { display:flex; }
+    .modal-content { width: 92%; max-width: 720px; background: white; border-radius: 12px; box-shadow: 0 30px 80px rgba(2,6,23,0.2); overflow: hidden; }
+    .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid #eef2f6; display:flex; align-items:center; gap:0.75rem; font-weight:800; font-size:1.05rem; }
+    .modal-body { padding: 1rem 1.5rem; display:grid; gap:0.75rem; }
+    .form-row { display:flex; gap:0.75rem; }
+    .form-field { flex:1; display:flex; flex-direction:column; }
+    .form-field label { font-weight:700; color:#444; margin-bottom:0.35rem; font-size:0.85rem; }
+    .form-field input[type="text"], .form-field input[type="date"], .form-field textarea { padding:0.6rem 0.75rem; border:1px solid #e6e9ee; border-radius:8px; font-size:0.95rem; }
+    .form-field textarea { min-height:90px; resize:vertical; }
+    .modal-actions { padding: 0.8rem 1.5rem; display:flex; gap:0.6rem; justify-content:flex-end; border-top:1px solid #f0f3f7; }
+    .modal-btn { padding:0.7rem 1rem; border-radius:8px; border:none; font-weight:700; cursor:pointer; }
+    .modal-btn.cancel { background:#f3f4f6; color:#111; }
+    .modal-btn.confirm { background: linear-gradient(135deg,#ff6a00,#ff8c42); color:white; }
+
+    /* SDG selector */
+    .sdg-picker { position:relative; }
+    .sdg-toggle { padding:0.6rem 0.75rem; border:1px solid #e6e9ee; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; }
+    .sdg-list { position:absolute; left:0; right:0; top:110%; background:white; border:1px solid #e6e9ee; border-radius:8px; padding:0.6rem; box-shadow: 0 10px 30px rgba(2,6,23,0.08); display:none; max-height:240px; overflow:auto; z-index:60; }
+    .sdg-list.active { display:block; }
+    .sdg-item { display:flex; gap:0.6rem; align-items:center; padding:0.25rem 0.35rem; }
+    .sdg-item input { transform:scale(1.05); }
+    .tag-list { display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.4rem; }
+    .event-tag { background:#fff3e8; color:#ff8c42; padding:0.35rem 0.6rem; border-radius:999px; font-weight:700; font-size:0.85rem; display:inline-flex; gap:0.35rem; align-items:center; }
   </style>
 </head>
 <body>
 
 
-<!-- CHAPTER HEADER -->
-<div class="chapter-header">
+<!-- ADMIN HEADER -->
+<div class="admin-header">
   <div>
-    <h1>Chapter Head Dashboard</h1>
-    <p class="subtitle">Managing YSP Manila</p>
+    <img src="YSP LOGO.png" alt="YSP Logo" class="logo-icon">
+    <div>
+      <h1>Chapter Head Dashboard</h1>
+      <p class="subtitle">Manage YSP website content and settings</p>
+    </div>
   </div>
   <a href="index.html" class="back-btn">Back to Website</a>
 </div>
 
-<!-- STATS GRID -->
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="icon"><i class="fas fa-calendar"></i></div>
-    <div class="label">My Events</div>
-    <div class="value">1</div>
-  </div>
-  <div class="stat-card">
-    <div class="icon"><i class="fas fa-users"></i></div>
-    <div class="label">Total Participants</div>
-    <div class="value">0</div>
-  </div>
-  <div class="stat-card">
-    <div class="icon"><i class="fas fa-check-circle"></i></div>
-    <div class="label">Pending Approvals</div>
-    <div class="value">0</div>
-  </div>
-</div>
-
-<!-- EVENT CREATION SECTION -->
-<div class="event-creation">
-  <div>
-    <h3>Create New Volunteer Opportunity</h3>
-    <p>Post a new event for members to join</p>
-  </div>
-  <button class="new-event-btn"><i class="fas fa-plus"></i> New Event</button>
-</div>
 
 <!-- TABS SECTION -->
+<!-- Chapter Head Info -->
+<div class="chapter-info" id="chapter-info">
+  <div class="info-row">
+    <div class="info-icon"><i class="fas fa-user"></i></div>
+    <div class="info-text"><div class="label">Chapter Head</div><div class="value primary" id="head_name">--</div></div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+    <div class="info-text"><div class="label">Chapter Location</div><div class="value" id="location">--</div></div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-icon"><i class="fas fa-envelope"></i></div>
+    <div class="info-text"><div class="label">Email</div><div class="value" id="head_email">--</div></div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-icon"><i class="fas fa-phone"></i></div>
+    <div class="info-text"><div class="label">Mobile</div><div class="value" id="phone">--</div></div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-icon"><i class="fas fa-birthday-cake"></i></div>
+    <div class="info-text"><div class="label">Age</div><div class="value" id="age">--</div></div>
+  </div>
+</div>
 <div class="tabs-section">
   <div class="tabs-nav">
     <button class="tab-btn active" data-tab="my-events">My Events</button>
@@ -128,29 +231,13 @@
 
   <!-- My Events Tab -->
   <div class="tab-content active" id="my-events">
-    <div class="event-card">
-      <div class="event-header">
-        <div>
-          <div class="event-title">Coastal Clean-up Drive</div>
-          <div class="event-meta">
-            <span><i class="fas fa-calendar"></i> February 14, 2026</span>
-            <span><i class="fas fa-users"></i> 0 participants</span>
-          </div>
-        </div>
-      </div>
-      <div class="event-description">
-        Join us for a coastal clean-up activity at Manila Bay. Help us collect trash and raise awareness about marine pollution. All materials will be provided.
-      </div>
-      <div class="event-tags">
-        <span class="event-tag"><i class="fas fa-droplet"></i> Clean Water</span>
-        <span class="event-tag"><i class="fas fa-water"></i> Life Below Water</span>
-        <span class="event-tag"><i class="fas fa-leaf"></i> Climate Action</span>
-      </div>
-      <div class="event-actions">
-        <button class="event-action-btn"><i class="fas fa-users"></i> Participants</button>
-        <button class="event-action-btn"><i class="fas fa-edit"></i> Edit</button>
-        <button class="event-action-btn delete"><i class="fas fa-trash"></i> Delete</button>
-      </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; gap:1rem;">
+      <h3 style="margin:0; font-size:1.25rem; color:#333;">My Events</h3>
+      <div style="margin-left:auto;"><button id="open-add-event" class="add-event-btn"><i class="fas fa-plus"></i> Add Event</button></div>
+    </div>
+
+    <div id="events-list">
+      <!-- existing events will be injected here -->
     </div>
   </div>
 
@@ -162,6 +249,175 @@
     </div>
   </div>
 </div>
+
+<!-- Event Modal (UI only) -->
+<div class="modal-overlay" id="event-modal">
+  <div class="modal-content">
+    <div class="modal-header"><i class="fas fa-calendar-plus"></i> Create / Edit Event</div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label for="event_name">Event Name</label>
+        <input type="text" id="event_name" placeholder="e.g., Coastal Clean-up Drive">
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="event_date">Date</label>
+          <input type="date" id="event_date">
+        </div>
+        <div class="form-field sdg-picker">
+          <label>SDGs</label>
+          <div class="sdg-toggle" id="sdg-toggle">Select SDGs <i class="fas fa-caret-down"></i></div>
+          <div class="sdg-list" id="sdg-list">
+            <label class="sdg-item"><input type="checkbox" value="Clean Water"><i class="fas fa-droplet"></i> Clean Water</label>
+            <label class="sdg-item"><input type="checkbox" value="Life Below Water"><i class="fas fa-water"></i> Life Below Water</label>
+            <label class="sdg-item"><input type="checkbox" value="Climate Action"><i class="fas fa-leaf"></i> Climate Action</label>
+            <label class="sdg-item"><input type="checkbox" value="Quality Education"><i class="fas fa-book"></i> Quality Education</label>
+            <label class="sdg-item"><input type="checkbox" value="No Poverty"><i class="fas fa-hand-holding-heart"></i> No Poverty</label>
+            <label class="sdg-item"><input type="checkbox" value="Good Health"><i class="fas fa-heart"></i> Good Health</label>
+          </div>
+          <div class="tag-list" id="sdg-selected"></div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="event_description">Description</label>
+        <textarea id="event_description" placeholder="Describe the event..."></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="event_contact">Contact Details</label>
+        <input type="text" id="event_contact" placeholder="Phone or email">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="event-cancel">Cancel</button>
+      <button class="modal-btn confirm" id="event-confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Event modal and list UI (no persistence)
+  (function(){
+    const openBtn = document.getElementById('open-add-event');
+    const modal = document.getElementById('event-modal');
+    const cancelBtn = document.getElementById('event-cancel');
+    const confirmBtn = document.getElementById('event-confirm');
+    const sdgToggle = document.getElementById('sdg-toggle');
+    const sdgList = document.getElementById('sdg-list');
+    const sdgSelected = document.getElementById('sdg-selected');
+    const eventsList = document.getElementById('events-list');
+
+    let editingCardId = null;
+
+    function openModal(editData){
+      modal.classList.add('active');
+      if(editData){
+        document.getElementById('event_name').value = editData.name || '';
+        document.getElementById('event_date').value = editData.date || '';
+        document.getElementById('event_description').value = editData.description || '';
+        document.getElementById('event_contact').value = editData.contact || '';
+        // check sdgs
+        Array.from(sdgList.querySelectorAll('input')).forEach(cb => cb.checked = (editData.sdgs || []).includes(cb.value));
+      } else {
+        document.getElementById('event_name').value = '';
+        document.getElementById('event_date').value = '';
+        document.getElementById('event_description').value = '';
+        document.getElementById('event_contact').value = '';
+        Array.from(sdgList.querySelectorAll('input')).forEach(cb => cb.checked = false);
+      }
+      renderSelectedSdgs();
+    }
+
+    function closeModal(){
+      modal.classList.remove('active');
+      editingCardId = null;
+    }
+
+    function renderSelectedSdgs(){
+      sdgSelected.innerHTML = '';
+      Array.from(sdgList.querySelectorAll('input:checked')).forEach(cb =>{
+        const span = document.createElement('span');
+        span.className = 'event-tag';
+        span.textContent = cb.value;
+        sdgSelected.appendChild(span);
+      });
+    }
+
+    sdgToggle.addEventListener('click', function(){ sdgList.classList.toggle('active'); });
+    sdgList.addEventListener('change', renderSelectedSdgs);
+
+    openBtn.addEventListener('click', function(){
+      editingCardId = null;
+      openModal();
+    });
+    cancelBtn.addEventListener('click', function(){ closeModal(); });
+
+    function createEventCard(data){
+      const card = document.createElement('div');
+      card.className = 'event-card';
+      card.dataset.id = data.id;
+      card.innerHTML = `
+        <div class="event-header">
+          <div>
+            <div class="event-title">${escapeHtml(data.name)}</div>
+            <div class="event-meta">
+              <span><i class="fas fa-calendar"></i> ${escapeHtml(data.date||'')}</span>
+              <span><i class="fas fa-users"></i> 0 participants</span>
+            </div>
+          </div>
+        </div>
+        <div class="event-description">${escapeHtml(data.description||'')}</div>
+        <div class="event-tags">${(data.sdgs||[]).map(s=>`<span class="event-tag"><i class="fas fa-check"></i> ${escapeHtml(s)}</span>`).join('')}</div>
+        <div class="event-actions">
+          <button class="event-action-btn participants"><i class="fas fa-users"></i> Participants</button>
+          <button class="event-action-btn edit"><i class="fas fa-edit"></i> Edit</button>
+          <button class="event-action-btn delete"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+      `;
+
+      // wire actions
+      card.querySelector('.edit').addEventListener('click', ()=>{
+        editingCardId = card.dataset.id;
+        const sdgs = Array.from(card.querySelectorAll('.event-tag')).map(t=>t.textContent.trim());
+        openModal({ name: card.querySelector('.event-title').textContent.trim(), date: card.querySelector('.event-meta span').textContent.replace(/[^0-9-]/g,''), description: card.querySelector('.event-description').textContent.trim(), contact: '', sdgs });
+      });
+      card.querySelector('.delete').addEventListener('click', ()=>{
+        if(confirm('Delete this event?')) card.remove();
+      });
+
+      return card;
+    }
+
+    function escapeHtml(str){ return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]; }); }
+
+    confirmBtn.addEventListener('click', function(){
+      const name = document.getElementById('event_name').value.trim();
+      const date = document.getElementById('event_date').value;
+      const description = document.getElementById('event_description').value.trim();
+      const contact = document.getElementById('event_contact').value.trim();
+      const sdgs = Array.from(sdgList.querySelectorAll('input:checked')).map(i=>i.value);
+      if(!name){ alert('Please enter event name'); return; }
+
+      const payload = { id: editingCardId || ('evt-'+Date.now()), name, date, description, contact, sdgs };
+
+      if(editingCardId){
+        // find existing card and replace
+        const existing = eventsList.querySelector(`[data-id="${editingCardId}"]`);
+        if(existing){ const newCard = createEventCard(payload); eventsList.replaceChild(newCard, existing); }
+      } else {
+        const newCard = createEventCard(payload);
+        eventsList.prepend(newCard);
+      }
+
+      closeModal();
+    });
+
+    // close modal on overlay click
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+  })();
+</script>
 
 <script>
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -184,10 +440,55 @@
     });
   });
 
-  // New Event button handler
-  document.querySelector('.new-event-btn').addEventListener('click', function() {
-    alert('Create new event form coming soon.');
-  });
+  // New Event button handler (guarded)
+  const newEventBtn = document.querySelector('.new-event-btn');
+  if (newEventBtn) {
+    newEventBtn.addEventListener('click', function() {
+      alert('Create new event form coming soon.');
+    });
+  }
+</script>
+
+<script>
+  (async function(){
+    if (!window.supabase) return console.warn('Supabase client not found.');
+    const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
+    const { createClient } = window.supabase;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const params = new URLSearchParams(window.location.search);
+    const urlEmail = params.get('email');
+    const storedEmail = localStorage.getItem('userEmail');
+    const storedRole = localStorage.getItem('userRole');
+
+    // Prefer the signed-in chapter head email stored in localStorage
+    const emailToUse = (storedRole === 'chapter' && storedEmail) ? storedEmail : (urlEmail || null);
+
+    try {
+      let query = supabase.from('chapters').select('*').limit(1);
+      if (emailToUse) query = supabase.from('chapters').select('*').eq('head_email', emailToUse).limit(1);
+      const { data, error } = await query;
+      if (error) {
+        console.error('Error loading chapter info:', error);
+        document.getElementById('chapter-info').textContent = 'Unable to load chapter information.';
+        return;
+      }
+      if (!data || data.length === 0) {
+        document.getElementById('chapter-info').textContent = 'No chapter head found.';
+        return;
+      }
+      const head = data[0];
+      document.getElementById('head_name').textContent = head.head_name || head.name || '—';
+      document.getElementById('location').textContent = head.location || '—';
+      document.getElementById('head_email').textContent = head.head_email || head.email || '—';
+      document.getElementById('phone').textContent = head.phone || head.mobile || '—';
+      document.getElementById('age').textContent = head.age !== undefined ? String(head.age) : '—';
+    } catch (err) {
+      console.error(err);
+      document.getElementById('chapter-info').textContent = 'Error loading chapter information.';
+    }
+  })();
 </script>
 
 </body>
