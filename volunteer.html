@@ -274,6 +274,18 @@
             background: #3498db;
         }
 
+        .sdg-tag.life-below-water {
+            background: #0ea5e9;
+        }
+
+        .sdg-tag.no-poverty {
+            background: #7c3aed;
+        }
+
+        .sdg-tag.good-health {
+            background: #ef4444;
+        }
+
         .card-contact {
             border-top: 1px solid #f0f0f0;
             padding-top: 1rem;
@@ -579,6 +591,13 @@
             color: white;
         }
 
+        .empty-state {
+            text-align: center;
+            color: #666;
+            font-size: 1rem;
+            padding: 1.5rem;
+        }
+
         @media (max-width: 768px) {
             .footer-container {
                 grid-template-columns: 1fr;
@@ -693,184 +712,7 @@
     <h2 class="section-title">Volunteer Opportunities</h2>
 
     <div class="volunteer-container">
-        <!-- Event Card 1 -->
-        <div class="volunteer-card">
-            <div class="card-header">
-                <h3>Coastal Clean-up Drive</h3>
-            </div>
-            <div class="card-body">
-                <div class="card-info-item">
-                    <i class="fas fa-calendar"></i>
-                    <div>
-                        <span class="label">Event Date</span>
-                        <span class="value">2026-02-15</span>
-                    </div>
-                </div>
-
-                <div class="card-info-item">
-                    <i class="fas fa-map-pin"></i>
-                    <div>
-                        <span class="label">Organizing Chapter</span>
-                        <span class="value">YSP Manila</span>
-                    </div>
-                </div>
-
-                <p class="card-description">Join us for a coastal clean-up activity at Manila Bay. Help us collect trash and raise awareness about marine pollution. All materials will be provided.</p>
-
-                <div class="card-info-item">
-                    <i class="fas fa-globe"></i>
-                    <div>
-                        <span class="label">SDGs Impacted</span>
-                    </div>
-                </div>
-
-                <div class="sdg-tags">
-                    <span class="sdg-tag clean-water">Clean Water</span>
-                    <span class="sdg-tag">Life Below Water</span>
-                    <span class="sdg-tag climate-action">Climate Action</span>
-                </div>
-
-                <div class="card-contact">
-                    <div class="contact-label">Contact Chapter Head for Sign-up:</div>
-                    <div class="contact-info">
-                        <i class="fas fa-user"></i>
-                        <span>Maria Santos</span>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-envelope"></i>
-                        <a href="mailto:maria.santos@ysp-manila.org">maria.santos@ysp-manila.org</a>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-phone"></i>
-                        <a href="tel:+639172345678">+63 917 234 5678</a>
-                    </div>
-                </div>
-
-                <button class="join-btn" onclick="openLoginModal(this)">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    Join this Event
-                </button>
-            </div>
-        </div>
-
-        <!-- Event Card 2 -->
-        <div class="volunteer-card">
-            <div class="card-header">
-                <h3>Community Learning Center Opening</h3>
-            </div>
-            <div class="card-body">
-                <div class="card-info-item">
-                    <i class="fas fa-calendar"></i>
-                    <div>
-                        <span class="label">Event Date</span>
-                        <span class="value">2026-02-20</span>
-                    </div>
-                </div>
-
-                <div class="card-info-item">
-                    <i class="fas fa-map-pin"></i>
-                    <div>
-                        <span class="label">Organizing Chapter</span>
-                        <span class="value">YSP Cebu</span>
-                    </div>
-                </div>
-
-                <p class="card-description">Celebrate with us as we open a new community learning center in Cebu. Volunteers needed for setup, activities coordination, and teaching assistance.</p>
-
-                <div class="card-info-item">
-                    <i class="fas fa-globe"></i>
-                    <div>
-                        <span class="label">SDGs Impacted</span>
-                    </div>
-                </div>
-
-                <div class="sdg-tags">
-                    <span class="sdg-tag quality-education">Quality Education</span>
-                    <span class="sdg-tag reduced-inequalities">Reduced Inequalities</span>
-                </div>
-
-                <div class="card-contact">
-                    <div class="contact-label">Contact Chapter Head for Sign-up:</div>
-                    <div class="contact-info">
-                        <i class="fas fa-user"></i>
-                        <span>Juan Dela Cruz</span>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-envelope"></i>
-                        <a href="mailto:juan.delacruz@ysp-cebu.org">juan.delacruz@ysp-cebu.org</a>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-phone"></i>
-                        <a href="tel:+639173456789">+63 917 345 6789</a>
-                    </div>
-                </div>
-
-                <button class="join-btn" onclick="openLoginModal(this)">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    Join this Event
-                </button>
-            </div>
-        </div>
-
-        <!-- Event Card 3 -->
-        <div class="volunteer-card">
-            <div class="card-header">
-                <h3>Tree Planting Initiative</h3>
-            </div>
-            <div class="card-body">
-                <div class="card-info-item">
-                    <i class="fas fa-calendar"></i>
-                    <div>
-                        <span class="label">Event Date</span>
-                        <span class="value">2026-03-05</span>
-                    </div>
-                </div>
-
-                <div class="card-info-item">
-                    <i class="fas fa-map-pin"></i>
-                    <div>
-                        <span class="label">Organizing Chapter</span>
-                        <span class="value">YSP Baguio</span>
-                    </div>
-                </div>
-
-                <p class="card-description">Help us plant 500 trees in the Baguio mountain area. This reforestation project aims to restore degraded forest areas and combat climate change.</p>
-
-                <div class="card-info-item">
-                    <i class="fas fa-globe"></i>
-                    <div>
-                        <span class="label">SDGs Impacted</span>
-                    </div>
-                </div>
-
-                <div class="sdg-tags">
-                    <span class="sdg-tag life-on-land">Life on Land</span>
-                    <span class="sdg-tag climate-action">Climate Action</span>
-                    <span class="sdg-tag">Sustainable Cities</span>
-                </div>
-
-                <div class="card-contact">
-                    <div class="contact-label">Contact Chapter Head for Sign-up:</div>
-                    <div class="contact-info">
-                        <i class="fas fa-user"></i>
-                        <span>Anna Reyes</span>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-envelope"></i>
-                        <a href="mailto:anna.reyes@ysp-baguio.org">anna.reyes@ysp-baguio.org</a>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-phone"></i>
-                        <a href="tel:+639174567890">+63 917 456 7890</a>
-                    </div>
-                </div>
-
-                <button class="join-btn" onclick="openLoginModal(this)">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    Join this Event
-                </button>
-            </div>
-        </div>
+      <!-- Volunteer opportunities will be loaded here from Supabase -->
     </div>
 </section>
 
@@ -995,6 +837,117 @@
         document.getElementById("loginForm").reset();
         closeLoginModal();
     }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  (async function(){
+    if (!window.supabase) return console.warn('Supabase client not found.');
+    const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
+    const { createClient } = window.supabase;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const container = document.querySelector('.volunteer-container');
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]; });
+    }
+
+    function createSdgTag(sdg) {
+      const slug = sdg.toLowerCase().replace(/\s+/g, '-');
+      return `<span class="sdg-tag ${slug}">${escapeHtml(sdg)}</span>`;
+    }
+
+    function createVolunteerCard(event) {
+      const [name, email, phone] = (event.contact || '').split(' • ').map(s => s ? s.trim() : '');
+      const location = event.chapter_location || event.organizing_chapter || '—';
+      const sdgTags = (event.sdgs || []).map(createSdgTag).join('');
+
+      return `
+        <div class="volunteer-card" data-id="${escapeHtml(event.id)}">
+          <div class="card-header"><h3>${escapeHtml(event.name || 'Untitled')}</h3></div>
+          <div class="card-body">
+            <div class="card-info-item">
+              <i class="fas fa-calendar"></i>
+              <div>
+                <span class="label">Event Date</span>
+                <span class="value">${escapeHtml(event.date || '—')}</span>
+              </div>
+            </div>
+            <div class="card-info-item">
+              <i class="fas fa-map-pin"></i>
+              <div>
+                <span class="label">Organizing Chapter</span>
+                <span class="value">${escapeHtml(location)}</span>
+              </div>
+            </div>
+            <p class="card-description">${escapeHtml(event.description || '')}</p>
+            <div class="card-info-item">
+              <i class="fas fa-globe"></i>
+              <div>
+                <span class="label">SDGs Impacted</span>
+              </div>
+            </div>
+            <div class="sdg-tags">${sdgTags}</div>
+            <div class="card-contact">
+              <div class="contact-label">Contact Chapter Head for Sign-up:</div>
+              <div class="contact-info">
+                <i class="fas fa-user"></i>
+                <span>${escapeHtml(name || '—')}</span>
+              </div>
+              <div class="contact-info">
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:${encodeURI(email || '')}">${escapeHtml(email || '—')}</a>
+              </div>
+              <div class="contact-info">
+                <i class="fas fa-phone"></i>
+                <a href="tel:${encodeURI(phone || '')}">${escapeHtml(phone || '—')}</a>
+              </div>
+            </div>
+
+            <button class="join-btn" onclick="openLoginModal(this)">
+              <i class="fas fa-hand-holding-heart"></i>
+              Join this Event
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function loadVolunteerEvents(){
+      const { data, error } = await supabase.from('events').select('*').order('created_at', { ascending: false });
+      if (error) {
+        console.error('Error loading volunteer events:', error);
+        return;
+      }
+
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-calendar-alt"></i>
+            <p>No volunteer opportunities available yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = data.map(createVolunteerCard).join('');
+    }
+
+    loadVolunteerEvents();
+
+    if (supabase.channel) {
+      supabase.channel('events-changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, () => {
+          loadVolunteerEvents();
+        })
+        .subscribe();
+    }
+  })();
 </script>
 
 </body>
