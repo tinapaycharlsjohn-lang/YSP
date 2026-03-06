@@ -163,6 +163,13 @@
     .form-field label { font-weight:700; color:#444; margin-bottom:0.35rem; font-size:0.85rem; }
     .form-field input[type="text"], .form-field input[type="date"], .form-field textarea { padding:0.6rem 0.75rem; border:1px solid #e6e9ee; border-radius:8px; font-size:0.95rem; }
     .form-field textarea { min-height:90px; resize:vertical; }
+
+    .contact-details { background: #fbfbfb; border: 1px solid #e6e9ee; border-radius: 8px; padding: 0.75rem; }
+    .contact-row, .location-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0; font-size: 0.95rem; }
+    .contact-row { border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-row i, .location-row i { width: 18px; text-align: center; color: #ff8c42; }
+
     .modal-actions { padding: 0.8rem 1.5rem; display:flex; gap:0.6rem; justify-content:flex-end; border-top:1px solid #f0f3f7; }
     .modal-btn { padding:0.7rem 1rem; border-radius:8px; border:none; font-weight:700; cursor:pointer; }
     .modal-btn.cancel { background:#f3f4f6; color:#111; }
@@ -173,10 +180,45 @@
     .sdg-toggle { padding:0.6rem 0.75rem; border:1px solid #e6e9ee; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; }
     .sdg-list { position:absolute; left:0; right:0; top:110%; background:white; border:1px solid #e6e9ee; border-radius:8px; padding:0.6rem; box-shadow: 0 10px 30px rgba(2,6,23,0.08); display:none; max-height:240px; overflow:auto; z-index:60; }
     .sdg-list.active { display:block; }
-    .sdg-item { display:flex; gap:0.6rem; align-items:center; padding:0.25rem 0.35rem; }
+    .sdg-item { display:flex; gap:0.6rem; align-items:center; padding:0.25rem 0.35rem; border-radius: 8px; cursor: pointer; transition: background 0.2s ease; }
+    .sdg-item:hover { background: rgba(255, 140, 66, 0.08); }
     .sdg-item input { transform:scale(1.05); }
+    .sdg-item.sdg-clean-water { color: #0369a1; }
+    .sdg-item.sdg-life-below-water { color: #0ea5e9; }
+    .sdg-item.sdg-climate-action { color: #16a34a; }
+    .sdg-item.sdg-quality-education { color: #e74c3c; }
+    .sdg-item.sdg-no-poverty { color: #7c3aed; }
+    .sdg-item.sdg-good-health { color: #ef4444; }
+
     .tag-list { display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.4rem; }
     .event-tag { background:#fff3e8; color:#ff8c42; padding:0.35rem 0.6rem; border-radius:999px; font-weight:700; font-size:0.85rem; display:inline-flex; gap:0.35rem; align-items:center; }
+    .event-tag.clean-water { background: #dbeafe; color: #0369a1; }
+    .event-tag.life-below-water { background: #dbeafe; color: #0ea5e9; }
+    .event-tag.climate-action { background: #dcfce7; color: #16a34a; }
+    .event-tag.quality-education { background: #ffe4e6; color: #e74c3c; }
+    .event-tag.no-poverty { background: #f3e8ff; color: #7c3aed; }
+    .event-tag.good-health { background: #fee2e2; color: #ef4444; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      color: white;
+      padding: 0.85rem 1.25rem;
+      border-radius: 999px;
+      font-weight: 600;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
   </style>
 </head>
 <body>
@@ -232,7 +274,10 @@
   <!-- My Events Tab -->
   <div class="tab-content active" id="my-events">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; gap:1rem;">
-      <h3 style="margin:0; font-size:1.25rem; color:#333;">My Events</h3>
+      <div>
+        <h3 style="margin:0; font-size:1.25rem; color:#333;">My Events</h3>
+        <div id="my-events-head-email" style="font-size:0.85rem; color:#666; margin-top:0.25rem;">Loading chapter info…</div>
+      </div>
       <div style="margin-left:auto;"><button id="open-add-event" class="add-event-btn"><i class="fas fa-plus"></i> Add Event</button></div>
     </div>
 
@@ -259,6 +304,10 @@
         <label for="event_name">Event Name</label>
         <input type="text" id="event_name" placeholder="e.g., Coastal Clean-up Drive">
       </div>
+      <div class="form-field">
+        <label>Chapter Location</label>
+        <div class="location-row"><i class="fas fa-map-marker-alt"></i><span id="contact-location">—</span></div>
+      </div>
 
       <div class="form-row">
         <div class="form-field">
@@ -269,12 +318,12 @@
           <label>SDGs</label>
           <div class="sdg-toggle" id="sdg-toggle">Select SDGs <i class="fas fa-caret-down"></i></div>
           <div class="sdg-list" id="sdg-list">
-            <label class="sdg-item"><input type="checkbox" value="Clean Water"><i class="fas fa-droplet"></i> Clean Water</label>
-            <label class="sdg-item"><input type="checkbox" value="Life Below Water"><i class="fas fa-water"></i> Life Below Water</label>
-            <label class="sdg-item"><input type="checkbox" value="Climate Action"><i class="fas fa-leaf"></i> Climate Action</label>
-            <label class="sdg-item"><input type="checkbox" value="Quality Education"><i class="fas fa-book"></i> Quality Education</label>
-            <label class="sdg-item"><input type="checkbox" value="No Poverty"><i class="fas fa-hand-holding-heart"></i> No Poverty</label>
-            <label class="sdg-item"><input type="checkbox" value="Good Health"><i class="fas fa-heart"></i> Good Health</label>
+            <label class="sdg-item sdg-clean-water"><input type="checkbox" value="Clean Water"><i class="fas fa-droplet"></i> Clean Water</label>
+            <label class="sdg-item sdg-life-below-water"><input type="checkbox" value="Life Below Water"><i class="fas fa-water"></i> Life Below Water</label>
+            <label class="sdg-item sdg-climate-action"><input type="checkbox" value="Climate Action"><i class="fas fa-leaf"></i> Climate Action</label>
+            <label class="sdg-item sdg-quality-education"><input type="checkbox" value="Quality Education"><i class="fas fa-book"></i> Quality Education</label>
+            <label class="sdg-item sdg-no-poverty"><input type="checkbox" value="No Poverty"><i class="fas fa-hand-holding-heart"></i> No Poverty</label>
+            <label class="sdg-item sdg-good-health"><input type="checkbox" value="Good Health"><i class="fas fa-heart"></i> Good Health</label>
           </div>
           <div class="tag-list" id="sdg-selected"></div>
         </div>
@@ -286,8 +335,12 @@
       </div>
 
       <div class="form-field">
-        <label for="event_contact">Contact Details</label>
-        <input type="text" id="event_contact" placeholder="Phone or email">
+        <label>Contact Details</label>
+        <div class="contact-details">
+          <div class="contact-row"><i class="fas fa-user"></i><span id="contact-name">—</span></div>
+          <div class="contact-row"><i class="fas fa-envelope"></i><span id="contact-email">—</span></div>
+          <div class="contact-row"><i class="fas fa-phone"></i><span id="contact-phone">—</span></div>
+        </div>
       </div>
     </div>
     <div class="modal-actions">
@@ -308,23 +361,57 @@
     const sdgList = document.getElementById('sdg-list');
     const sdgSelected = document.getElementById('sdg-selected');
     const eventsList = document.getElementById('events-list');
+    window.eventsList = eventsList;
 
     let editingCardId = null;
 
+    function sdgSlug(text){
+      return String(text||'')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    }
+
+    function showToast(message, error){
+      let toast = document.getElementById('toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message + (error ? ` — ${String(error).substring(0, 80)}` : '');
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(()=>{ toast.classList.remove('show'); }, 2400);
+    }
+
+    function setCurrentHeadEmail(email){
+      const normalized = email ? String(email).trim().toLowerCase() : null;
+      window.currentChapterHeadEmail = normalized;
+      const infoEl = document.getElementById('my-events-head-email');
+      if (infoEl) infoEl.textContent = normalized ? `Viewing events for: ${normalized}` : 'No chapter head logged in.';
+      return normalized;
+    }
+
     function openModal(editData){
       modal.classList.add('active');
+      const contact = window.chapterHeadContact || { name: '—', email: '—', phone: '—', location: '—' };
+      document.getElementById('contact-name').textContent = contact.name;
+      document.getElementById('contact-email').textContent = contact.email;
+      document.getElementById('contact-phone').textContent = contact.phone;
+      document.getElementById('contact-location').textContent = contact.location;
+
       if(editData){
         document.getElementById('event_name').value = editData.name || '';
         document.getElementById('event_date').value = editData.date || '';
         document.getElementById('event_description').value = editData.description || '';
-        document.getElementById('event_contact').value = editData.contact || '';
         // check sdgs
         Array.from(sdgList.querySelectorAll('input')).forEach(cb => cb.checked = (editData.sdgs || []).includes(cb.value));
       } else {
         document.getElementById('event_name').value = '';
         document.getElementById('event_date').value = '';
         document.getElementById('event_description').value = '';
-        document.getElementById('event_contact').value = '';
         Array.from(sdgList.querySelectorAll('input')).forEach(cb => cb.checked = false);
       }
       renderSelectedSdgs();
@@ -354,7 +441,10 @@
     });
     cancelBtn.addEventListener('click', function(){ closeModal(); });
 
+    const eventsCache = {};
+
     function createEventCard(data){
+      eventsCache[data.id] = data;
       const card = document.createElement('div');
       card.className = 'event-card';
       card.dataset.id = data.id;
@@ -369,7 +459,7 @@
           </div>
         </div>
         <div class="event-description">${escapeHtml(data.description||'')}</div>
-        <div class="event-tags">${(data.sdgs||[]).map(s=>`<span class="event-tag"><i class="fas fa-check"></i> ${escapeHtml(s)}</span>`).join('')}</div>
+        <div class="event-tags">${(data.sdgs||[]).map(s=>`<span class="event-tag ${sdgSlug(s)}"><i class="fas fa-check"></i> ${escapeHtml(s)}</span>`).join('')}</div>
         <div class="event-actions">
           <button class="event-action-btn participants"><i class="fas fa-users"></i> Participants</button>
           <button class="event-action-btn edit"><i class="fas fa-edit"></i> Edit</button>
@@ -380,42 +470,154 @@
       // wire actions
       card.querySelector('.edit').addEventListener('click', ()=>{
         editingCardId = card.dataset.id;
-        const sdgs = Array.from(card.querySelectorAll('.event-tag')).map(t=>t.textContent.trim());
-        openModal({ name: card.querySelector('.event-title').textContent.trim(), date: card.querySelector('.event-meta span').textContent.replace(/[^0-9-]/g,''), description: card.querySelector('.event-description').textContent.trim(), contact: '', sdgs });
+        const data = eventsCache[editingCardId] || {
+          name: card.querySelector('.event-title').textContent.trim(),
+          date: card.querySelector('.event-meta span').textContent.replace(/[^0-9-]/g,''),
+          description: card.querySelector('.event-description').textContent.trim(),
+          sdgs: Array.from(card.querySelectorAll('.event-tag')).map(t=>t.textContent.trim()),
+        };
+        openModal(data);
       });
-      card.querySelector('.delete').addEventListener('click', ()=>{
-        if(confirm('Delete this event?')) card.remove();
+      card.querySelector('.delete').addEventListener('click', async ()=>{
+        if (confirm('Delete this event?')) await deleteEvent(card.dataset.id);
       });
 
       return card;
     }
 
+    async function deleteEvent(id){
+      if (!window.supabaseClient) return;
+      const { error } = await window.supabaseClient.from('events').delete().eq('id', id);
+      if (error) return console.error('Delete event failed', error);
+      const existing = window.eventsList?.querySelector(`[data-id="${id}"]`);
+      if (existing) existing.remove();
+      delete eventsCache[id];
+      showToast('Event deleted');
+    }
+
     function escapeHtml(str){ return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]; }); }
 
-    confirmBtn.addEventListener('click', function(){
+    confirmBtn.addEventListener('click', async function(){
       const name = document.getElementById('event_name').value.trim();
       const date = document.getElementById('event_date').value;
       const description = document.getElementById('event_description').value.trim();
-      const contact = document.getElementById('event_contact').value.trim();
       const sdgs = Array.from(sdgList.querySelectorAll('input:checked')).map(i=>i.value);
       if(!name){ alert('Please enter event name'); return; }
 
-      const payload = { id: editingCardId || ('evt-'+Date.now()), name, date, description, contact, sdgs };
+      const contact = window.chapterHeadContact
+        ? `${window.chapterHeadContact.name} • ${window.chapterHeadContact.email} • ${window.chapterHeadContact.phone}`
+        : '';
 
-      if(editingCardId){
-        // find existing card and replace
-        const existing = eventsList.querySelector(`[data-id="${editingCardId}"]`);
-        if(existing){ const newCard = createEventCard(payload); eventsList.replaceChild(newCard, existing); }
-      } else {
-        const newCard = createEventCard(payload);
-        eventsList.prepend(newCard);
+      const headEmail = window.currentChapterHeadEmail;
+      const chapterLocationRaw = window.currentChapterLocation || (window.chapterHeadContact && window.chapterHeadContact.location);
+      const chapterLocation = chapterLocationRaw ? String(chapterLocationRaw).trim() : null;
+
+      if (!headEmail) {
+        showToast('Missing chapter head email; cannot save event.');
+        return;
       }
 
+      // Make sure we always insert events as lowercase email (so filtering matches)
+      const normalizedHeadEmail = headEmail.toLowerCase();
+
+      const payload = {
+        name,
+        date,
+        description,
+        contact,
+        sdgs,
+        head_email: normalizedHeadEmail,
+        chapter_location: chapterLocation || null,
+      };
+
+      console.log('Saving event payload:', payload);
+
+      // Capture edit state before we reset it via closeModal().
+      const editingId = editingCardId;
+      const isEditing = Boolean(editingId);
+
       closeModal();
+
+      try {
+        if (isEditing) {
+          const result = await updateEvent(editingId, payload);
+          if (result.ok) {
+            showToast('Event updated');
+          } else {
+            showToast('Unable to update event', result.error);
+            console.error(result.error);
+          }
+        } else {
+          const result = await createEvent(payload);
+          if (result.ok) {
+            showToast('Event added');
+          } else {
+            showToast('Unable to add event', result.error);
+            console.error(result.error);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Unable to save event');
+      }
     });
+
+    async function createEvent(payload){
+      if (!window.supabaseClient) return { ok: false, error: 'Supabase client not initialized' };
+
+      // Try to return the inserted row so we can reliably refresh by head_email.
+      let data = null;
+      let error = null;
+      try {
+        const res = await window.supabaseClient.from('events').insert([payload]).select('*');
+        data = res.data;
+        error = res.error;
+      } catch (err) {
+        console.error('Create event (select) failed', err);
+        error = err;
+      }
+
+      // If the select insert path failed, try a plain insert.
+      if (error) {
+        const res = await window.supabaseClient.from('events').insert([payload]);
+        error = res.error;
+      }
+
+      if (error) {
+        console.error('Create event failed', error);
+        return { ok: false, error };
+      }
+
+      // Ensure we have a consistent head_email in case it was missing.
+      if (data && data[0] && data[0].head_email) {
+        window.currentChapterHeadEmail = String(data[0].head_email).trim().toLowerCase();
+      }
+
+      if (window.currentChapterHeadEmail) await loadEventsForHead(window.currentChapterHeadEmail);
+      return { ok: true, data };
+    }
+
+    async function updateEvent(id, payload){
+      if (!window.supabaseClient) return { ok: false, error: 'Supabase client not initialized' };
+      const { error } = await window.supabaseClient.from('events').update(payload).eq('id', id);
+      if (error) {
+        console.error('Update event failed', error);
+        return { ok: false, error };
+      }
+      // refresh list for the current head
+      if (window.currentChapterHeadEmail) await loadEventsForHead(window.currentChapterHeadEmail);
+      return { ok: true };
+    }
 
     // close modal on overlay click
     modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+    // Expose key helpers to other scripts in the page
+    window.setCurrentHeadEmail = setCurrentHeadEmail;
+    window.showToast = showToast;
+    window.createEventCard = createEventCard;
+    window.loadEventsForHead = loadEventsForHead;
+    window.subscribeToEventChanges = subscribeToEventChanges;
   })();
 </script>
 
@@ -450,12 +652,85 @@
 </script>
 
 <script>
+  if (!window.supabase) console.warn('Supabase client not found.');
+  const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
+  const { createClient } = window.supabase || {};
+  window.supabaseClient = createClient ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+  async function loadEventsForHead(email) {
+    if (!window.supabaseClient || !email) return;
+    const normalizedEmail = String(email).trim().toLowerCase();
+    console.log('Loading events for head_email:', normalizedEmail);
+
+    try {
+      // Always fetch all events from the table, then filter locally.
+      // This avoids subtle mismatches due to column naming / case sensitivity.
+      const { data, error } = await window.supabaseClient.from('events').select('*');
+      if (error) {
+        console.error('Error loading events:', error);
+        showToast('Unable to load My Events');
+        return;
+      }
+
+      const filtered = (data || []).filter(ev => {
+        const candidates = [
+          ev.head_email,
+          ev.headEmail,
+          ev.email,
+          ev.contact,
+        ];
+        return candidates.some(val => {
+          if (!val) return false;
+          return String(val).toLowerCase().includes(normalizedEmail);
+        });
+      });
+
+      console.log('Loaded events count (filtered):', filtered.length, 'from', (data || []).length);
+      renderEvents(filtered);
+    } catch (err) {
+      console.error('Error loading events (caught):', err);
+      showToast('Unable to load My Events');
+    }
+  }
+
+  function renderEvents(events) {
+    const listContainer = window.eventsList;
+    if (!listContainer) return;
+
+    listContainer.innerHTML = '';
+    if (!events || events.length === 0) {
+      listContainer.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-calendar-alt"></i>
+          <p>No events yet. Click “Add Event” to create one.</p>
+        </div>
+      `;
+      return;
+    }
+
+    events.forEach(ev => {
+      const card = createEventCard(ev);
+      listContainer.appendChild(card);
+    });
+  }
+
+  function subscribeToEventChanges(){
+    if (!window.supabaseClient?.channel) return;
+
+    window.supabaseClient
+      .channel('events-changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, payload => {
+        const record = payload.record;
+        if (!record || record.head_email !== window.currentChapterHeadEmail) return;
+        // refresh list for this chapter head when any of their events change
+        loadEventsForHead(window.currentChapterHeadEmail);
+      })
+      .subscribe();
+  }
+
   (async function(){
-    if (!window.supabase) return console.warn('Supabase client not found.');
-    const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
-    const { createClient } = window.supabase;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    if (!window.supabaseClient) return;
 
     const params = new URLSearchParams(window.location.search);
     const urlEmail = params.get('email');
@@ -463,15 +738,17 @@
     const storedRole = localStorage.getItem('userRole');
 
     // Prefer the signed-in chapter head email stored in localStorage
-    const emailToUse = (storedRole === 'chapter' && storedEmail) ? storedEmail : (urlEmail || null);
+    const emailToUse = (storedRole === 'chapter' && storedEmail) ? storedEmail.toLowerCase() : (urlEmail ? urlEmail.toLowerCase() : null);
+    window.currentChapterHeadEmail = setCurrentHeadEmail(emailToUse);
+    console.log('Chapter page using head email:', window.currentChapterHeadEmail);
 
     try {
-      let query = supabase.from('chapters').select('*').limit(1);
-      if (emailToUse) query = supabase.from('chapters').select('*').eq('head_email', emailToUse).limit(1);
+      let query = window.supabaseClient.from('chapters').select('*').limit(1);
+      if (emailToUse) query = window.supabaseClient.from('chapters').select('*').eq('head_email', emailToUse).limit(1);
       const { data, error } = await query;
       if (error) {
         console.error('Error loading chapter info:', error);
-        document.getElementById('chapter-info').textContent = 'Unable to load chapter information.';
+        showToast('Unable to load chapter information');
         return;
       }
       if (!data || data.length === 0) {
@@ -484,9 +761,30 @@
       document.getElementById('head_email').textContent = head.head_email || head.email || '—';
       document.getElementById('phone').textContent = head.phone || head.mobile || '—';
       document.getElementById('age').textContent = head.age !== undefined ? String(head.age) : '—';
+
+      // Keep chapter head contact details available for the event modal.
+      window.chapterHeadContact = {
+        name: document.getElementById('head_name').textContent,
+        email: document.getElementById('head_email').textContent,
+        phone: document.getElementById('phone').textContent,
+        location: document.getElementById('location').textContent,
+      };
+      window.currentChapterLocation = window.chapterHeadContact.location;
+
+      // Ensure we have a reliable head email for event scoping based on the record we just loaded.
+      setCurrentHeadEmail(head.head_email || head.email || window.currentChapterHeadEmail);
+
+      // Load this chapter head's events
+      if (window.currentChapterHeadEmail) {
+        await loadEventsForHead(window.currentChapterHeadEmail);
+      }
+
+      // Subscribe to real-time changes so the UI stays in sync
+      subscribeToEventChanges();
     } catch (err) {
       console.error(err);
-      document.getElementById('chapter-info').textContent = 'Error loading chapter information.';
+      // Leave the chapter info panel intact, but provide a toast.
+      showToast('Unable to load chapter information');
     }
   })();
 </script>
