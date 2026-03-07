@@ -182,6 +182,9 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         .card-image {
             width: 100%;
@@ -189,7 +192,6 @@
             max-height: 320px;
             overflow: hidden;
             border-radius: 12px;
-            margin-bottom: 1rem;
             background: linear-gradient(135deg, #f5f7fa 0%, #eef2f6 100%);
             display: flex;
             align-items: center;
@@ -198,10 +200,12 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            flex-shrink: 0;
         }
         .card-image img {
             width: 100%;
             height: 100%;
+            border: 12px solid #ffffff;
             object-fit: cover;
             display: block;
         }
@@ -220,20 +224,35 @@
         }
 
         .card-header {
-            background: linear-gradient(135deg, #fff5f0 0%, #ffe8d6 100%);
+            background-color: #ff8c42;
             padding: 1.5rem;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 3px solid #f0f0f0;
+            max-height: 90px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
         }
 
         .card-header h3 {
-            font-size: 1.4rem;
-            color: #333;
+            font-size: clamp(0.95rem, 2vw, 1.2rem);
+            color: #ffffff;
             margin: 0;
             font-weight: 700;
+            line-height: 1.3;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .card-body {
             padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 0.75rem;
         }
 
         .card-info-item {
@@ -260,18 +279,27 @@
             color: #666;
         }
 
+        .card-info-item.location .value {
+            font-weight: 650;
+            font-size: 1.1rem;
+            color: #ff6600;
+        }
+
         .card-description {
             color: #666;
             line-height: 1.6;
-            margin-bottom: 1.5rem;
             font-size: 0.95rem;
+            flex: 1;
+            max-height: 150px;
+            overflow-y: auto;
         }
 
         .sdg-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem;
-            margin-bottom: 1.5rem;
+            align-content: flex-start;
+            flex-shrink: 0;
         }
 
         .sdg-tag {
@@ -285,7 +313,7 @@
         }
 
         .sdg-tag.quality-education {
-            background: #e74c3c;
+            background: #bbad35;
         }
 
         .sdg-tag.reduced-inequalities {
@@ -319,7 +347,8 @@
         .card-contact {
             border-top: 1px solid #f0f0f0;
             padding-top: 1rem;
-            margin-top: 1rem;
+            margin-top: auto;
+            flex-shrink: 0;
         }
 
         .contact-label {
@@ -337,6 +366,13 @@
             color: #666;
             font-size: 0.9rem;
         }
+
+        .contact-name {
+            font-weight: 700;
+            font-size: 1.0rem;
+            color: #333;
+        }
+
 
         .contact-info i {
             color: #ff8c42;
@@ -702,6 +738,8 @@
                 width: 95%;
                 margin: 20% auto;
             }
+
+
         }
     </style>
 </head>
@@ -915,11 +953,11 @@
                 <span class="value">${escapeHtml(event.date || '—')}</span>
               </div>
             </div>
-            <div class="card-info-item">
+            <div class="card-info-item location">
               <i class="fas fa-map-pin"></i>
               <div>
-                <span class="label">Organizing Chapter</span>
-                <span class="value">${escapeHtml(location)}</span>
+                <span class="label">Organizing Chapter: </span>
+                <span class="value location-value">${escapeHtml(location)}</span>
               </div>
             </div>
             <p class="card-description">${escapeHtml(event.description || '')}</p>
@@ -931,10 +969,10 @@
             </div>
             <div class="sdg-tags">${sdgTags}</div>
             <div class="card-contact">
-              <div class="contact-label">Contact Chapter Head for Sign-up:</div>
+              <div class="contact-label">Assigned Chapter Head:</div>
               <div class="contact-info">
                 <i class="fas fa-user"></i>
-                <span>${escapeHtml(name || '—')}</span>
+                <span class="contact-name">${escapeHtml(name || '—')}</span>
               </div>
               <div class="contact-info">
                 <i class="fas fa-envelope"></i>
