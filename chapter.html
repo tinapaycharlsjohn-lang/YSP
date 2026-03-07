@@ -119,6 +119,12 @@
     }
 
     .event-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+    .event-card-content { display: flex; gap: 1rem; align-items: flex-start; }
+    .event-image-preview { flex-shrink: 0; width: 120px; height: 120px; border-radius: 8px; overflow: hidden; border: 2px solid #e0e6f0; margin-top: 19.5px; }
+    .event-card-image { width: 100%; height: 100%; object-fit: cover; }
+    .no-image { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 0.9rem; background: #f9f9f9; }
+    .no-image i { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .event-details { flex: 1; }
     .event-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
     .event-title { font-size: 1.2rem; color: #333; font-weight: 700; }
     .event-meta { color: #999; font-size: 0.9rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; }
@@ -157,6 +163,8 @@
       .stats-grid { grid-template-columns: 1fr; }
       .event-header { flex-direction: column; }
       .event-actions { flex-wrap: wrap; }
+      .event-card-content { flex-direction: column; }
+      .event-image-preview { width: 100%; height: 200px; }
     }
 
     /* Add Event modal + SDG selector styles */
@@ -193,6 +201,47 @@
     .modal-btn.cancel { background:#f3f4f6; color:#111; }
     .modal-btn.confirm { background: linear-gradient(135deg,#ff6a00,#ff8c42); color:white; }
 
+    .file-input-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      background: linear-gradient(135deg, #f0f4f9 0%, #e8eef5 100%);
+      border: 1.5px solid #dfe4ea;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.25s ease;
+      font-size: 0.95rem;
+    }
+    .file-input-btn:hover {
+      background: linear-gradient(135deg, #e0e6f0 0%, #d8dff0 100%);
+      color: #333;
+      border-color: #ff8c42;
+    }
+
+    .remove-image-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      transition: background 0.2s ease;
+    }
+    .remove-image-btn:hover {
+      background: rgba(0,0,0,0.9);
+    }
+
     /* SDG selector */
     .sdg-picker { position:relative; }
     .sdg-toggle { padding:0.6rem 0.75rem; border:1px solid #e6e9ee; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; }
@@ -204,7 +253,7 @@
     .sdg-item.sdg-clean-water { color: #0369a1; }
     .sdg-item.sdg-life-below-water { color: #0ea5e9; }
     .sdg-item.sdg-climate-action { color: #16a34a; }
-    .sdg-item.sdg-quality-education { color: #e74c3c; }
+    .sdg-item.sdg-quality-education { color: #bbad35; }
     .sdg-item.sdg-no-poverty { color: #7c3aed; }
     .sdg-item.sdg-good-health { color: #ef4444; }
 
@@ -213,7 +262,7 @@
     .event-tag.clean-water { background: #dbeafe; color: #0369a1; }
     .event-tag.life-below-water { background: #dbeafe; color: #0ea5e9; }
     .event-tag.climate-action { background: #dcfce7; color: #16a34a; }
-    .event-tag.quality-education { background: #ffe4e6; color: #e74c3c; }
+    .event-tag.quality-education { background: #f1ecc0; color: #bbad35; }
     .event-tag.no-poverty { background: #f3e8ff; color: #7c3aed; }
     .event-tag.good-health { background: #fee2e2; color: #ef4444; }
 
@@ -354,9 +403,13 @@
 
       <div class="form-field">
         <label for="event_image">Event Image (optional)</label>
-        <input type="file" id="event_image" accept="image/*">
+        <label for="event_image" class="file-input-btn"><i class="fas fa-upload"></i> Choose Image</label>
+        <input type="file" id="event_image" accept="image/*" style="display: none;">
         <div id="event_image_preview" style="margin-top:0.75rem; display:none;">
-          <img id="event_image_preview_img" class="image-preview" src="" alt="Event preview" />
+          <div style="position: relative; display: inline-block;">
+            <img id="event_image_preview_img" class="image-preview" src="" alt="Event preview" />
+            <button id="remove_image_btn" class="remove-image-btn" title="Remove image"><i class="fas fa-times"></i></button>
+          </div>
         </div>
       </div>
 
@@ -472,8 +525,10 @@
       editingImageData = null;
       const previewContainer = document.getElementById('event_image_preview');
       const previewImg = document.getElementById('event_image_preview_img');
+      const removeBtn = document.getElementById('remove_image_btn');
       if (previewContainer) previewContainer.style.display = 'none';
       if (previewImg) previewImg.src = '';
+      if (removeBtn) removeBtn.style.display = 'none';
       const fileInput = document.getElementById('event_image');
       if (fileInput) fileInput.value = '';
 
@@ -486,6 +541,8 @@
           previewImg.src = editingImageData;
           if (previewContainer) previewContainer.style.display = 'block';
         }
+        const removeBtn = document.getElementById('remove_image_btn');
+        if (removeBtn) removeBtn.style.display = editingImageData ? 'flex' : 'none';
         // check sdgs
         Array.from(sdgList.querySelectorAll('input')).forEach(cb => cb.checked = (editData.sdgs || []).includes(cb.value));
       } else {
@@ -525,6 +582,8 @@
           selectedImageData = null;
           if (previewContainer) previewContainer.style.display = 'none';
           if (previewImg) previewImg.src = '';
+          const removeBtn = document.getElementById('remove_image_btn');
+          if (removeBtn) removeBtn.style.display = 'none';
           return;
         }
         compressImage(file, (base64) => {
@@ -533,7 +592,24 @@
             previewImg.src = base64;
             if (previewContainer) previewContainer.style.display = 'block';
           }
+          const removeBtn = document.getElementById('remove_image_btn');
+          if (removeBtn) removeBtn.style.display = 'flex';
         });
+      });
+    }
+
+    const removeImageBtn = document.getElementById('remove_image_btn');
+    if (removeImageBtn) {
+      removeImageBtn.addEventListener('click', function(){
+        selectedImageData = null;
+        editingImageData = null;
+        const previewContainer = document.getElementById('event_image_preview');
+        const previewImg = document.getElementById('event_image_preview_img');
+        if (previewContainer) previewContainer.style.display = 'none';
+        if (previewImg) previewImg.src = '';
+        const fileInput = document.getElementById('event_image');
+        if (fileInput) fileInput.value = '';
+        this.style.display = 'none';
       });
     }
 
@@ -551,21 +627,28 @@
       card.className = 'event-card';
       card.dataset.id = data.id;
       card.innerHTML = `
-        <div class="event-header">
-          <div>
-            <div class="event-title">${escapeHtml(data.name)}</div>
-            <div class="event-meta">
-              <span><i class="fas fa-calendar"></i> ${escapeHtml(data.date||'')}</span>
-              <span><i class="fas fa-users"></i> 0 participants</span>
+        <div class="event-card-content">
+          <div class="event-image-preview">
+            ${data.image_data ? `<img src="${data.image_data}" alt="Event image" class="event-card-image">` : `<div class="no-image"><i class="fas fa-image"></i><span>No Image</span></div>`}
+          </div>
+          <div class="event-details">
+            <div class="event-header">
+              <div>
+                <div class="event-title">${escapeHtml(data.name)}</div>
+                <div class="event-meta">
+                  <span><i class="fas fa-calendar"></i> ${escapeHtml(data.date||'')}</span>
+                  <span><i class="fas fa-users"></i> 0 participants</span>
+                </div>
+              </div>
+            </div>
+            <div class="event-description">${escapeHtml(data.description||'')}</div>
+            <div class="event-tags">${(data.sdgs||[]).map(s=>`<span class="event-tag ${sdgSlug(s)}"><i class="fas fa-check"></i> ${escapeHtml(s)}</span>`).join('')}</div>
+            <div class="event-actions">
+              <button class="event-action-btn participants"><i class="fas fa-users"></i> Participants</button>
+              <button class="event-action-btn edit"><i class="fas fa-edit"></i> Edit</button>
+              <button class="event-action-btn delete"><i class="fas fa-trash"></i> Delete</button>
             </div>
           </div>
-        </div>
-        <div class="event-description">${escapeHtml(data.description||'')}</div>
-        <div class="event-tags">${(data.sdgs||[]).map(s=>`<span class="event-tag ${sdgSlug(s)}"><i class="fas fa-check"></i> ${escapeHtml(s)}</span>`).join('')}</div>
-        <div class="event-actions">
-          <button class="event-action-btn participants"><i class="fas fa-users"></i> Participants</button>
-          <button class="event-action-btn edit"><i class="fas fa-edit"></i> Edit</button>
-          <button class="event-action-btn delete"><i class="fas fa-trash"></i> Delete</button>
         </div>
       `;
 
