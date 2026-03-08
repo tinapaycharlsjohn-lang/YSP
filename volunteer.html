@@ -171,7 +171,7 @@
         /* VOLUNTEER CARDS */
         .volunteer-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
@@ -184,7 +184,6 @@
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            height: 100%;
         }
         .card-image {
             width: 100%;
@@ -418,7 +417,7 @@
         .login-modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 10000;
             left: 0;
             top: 0;
             width: 100%;
@@ -490,11 +489,24 @@
 
         .form-group input {
             width: 100%;
-            padding: 0.8rem;
+            padding: 0.8rem 0.8rem 0.8rem 2.5rem;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 0.95rem;
             transition: border-color 0.3s ease;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff8c42;
+            font-size: 1rem;
         }
 
         .form-group input:focus {
@@ -788,22 +800,29 @@
 <div id="loginModal" class="login-modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>Member Login</h2>
+            <h2>Join Event</h2>
             <button class="close" onclick="closeLoginModal()">&times;</button>
         </div>
 
         <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" required>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
+            <p style="font-size: 0.9rem; color: #f56f58; margin-bottom: 0.5rem; margin-top: 1rem; align-items: center; gap: 0.5rem; text-align: center;">
+                <i class="fas fa-exclamation-triangle"></i>
+                Only registered members can join.
+            </p>
 
-            <button type="submit" class="login-btn">Login to Join Event</button>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem; text-align: center; margin-bottom: 2rem;">
+                You will be contacted via email if approved.
+            </p>
+
+            <button type="submit" class="login-btn">Join Event</button>
         </form>
 
         <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #666;">
@@ -875,9 +894,12 @@
     // Login Modal Functions
     function openLoginModal(button) {
         document.getElementById("loginModal").style.display = "block";
-        // Store event name for reference
-        const eventName = button.closest('.volunteer-card').querySelector('h3').textContent;
+        // Store event info for reference
+        const card = button.closest('.volunteer-card');
+        const eventName = card.querySelector('h3').textContent;
+        const eventId = card.dataset.id;
         document.getElementById("loginForm").dataset.eventName = eventName;
+        document.getElementById("loginForm").dataset.eventId = eventId;
     }
 
     function closeLoginModal() {
@@ -893,17 +915,85 @@
     }
 
     // Handle Login
-    function handleLogin(event) {
+    async function handleLogin(event) {
         event.preventDefault();
-        const email = document.getElementById("email").value;
+        const email = document.getElementById("email").value.trim().toLowerCase();
         const eventName = document.getElementById("loginForm").dataset.eventName;
+        const eventId = document.getElementById("loginForm").dataset.eventId;
         
-        // Here you would normally validate credentials and submit to server
-        alert(`Thank you! You have successfully joined the "${eventName}" event. A confirmation email has been sent to ${email}.`);
-        
-        // Reset form and close modal
-        document.getElementById("loginForm").reset();
-        closeLoginModal();
+        if (!window.supabaseClient) {
+            alert('Database connection not available. Please try again later.');
+            return;
+        }
+
+        try {
+            // First, let's see what tables exist and what's in the members table
+            console.log('Checking available tables...');
+            const { data: allMembers, error: fetchError } = await window.supabaseClient
+                .from('members')
+                .select('*');
+
+            console.log('All members in table:', allMembers);
+            console.log('First member structure:', allMembers && allMembers[0] ? allMembers[0] : 'no members');
+            console.log('All member columns:', allMembers && allMembers[0] ? Object.keys(allMembers[0]) : 'no columns');
+            console.log('Fetch error:', fetchError);
+
+            // Check if email exists in members table
+            console.log('Checking email:', email);
+            console.log('Email type:', typeof email);
+            
+            // Try case-insensitive match using ilike
+            const { data: member, error } = await window.supabaseClient
+                .from('members')
+                .select('*')
+                .ilike('email', email);
+
+            console.log('Full response:', { data: member, error });
+            console.log('Number of matches:', member ? member.length : 0);
+            if (member && member.length > 0) {
+                console.log('First match:', member[0]);
+            }
+
+            if (error) {
+                console.error('Error checking member:', error);
+                alert('An error occurred while verifying your membership. Please try again. Error: ' + (error.message || 'Unknown error'));
+                return;
+            }
+
+            if (!member || member.length === 0) {
+                // Log all emails in the table for comparison
+                if (allMembers && allMembers.length > 0) {
+                    console.log('All emails in table:');
+                    allMembers.forEach((m, idx) => {
+                        console.log(`  [${idx}] email: "${m.email}" | type: ${typeof m.email} | length: ${m.email ? m.email.length : 'null'}`);
+                    });
+                }
+                alert('This email address is not registered as a member. Please register first before joining events.');
+                return;
+            }
+
+            console.log('Member(s) found:', member);
+
+            // Email exists, insert pending approval
+            const { data: inserted, error: insertError } = await window.supabaseClient
+                .from('pending_approvals')
+                .insert({ event_id: eventId, member_email: email, status: 'pending' });
+
+            if (insertError) {
+                console.error('Error inserting pending approval:', insertError);
+                alert('Could not submit join request. Please try again.');
+                return;
+            }
+
+            alert(`Thank you! Your request to join the "${eventName}" event has been submitted. You will be contacted via email if approved.`);
+            
+            // Reset form and close modal
+            document.getElementById("loginForm").reset();
+            closeLoginModal();
+        } catch (err) {
+            console.error('Unexpected error:', err);
+            alert('An unexpected error occurred. Please try again.');
+        }
     }
 </script>
 
@@ -915,6 +1005,7 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
     const { createClient } = window.supabase;
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.supabaseClient = supabase;
 
     const container = document.querySelector('.volunteer-container');
 
