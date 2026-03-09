@@ -164,10 +164,25 @@
 
     /* HERO / INTRO SECTION */
     .hero {
-      background: linear-gradient(135deg, #ff6a00 0%, #ff8c42 100%);
+      /* use the supplied skyline image with a warm overlay */
+      background: linear-gradient(135deg, rgba(255,106,0,0.85) 0%, rgba(255,140,66,0.85) 100%),
+                  url('hero-bg.png') center/cover no-repeat;
+      background-blend-mode: overlay;
       color: white;
-      padding: 60px 20px;
+      padding: 80px 20px;
+      position: relative;
     }
+
+    /* if you prefer a faint watermark effect instead:
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('hero-bg.png') center/cover no-repeat;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    */
 
     .hero-container {
       max-width: 1200px;
@@ -706,9 +721,9 @@
 <section id="hero" class="hero">
   <div class="hero-container">
     <div class="hero-text">
-      <h1>Empowering Youth, Building Communities</h1>
-      <p>Join Youth Service Philippines in creating lasting impact through volunteerism, education, and community development across the nation.</p>
-      <a class="cta-btn" href="membership.html">Become a Member <i class="fas fa-arrow-right"></i></a>
+      <h1>Join the Movement, Programs That Empower</h1>
+      <p>From leadership training to community outreach, explore our programs designed to uplift Filipino youth and strengthen communities nationwide.</p>
+      <a class="cta-btn" href="membership.html">Get Involved <i class="fas fa-arrow-right"></i></a>
     </div>
     <div class="hero-cta">
       <!-- reserved for future image or form -->
