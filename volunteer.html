@@ -176,6 +176,38 @@
             margin-top: 2rem;
         }
 
+        /* search bar styling */
+        .search-container {
+            position: relative;
+            margin: 1rem 0;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            border: 1px solid #e0e6f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+            background: #fafbfc;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ff8c42;
+            box-shadow: 0 0 0 2px rgba(255, 140, 66, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 0.9rem;
+        }
+
         .volunteer-card {
             background: white;
             border-radius: 8px;
@@ -791,6 +823,11 @@
 <section id="volunteer" class="section">
     <h2 class="section-title">Volunteer Opportunities</h2>
 
+    <div class="search-container">
+        <input type="text" id="volunteer-search" placeholder="Search by chapter location, chapter head, etc." class="search-input">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+
     <div class="volunteer-container">
       <!-- Volunteer opportunities will be loaded here from Supabase -->
     </div>
@@ -1008,6 +1045,23 @@
     window.supabaseClient = supabase;
 
     const container = document.querySelector('.volunteer-container');
+    const volunteerSearchInput = document.getElementById('volunteer-search');
+
+    function applyVolunteerSearch() {
+      const query = volunteerSearchInput ? volunteerSearchInput.value.trim().toLowerCase() : '';
+      if (!query) {
+        document.querySelectorAll('.volunteer-card').forEach(card => card.style.display = '');
+        return;
+      }
+      document.querySelectorAll('.volunteer-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+
+    if (volunteerSearchInput) {
+      volunteerSearchInput.addEventListener('input', applyVolunteerSearch);
+    }
 
     function escapeHtml(str) {
       return String(str || '').replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]; });
@@ -1105,6 +1159,7 @@
       }
 
       container.innerHTML = data.map(createVolunteerCard).join('');
+      applyVolunteerSearch();
     }
 
     loadVolunteerEvents();
