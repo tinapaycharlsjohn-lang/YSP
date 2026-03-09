@@ -147,6 +147,10 @@
       z-index: 5000;
       backdrop-filter: blur(2px);
     }
+    /* details modal should stack above generic modals like event/participants */
+    #member-view-modal {
+      z-index: 6000;
+    }
     .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -156,8 +160,8 @@
       background: white; 
       border-radius: 14px; 
       padding: 0;
-      max-width: 520px; 
-      width: 90%; 
+      max-width: 720px; 
+      width: 92%; 
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 25px 70px rgba(0,0,0,0.25);
@@ -199,6 +203,20 @@
       margin-bottom: 1.5rem;
       padding: 0 2rem;
     }
+
+    /* event-modal / generic modal body styles copied from chapter page */
+    .modal-body { padding: 1rem 1.5rem; display: grid; gap: 0.75rem; max-height: calc(90vh - 170px); overflow-y: auto; }
+    .form-row { display: flex; gap: 0.75rem; }
+    .form-field { flex: 1; display: flex; flex-direction: column; }
+    .form-field label { font-weight: 700; color: #444; margin-bottom: 0.35rem; font-size: 0.85rem; }
+    .form-field input[type="text"], .form-field input[type="date"], .form-field textarea { padding: 0.6rem 0.75rem; border: 1px solid #e6e9ee; border-radius: 8px; font-size: 0.95rem; }
+    .form-field textarea { min-height: 90px; resize: vertical; }
+
+    .contact-details { background: #fbfbfb; border: 1px solid #e6e9ee; border-radius: 8px; padding: 0.75rem; }
+    .contact-row, .location-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0; font-size: 0.95rem; }
+    .contact-row { border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-row i, .location-row i { width: 18px; text-align: center; color: #ff8c42; }
     .form-group:last-of-type {
       margin-bottom: 2rem;
     }
@@ -270,14 +288,12 @@
       border-radius: 10px;
       object-fit: cover;
       background: linear-gradient(135deg, #f5f7fa 0%, #eef2f6 100%);
-      display: none;
+      /* always visible when src is set */
+      display: block;
       border: 2px solid #e0e6f0;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-    .image-preview.active { 
-      display: block;
-      animation: imageReveal 0.3s ease;
-    }
+    /* .image-preview.active no longer needed */
     @keyframes imageReveal {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
@@ -468,6 +484,348 @@
         transform: translateY(0);
       }
     }
+
+    /* Event card and SDG tag styles */
+    .sdg-item { display:flex; gap:0.6rem; align-items:center; padding:0.25rem 0.35rem; border-radius: 8px; cursor: pointer; transition: background 0.2s ease; }
+    .sdg-item:hover { background: rgba(255, 140, 66, 0.08); }
+    .sdg-item input { transform:scale(1.05); }
+    .sdg-item.sdg-clean-water { color: #0369a1; }
+    .sdg-item.sdg-life-below-water { color: #0ea5e9; }
+    .sdg-item.sdg-climate-action { color: #16a34a; }
+    .sdg-item.sdg-quality-education { color: #bbad35; }
+    .sdg-item.sdg-no-poverty { color: #7c3aed; }
+    .sdg-item.sdg-good-health { color: #ef4444; }
+
+    .tag-list { display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.4rem; }
+    .event-tag { background:#fff3e8; color:#ff8c42; padding:0.35rem 0.6rem; border-radius:999px; font-weight:700; font-size:0.85rem; display:inline-flex; gap:0.35rem; align-items:center; }
+    .event-tag.clean-water { background: #dbeafe; color: #0369a1; }
+    .event-tag.life-below-water { background: #dbeafe; color: #0ea5e9; }
+    .event-tag.climate-action { background: #dcfce7; color: #16a34a; }
+    .event-tag.quality-education { background: #f1ecc0; color: #bbad35; }
+    .event-tag.no-poverty { background: #f3e8ff; color: #7c3aed; }
+    .event-tag.good-health { background: #fee2e2; color: #ef4444; }
+
+    /* Event card layout (horizontal row) */
+    .event-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: white;
+      padding: 1.25rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #eef2f6;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      margin-bottom: 0.75rem;
+    }
+    .event-card-content {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      flex: 1;
+    }
+    .event-card-image {
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .no-image {
+      width: 120px;
+      height: 80px;
+      background: #fafbfc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-size: 1.2rem;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    /* Contact/location rows used in admin event modal */
+    .contact-row, .location-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0; font-size: 0.95rem; }
+    .contact-row { border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-row i, .location-row i { width: 18px; text-align: center; color: #ff8c42; }
+
+    .event-details { flex: 1; }
+    .event-header { display: flex; justify-content: space-between; align-items: center; }
+    .event-title { font-weight: 600; font-size: 1rem; }
+    .event-meta { color: #666; font-size: 0.85rem; display: flex; gap: 1rem; }
+    .event-meta i { color: #ff8c42; margin-right: 0.25rem; }    .event-description { color: #444; font-size: 0.9rem; margin: 0.75rem 0; }
+    .event-actions { display: flex; gap: 0.5rem; margin-left: auto; flex-shrink: 0; align-self: flex-end; }
+    .event-action-btn { background: white; color: #333; border: 1px solid #e0e0e0; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap:0.3rem; }
+    .event-action-btn:hover { background: #f9f9f9; }
+    .event-action-btn.delete { color: #ef4444; border-color: #ef4444; }
+    .event-action-btn.delete:hover { background: #fee2e2; }
+    @media (max-width: 768px) {
+      .event-card { flex-direction: column; align-items: flex-start; }
+      .event-card-content { flex-direction: column; }
+      .event-meta { flex-direction: column; gap:0.4rem; }
+    }
+
+    /* Participants Modal Styles */
+    #participants-modal .modal-content {
+      width: 92%;
+      max-width: 720px;
+      max-height: 90vh;
+      padding: 1.5rem;
+    }
+    .participants-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #e0e6f0;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .participants-tab {
+      background: #f5f7fa;
+      border: 1px solid #e0e6f0;
+      padding: 0.5rem 1rem;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .participants-tab.active {
+      background: #ff8c42;
+      color: white;
+      border-color: #ff8c42;
+    }
+
+    .search-container {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 2.5rem 0.75rem 1rem;
+      border: 1px solid #e0e6f0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+      background: #fafbfc;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #ff8c42;
+      box-shadow: 0 0 0 2px rgba(255, 140, 66, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .members-count {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.75rem;
+      background: #fafbfc;
+      border-radius: 6px;
+    }
+
+    .members-count i {
+      color: #ff8c42;
+      font-size: 0.95rem;
+    }
+
+    .participants-content {
+      min-height: 220px;
+      padding: 0 1rem;
+    }
+
+    .participants-section {
+      display: none;
+    }
+
+    .participants-section.active {
+      display: block;
+      padding: 0 1rem ;
+      text-align: center;
+    }
+
+    .participants-list, .pending-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 4px; /* avoid scrollbar overlapping content */
+    }
+
+    .participant-item, .pending-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e0e6f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .participant-item {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .participant-item:hover {
+      background: #f0f4ff;
+      border-color: #ff8c42;
+      box-shadow: 0 2px 8px rgba(255, 140, 66, 0.15);
+    }
+
+    .participant-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .participant-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ff8c42;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .participant-details h4 {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .participant-details p {
+      margin: 0.25rem 0 0;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .pending-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .remove-participant-btn {
+      padding: 0.4rem 0.6rem;
+      border: none;
+      background: #ff6b6b;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remove-participant-btn:hover {
+      background: #e03131;
+      transform: scale(1.05);
+    }
+
+    .pending-btn {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .pending-btn.approve {
+      background: #16a34a;
+      color: white;
+    }
+
+    .pending-btn.approve:hover {
+      background: #15803d;
+    }
+
+    .pending-btn.reject {
+      background: #dc2626;
+      color: white;
+    }
+
+    .pending-btn.reject:hover {
+      background: #b91c1c;
+    }
+
+    /* Member Details Modal Styles */
+    .member-details-content {
+      max-width: 600px;
+    }
+
+    .member-details-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .member-avatar-large {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1rem;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff8c42, #ff6a00);
+      font-size: 2.5rem;
+      color: white;
+      font-weight: 700;
+      margin: 0 auto 1.5rem;
+    }
+
+    .member-info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .member-info-field {
+      border-left: 4px solid #ff8c42;
+      padding: 0.75rem 1rem;
+      background: #f9f9f9;
+      border-radius: 4px;
+    }
+
+    .member-info-field label {
+      display: block;
+      font-weight: 700;
+      color: #ff8c42;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .member-info-value {
+      color: #333;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -553,7 +911,9 @@
   <div class="tab-content" id="events">
     <div class="stats-box">
       <h3>Events Management</h3>
-      <p style="color: #666; margin-top: 1rem;">Events management interface coming soon.</p>
+      <p style="color: #666; margin-top: 1rem;">Manage events created by chapter heads. You can view, edit, or delete any event and see participant details.</p>
+      <!-- events list operates without add button for admins -->
+      <div id="admin-events-list" style="margin-top:1.25rem; display:flex; flex-direction:column; gap:0.75rem;"></div>
     </div>
   </div>
 
@@ -1286,6 +1646,11 @@
     window.closeMemberViewModal = function(){
       document.getElementById('member-view-modal').classList.remove('active');
       currentViewingMemberId = null;
+      // ensure action buttons visible again
+      const editBtn = document.getElementById('edit-member-btn');
+      const delBtn = document.getElementById('delete-member-btn');
+      if (editBtn) editBtn.style.display = '';
+      if (delBtn) delBtn.style.display = '';
     };
 
     function openMemberModal(isEdit, member = null){
@@ -1320,8 +1685,15 @@
       document.getElementById('view-email').textContent = member.email || '--';
       document.getElementById('view-address').textContent = member.local_address || '--';
 
-      document.getElementById('member-view-modal').classList.add('active');
+      const modalEl = document.getElementById('member-view-modal');
+      if(modalEl){
+        modalEl.style.zIndex = 6000; // ensure front
+        modalEl.classList.add('active');
+      }
     }
+
+    // make accessible outside this module
+    window.openMemberViewModal = openMemberViewModal;
 
     // Load members from Supabase
     async function loadMembers(searchQuery = ''){
@@ -1980,6 +2352,608 @@
 
       window.addEventListener('beforeunload', () => supabase.removeChannel(sub));
     })();
+</script>
+
+<!-- Event modal (admin) -->
+<div class="modal-overlay" id="event-modal">
+  <div class="modal-content">
+    <div class="modal-header"><i class="fas fa-calendar-plus"></i> Create / Edit Event</div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label for="event_name">Event Name</label>
+        <input type="text" id="event_name" placeholder="e.g., Coastal Clean-up Drive">
+      </div>
+      <div class="form-field">
+        <label>Chapter Location</label>
+        <div class="location-row"><i class="fas fa-map-marker-alt"></i><span id="contact-location">—</span></div>
+      </div>
+
+      <div class="form-field">
+        <label>Contact Details</label>
+        
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="event_date">Date</label>
+          <input type="date" id="event_date">
+        </div>
+        <div class="form-field sdg-picker">
+          <label>SDGs</label>
+          <div class="sdg-toggle" id="sdg-toggle">Select SDGs <i class="fas fa-caret-down"></i></div>
+          <div class="sdg-list" id="sdg-list">
+            <label class="sdg-item sdg-clean-water"><input type="checkbox" value="Clean Water"><i class="fas fa-droplet"></i> Clean Water</label>
+            <label class="sdg-item sdg-life-below-water"><input type="checkbox" value="Life Below Water"><i class="fas fa-water"></i> Life Below Water</label>
+            <label class="sdg-item sdg-climate-action"><input type="checkbox" value="Climate Action"><i class="fas fa-leaf"></i> Climate Action</label>
+            <label class="sdg-item sdg-quality-education"><input type="checkbox" value="Quality Education"><i class="fas fa-book"></i> Quality Education</label>
+            <label class="sdg-item sdg-no-poverty"><input type="checkbox" value="No Poverty"><i class="fas fa-hand-holding-heart"></i> No Poverty</label>
+            <label class="sdg-item sdg-good-health"><input type="checkbox" value="Good Health"><i class="fas fa-heart"></i> Good Health</label>
+          </div>
+          <div class="tag-list" id="sdg-selected"></div>
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="event_description">Description</label>
+        <textarea id="event_description" placeholder="Describe the event..."></textarea>
+      </div>
+      <div class="form-field">
+        <label for="event_image">Event Image (optional)</label>
+        <label for="event_image" class="file-input-btn"><i class="fas fa-upload"></i> Choose Image</label>
+        <input type="file" id="event_image" accept="image/*" style="display: none;">
+        <div id="event_image_preview" style="margin-top:0.75rem; display:none;">
+          <div style="position: relative; display: inline-block;">
+            <img id="event_image_preview_img" class="image-preview" src="" alt="Event preview" />
+            <button id="remove_image_btn" class="remove-image-btn" title="Remove image"><i class="fas fa-times"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Contact Details</label>
+        <div class="contact-details">
+          <div class="contact-row"><i class="fas fa-user"></i><span id="contact-name">—</span></div>
+          <div class="contact-row"><i class="fas fa-envelope"></i><span id="contact-email">—</span></div>
+          <div class="contact-row"><i class="fas fa-phone"></i><span id="contact-phone">—</span></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="event-cancel">Cancel</button>
+      <button class="modal-btn confirm" id="event-confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Participants Modal (admin uses same as chapter) -->
+<div class="modal-overlay" id="participants-modal">
+  <div class="modal-content">
+    <div class="modal-header"> Event Participants</div>
+    <div class="modal-body">
+      <div class="participants-tabs">
+        <button class="participants-tab active" data-tab="participants">Participants</button>
+        <button class="participants-tab" data-tab="pending">Pending Approvals</button>
+      </div>
+      <div class="search-container">
+        <input type="text" id="participants-search" placeholder="Search members..." class="search-input">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      <div class="members-count" id="members-count-display">
+        <i class="fas fa-users"></i>
+        <span id="members-count-text">-- members</span>
+      </div>
+      <div class="participants-content">
+        <div class="participants-section active" id="participants-section">
+          <div class="participants-list">
+            <div class="empty-state">
+              <i class="fas fa-users"></i>
+              <p>No Participants Yet</p>
+            </div>
+          </div>
+        </div>
+        <div class="participants-section" id="pending-section">
+          <div class="pending-list">
+            <div class="empty-state">
+              <i class="fas fa-clock"></i>
+              <p>No pending approvals</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="participants-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Admin events management
+(function(){
+  const SUPABASE_URL = 'https://grpkcerqjfdpfttwpngf.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdycGtjZXJxamZkcGZ0dHdwbmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzg2OTcsImV4cCI6MjA4NjkxNDY5N30.8gyM-pyCVI4RIe2kmeRcKM_4BDjg0pQkXuX4JSZQ0nQ';
+  const { createClient } = window.supabase || {};
+  const supabase = createClient ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+  let eventsCache = [];
+  let editingCardId = null;
+  let selectedImageData = null;
+  let editingImageData = null;
+
+  // helpers
+  function escapeHtml(str){ return String(str||'').replace(/[&<>"']/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m];}); }
+  function sdgSlug(text){ return String(text||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+  function compressImage(file, callback){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      const img = new Image();
+      img.onload = function(){
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800; const MAX_HEIGHT = 600;
+        let w = img.width, h = img.height;
+        if(w>h){ if(w>MAX_WIDTH){ h = Math.round((h*MAX_WIDTH)/w); w=MAX_WIDTH; } }
+        else { if(h>MAX_HEIGHT){ w = Math.round((w*MAX_HEIGHT)/h); h=MAX_HEIGHT; } }
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d'); ctx.drawImage(img,0,0,w,h);
+        const base64 = canvas.toDataURL('image/jpeg',0.7);
+        callback(base64);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // modal elements
+  const modal = document.getElementById('event-modal');
+  const cancelBtn = document.getElementById('event-cancel');
+  const confirmBtn = document.getElementById('event-confirm');
+  const sdgToggle = document.getElementById('sdg-toggle');
+  const sdgList = document.getElementById('sdg-list');
+  const sdgSelected = document.getElementById('sdg-selected');
+  const imageInput = document.getElementById('event_image');
+
+  const participantsModal = document.getElementById('participants-modal');
+  const participantsCloseBtn = document.getElementById('participants-close');
+  const participantsTabs = document.querySelectorAll('.participants-tab');
+  const participantsSections = document.querySelectorAll('.participants-section');
+
+  function renderSelectedSdgs(){
+    sdgSelected.innerHTML='';
+    Array.from(sdgList.querySelectorAll('input:checked')).forEach(cb=>{
+      const span=document.createElement('span'); span.className='event-tag'; span.textContent=cb.value; sdgSelected.appendChild(span);
+    });
+  }
+  sdgToggle?.addEventListener('click', ()=> sdgList.classList.toggle('active'));
+  sdgList?.addEventListener('change', renderSelectedSdgs);
+
+  if(imageInput){
+    imageInput.addEventListener('change', function(e){
+      const file=e.target.files&&e.target.files[0];
+      const previewContainer=document.getElementById('event_image_preview');
+      const previewImg=document.getElementById('event_image_preview_img');
+      if(!file){ selectedImageData=null; if(previewContainer) previewContainer.style.display='none'; if(previewImg) previewImg.src='';
+        const removeBtn=document.getElementById('remove_image_btn'); if(removeBtn) removeBtn.style.display='none'; return; }
+      compressImage(file,(base64)=>{
+        selectedImageData=base64;
+        if(previewImg){ previewImg.src=base64; if(previewContainer) previewContainer.style.display='block'; }
+        const removeBtn=document.getElementById('remove_image_btn'); if(removeBtn) removeBtn.style.display='flex';
+      });
+    });
+  }
+  document.getElementById('remove_image_btn')?.addEventListener('click',function(){
+    selectedImageData=null; editingImageData=null;
+    const previewContainer=document.getElementById('event_image_preview');
+    const previewImg=document.getElementById('event_image_preview_img');
+    if(previewContainer) previewContainer.style.display='none';
+    if(previewImg) previewImg.src='';
+    const fileInput=document.getElementById('event_image'); if(fileInput) fileInput.value='';
+    this.style.display='none';
+  });
+
+  function openModal(data){
+    // show contact/location info exactly as chapter page
+    let contactObj = { name:'—', email:'—', phone:'—', location:'—' };
+    if(data){
+      document.getElementById('event_name').value=data.name||'';
+      document.getElementById('event_date').value=data.date||'';
+      document.getElementById('event_description').value=data.description||'';
+      Array.from(sdgList.querySelectorAll('input')).forEach(cb=>cb.checked=(data.sdgs||[]).includes(cb.value));
+      if(data.image_data){ editingImageData=data.image_data;
+        const previewImg=document.getElementById('event_image_preview_img');
+        const previewContainer=document.getElementById('event_image_preview');
+        if(previewImg){ previewImg.src=data.image_data; previewContainer.style.display='block'; }
+        const removeBtn=document.getElementById('remove_image_btn'); if(removeBtn) removeBtn.style.display='flex';
+      }
+      // prepare contact object from string or fields
+      if(data.contact){
+        const parts = data.contact.split(' • ').map(p=>p.trim());
+        contactObj.name = parts[0]||contactObj.name;
+        contactObj.email = parts[1]||contactObj.email;
+        contactObj.phone = parts[2]||contactObj.phone;
+      }
+      if(data.chapter_location) contactObj.location = data.chapter_location;
+    } else {
+      // clear values for new event
+      document.getElementById('event_name').value='';
+      document.getElementById('event_date').value='';
+      document.getElementById('event_description').value='';
+      Array.from(sdgList.querySelectorAll('input')).forEach(cb=>cb.checked=false);
+      const previewContainer=document.getElementById('event_image_preview');
+      const previewImg=document.getElementById('event_image_preview_img');
+      if(previewContainer) previewContainer.style.display='none';
+      if(previewImg) previewImg.src='';
+      editingImageData=null;
+      selectedImageData=null;
+    }
+    document.getElementById('contact-name').textContent = contactObj.name;
+    document.getElementById('contact-email').textContent = contactObj.email;
+    document.getElementById('contact-phone').textContent = contactObj.phone;
+    document.getElementById('contact-location').textContent = contactObj.location;
+
+    renderSelectedSdgs();
+    modal.classList.add('active');
+  }
+
+  function closeModal(){ modal.classList.remove('active'); editingCardId=null; }
+
+  // no add button for admin; only cancel opener
+  cancelBtn?.addEventListener('click',()=>closeModal());
+  // close modal when clicking outside content
+  modal?.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+
+  function createEventCard(data){
+    eventsCache[data.id]=data;
+    const card=document.createElement('div'); card.className='event-card'; card.dataset.id=data.id;
+    card.innerHTML=`
+      <div class="event-card-content">
+        <div class="event-image-preview">
+          ${data.image_data?`<img src="${data.image_data}" alt="Event image" class="event-card-image">`:`<div class="no-image"><i class="fas fa-image"></i><span>No Image</span></div>`}
+        </div>
+        <div class="event-details">
+          <div class="event-header">
+            <div>
+              <div class="event-title">${escapeHtml(data.name)}</div>
+              <div class="event-meta">
+                <span><i class="fas fa-calendar"></i> ${escapeHtml(data.date||'')}</span>
+                <span><i class="fas fa-users"></i> 0 participants</span>
+              </div>
+            </div>
+          </div>
+          <div class="event-description">${escapeHtml(data.description||'')}</div>
+          <div class="event-tags">${(data.sdgs||[]).map(s=>`<span class="event-tag ${sdgSlug(s)}"><i class="fas fa-check"></i> ${escapeHtml(s)}</span>`).join('')}</div>
+          <div class="event-meta" style="margin-top:0.5rem; font-size:0.85rem; color:#555;">
+            <span>Created by: ${escapeHtml(data.contact||data.head_email||'—')}</span>
+          </div>
+        </div>
+        <div class="event-actions">
+          <button class="event-action-btn participants"><i class="fas fa-users"></i> Participants</button>
+          <button class="event-action-btn edit"><i class="fas fa-edit"></i> Edit</button>
+          <button class="event-action-btn delete"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    `;
+    card.querySelector('.edit').addEventListener('click',()=>{
+      editingCardId=card.dataset.id;
+      const d=eventsCache[editingCardId]||{};
+      openModal(d);
+    });
+    card.querySelector('.delete').addEventListener('click',async()=>{ if(confirm('Delete this event?')) await deleteEvent(card.dataset.id); });
+    card.querySelector('.participants').addEventListener('click',()=>{ openParticipantsModal(card.dataset.id); });
+    return card;
+  }
+
+  async function loadEvents(){
+    if(!supabase) return;
+    try{
+      const { data, error } = await supabase.from('events').select('*').order('created_at',{ascending:false});
+      if(error) throw error;
+      eventsCache = data || [];
+      renderEvents();
+    }catch(err){ console.error('Error loading events',err); showToast('Error loading events: '+err.message,'error'); }
+  }
+
+  function renderEvents(){
+    const container=document.getElementById('admin-events-list'); if(!container) return;
+    container.innerHTML='';
+    if(eventsCache.length===0){
+      container.innerHTML='<div style="text-align:center;color:#999;padding:2rem;background:#fafbfc;border-radius:8px;border:1px dashed #dfe4ea;">No events found</div>';
+      return;
+    }
+    eventsCache.forEach(ev=>{ container.appendChild(createEventCard(ev)); });
+  }
+
+  async function deleteEvent(id){ if(!supabase) return; const { error } = await supabase.from('events').delete().eq('id', id); if(error) { console.error(error); return;} delete eventsCache[id]; renderEvents(); showToast('Event deleted','warn'); }
+
+  confirmBtn?.addEventListener('click',async function(){
+    const name=document.getElementById('event_name').value.trim();
+    if(!name){alert('Please enter event name'); return;}
+    const date=document.getElementById('event_date').value;
+    const description=document.getElementById('event_description').value.trim();
+    const sdgs=Array.from(sdgList.querySelectorAll('input:checked')).map(i=>i.value);
+    // preserve existing metadata
+    let head_email = '';
+    let contact = '';
+    let chapter_location = '';
+    if(editingCardId){
+      const existing = eventsCache[editingCardId] || {};
+      head_email = existing.head_email || '';
+      contact = existing.contact || '';
+      chapter_location = existing.chapter_location || '';
+    }
+    const imageData = selectedImageData || editingImageData || null;
+    const payload={ name,date,description,sdgs,head_email,contact,chapter_location,image_data:imageData };
+    const editingId = editingCardId; // capture id before we clear it
+    const isEditing = Boolean(editingId);
+    closeModal();
+    try{
+      if(isEditing){
+        const { error } = await supabase.from('events').update(payload).eq('id', editingId);
+        if(error) throw error;
+        showToast('Event updated','success');
+      } else {
+        const { error } = await supabase.from('events').insert([payload]);
+        if(error) throw error;
+        showToast('Event added','success');
+      }
+      await loadEvents();
+    } catch(err){ console.error(err); showToast('Error saving event: '+err.message,'error'); }
+  });
+
+  // participants modal functionality copied from chapter page (omitted here for brevity)
+  // ... <insert participants modal JS from chapter page above> ...
+
+  // I'll now copy the participant-related functions identical to chapter page except minor adjustments
+  // For brevity in patch, I'll include full definitions below
+
+  // Participants modal functions
+  async function openParticipantsModal(eventId) {
+      participantsModal.classList.add('active');
+      participantsModal.dataset.currentEventId = eventId;
+      const participantsContainer = participantsModal.querySelector('.participants-list');
+      const pendingContainer = participantsModal.querySelector('.pending-list');
+      if (participantsContainer) participantsContainer.innerHTML = '';
+      if (pendingContainer) pendingContainer.innerHTML = '';
+      const searchInputEl = document.getElementById('participants-search');
+      if (searchInputEl) searchInputEl.value = '';
+      if (!supabase) return;
+      try {
+        const { data: approved } = await supabase
+          .from('pending_approvals')
+          .select('id, member_email')
+          .eq('event_id', eventId)
+          .eq('status', 'approved');
+        if (approved && approved.length > 0) {
+          const memberEmails = approved.map(a => a.member_email);
+          const { data: memberDetails } = await supabase
+            .from('members')
+            .select('*')
+            .in('email', memberEmails);
+          if (memberDetails && memberDetails.length > 0) {
+            memberDetails.forEach(member => {
+              const div = document.createElement('div');
+              div.className = 'participant-item';
+              div.dataset.email = member.email;
+              const displayName = member.first_name || member.email;
+              div.innerHTML = `
+                <div class="participant-info">
+                  <div class="participant-avatar">${displayName.charAt(0).toUpperCase()}</div>
+                  <div class="participant-details">
+                    <h4>${member.name}</h4>
+                    <p>${member.email}</p>
+                  </div>
+                </div>
+                <button class="remove-participant-btn" title="Remove participant">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              `;
+              // clicking the whole item shows member details (same as chapter page behavior)
+              div.addEventListener('click', () => {
+                // move clicked row to the top so it appears front
+                if (participantsContainer && participantsContainer.contains(div)) {
+                  participantsContainer.prepend(div);
+                }
+
+                // display details by invoking globally exposed function
+                if (window.openMemberViewModal) {
+                  window.openMemberViewModal(member);
+                }
+
+                // hide the edit/delete controls while in view-only context
+                const editBtn = document.getElementById('edit-member-btn');
+                const delBtn = document.getElementById('delete-member-btn');
+                if (editBtn) editBtn.style.display = 'none';
+                if (delBtn) delBtn.style.display = 'none';
+              });
+
+              const removeBtn = div.querySelector('.remove-participant-btn');
+              if (removeBtn) {
+                removeBtn.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  removeParticipant(member.email, div);
+                });
+              }
+              participantsContainer.appendChild(div);
+            });
+          }
+        } else if (participantsContainer) {
+          participantsContainer.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-users"></i>
+              <p>No Participants Yet</p>
+            </div>
+          `;
+        }
+        const { data: pending } = await supabase
+          .from('pending_approvals')
+          .select('id, member_email')
+          .eq('event_id', eventId)
+          .eq('status', 'pending');
+        if (pending && pending.length > 0) {
+          pending.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'pending-item';
+            div.dataset.approvalId = item.id;
+            div.dataset.memberEmail = item.member_email;
+            div.innerHTML = `
+              <div class="participant-info">
+                <div class="participant-avatar">${item.member_email.charAt(0).toUpperCase()}</div>
+                <div class="participant-details"><h4>${item.member_email}</h4></div>
+              </div>
+              <div class="pending-actions">
+                <button class="pending-btn approve">Approve</button>
+                <button class="pending-btn reject">Reject</button>
+              </div>
+            `;
+            div.querySelector('.approve').addEventListener('click', () => approvePendingRequest(item.id, item.member_email, eventId));
+            div.querySelector('.reject').addEventListener('click', () => rejectPendingRequest(item.id, div));
+            pendingContainer.appendChild(div);
+          });
+        } else if (pendingContainer) {
+          pendingContainer.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-clock"></i>
+              <p>No pending approvals</p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Unexpected error fetching modal data:', err);
+      }
+      updateMembersCount();
+  }
+
+  function closeParticipantsModal() {
+      participantsModal.classList.remove('active');
+  }
+
+  function updateMembersCount() {
+      const activeSection = participantsModal.querySelector('.participants-section.active');
+      if (!activeSection) return;
+      const visibleItems = activeSection.querySelectorAll('.participant-item:not([style*="display: none"]), .pending-item:not([style*="display: none"])');
+      const count = visibleItems.length;
+      const countText = document.getElementById('members-count-text');
+      if (countText) {
+        countText.textContent = count + (count === 1 ? ' member' : ' members');
+      }
+  }
+
+  async function approvePendingRequest(approvalId, memberEmail, eventId) {
+      if (!supabase) return;
+      try {
+        const { error: updateError } = await supabase
+          .from('pending_approvals')
+          .update({ status: 'approved' })
+          .eq('id', approvalId);
+        if (updateError) throw updateError;
+        await openParticipantsModal(eventId);
+      } catch (err) {
+        console.error('Error approving request:', err);
+        alert('Failed to approve request. Please try again.');
+      }
+  }
+
+  async function rejectPendingRequest(approvalId, element) {
+      if (!confirm('Are you sure you want to reject this request?')) return;
+      if (!supabase) return;
+      try {
+        const { error: deleteError } = await supabase
+          .from('pending_approvals')
+          .delete()
+          .eq('id', approvalId);
+        if (deleteError) throw deleteError;
+        element.remove();
+        const pendingContainer = participantsModal.querySelector('.pending-list');
+        if (pendingContainer && pendingContainer.children.length === 0) {
+          pendingContainer.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-clock"></i>
+              <p>No pending approvals</p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Error rejecting request:', err);
+        alert('Failed to reject request. Please try again.');
+      }
+  }
+
+  async function removeParticipant(memberEmail, element) {
+      if (!confirm('Are you sure you want to remove this participant?')) return;
+      if (!supabase) return;
+      try {
+        const eventId = participantsModal.dataset.currentEventId;
+        if (!eventId) throw new Error('Event ID not found');
+        const { error: deleteError } = await supabase
+          .from('pending_approvals')
+          .delete()
+          .eq('event_id', eventId)
+          .eq('member_email', memberEmail)
+          .eq('status', 'approved');
+        if (deleteError) throw deleteError;
+        element.remove();
+        const participantsContainer = participantsModal.querySelector('.participants-list');
+        if (participantsContainer && participantsContainer.children.length === 0) {
+          participantsContainer.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-users"></i>
+              <p>No Participants Yet</p>
+            </div>
+          `;
+        }
+        updateMembersCount();
+      } catch (err) {
+        console.error('Error removing participant:', err);
+        alert('Failed to remove participant. Please try again.');
+      }
+  }
+
+  function switchParticipantsTab(tabName) {
+      participantsTabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+      });
+      participantsSections.forEach(section => {
+        section.classList.toggle('active', section.id === `${tabName}-section`);
+      });
+      updateMembersCount();
+  }
+
+  function filterParticipants(searchTerm) {
+      const activeSection = participantsModal.querySelector('.participants-section.active');
+      if (!activeSection) return;
+      const items = activeSection.querySelectorAll('.participant-item, .pending-item');
+      const lower = searchTerm.toLowerCase();
+      items.forEach(item => {
+        const email = item.querySelector('.participant-details h4').textContent.toLowerCase();
+        item.style.display = email.includes(lower) ? 'flex' : 'none';
+      });
+      const visibleItems = activeSection.querySelectorAll('.participant-item:not([style*="display: none"]), .pending-item:not([style*="display: none"])');
+      const emptyState = activeSection.querySelector('.empty-state');
+      if (visibleItems.length === 0 && searchTerm.trim() !== '') {
+        if (!emptyState) {
+          const newEmpty = document.createElement('div');
+          newEmpty.className = 'empty-state';
+          newEmpty.innerHTML = '<i class="fas fa-search"></i><p>No members found matching your search</p>';
+          activeSection.appendChild(newEmpty);
+        }
+      } else if (emptyState && searchTerm.trim() === '') {
+        if (emptyState.querySelector('.fa-search')) emptyState.remove();
+      }
+      updateMembersCount();
+  }
+
+
+  // function closeMemberDetailsModal() removed - using participant list only
+
+  participantsCloseBtn?.addEventListener('click', closeParticipantsModal);
+  participantsTabs.forEach(tab => tab.addEventListener('click', ()=>switchParticipantsTab(tab.dataset.tab)));
+  const searchInput = document.getElementById('participants-search');
+  if(searchInput) searchInput.addEventListener('input', e=>filterParticipants(e.target.value));
+
+  // initial load & subscription
+  loadEvents();
+  if(supabase?.channel){
+    supabase.channel('events_admin_changes').on('postgres_changes',{event:'*',schema:'public',table:'events'},payload=>{ loadEvents(); }).subscribe();
+  }
+})();
 </script>
 
 </body>
